@@ -16,7 +16,13 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_subdirectory(core)
 add_subdirectory(scenes)
 
-add_executable(${PROJECT_NAME} main.cpp)
+add_executable(${PROJECT_NAME} main.cpp
+        Game/base_class.cpp
+        Game/base_class.h
+        Game/player_class.cpp
+        Game/player_class.h
+        Game/warrior.cpp
+        Game/warrior.h)
 
 # Add config.h.in file
 configure_file(config.h.in config.h)
