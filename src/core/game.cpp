@@ -1,9 +1,10 @@
 #include <raylib.h>
-
+#include "../scenes/screen.h"
 #include "game.h"
 
 #include "store.h"
 #include "stage.h"
+#include "../scenes/menu_scene.h"
 
 using namespace std::string_literals;
 
@@ -61,8 +62,11 @@ void game::core::Game::Run(const std::string& scene_name, std::unique_ptr<game::
         // Process input and update current active scene
         game::core::Store::stage->Update();
 
+
+
         // Draw
         BeginDrawing();
+
         ClearBackground(BLACK); // Letterbox color
 
         // Draw everything in the render texture, note this will not be rendered on screen, yet
@@ -74,6 +78,7 @@ void game::core::Game::Run(const std::string& scene_name, std::unique_ptr<game::
         // Draw render texture to window, properly scaled
         this->DrawRenderTexture();
         EndDrawing();
+
 
         // Increment game tick counter
         game::core::Store::ticks++;

@@ -8,4 +8,4 @@ add_library(core STATIC game.h game.cpp store.h scene.h stage.h stage.cpp render
 
 target_include_directories(core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
-target_link_libraries(core raylib raylib_cpp)
+target_link_libraries(core raylib raylib_cpp nlohmann_json::nlohmann_json)

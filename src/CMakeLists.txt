@@ -2,6 +2,7 @@
 
 include(../cmake/raylib.cmake)
 include(../cmake/raylib_cpp.cmake)
+include(../cmake/nlohmann_json.cmake)
 
 project(game VERSION 0.1.0 LANGUAGES CXX)
 
@@ -26,7 +27,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         )
 
 # Link to libraries
-target_link_libraries(${PROJECT_NAME} core scenes)
+target_link_libraries(${PROJECT_NAME} core scenes nlohmann_json::nlohmann_json)
 
 # Copy assets to assets path
 add_custom_target(copy_assets
