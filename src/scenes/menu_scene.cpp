@@ -11,7 +11,6 @@ using namespace std::string_literals;
 
 game::scenes::MenuScene::MenuScene() {
     // Your scene initialization code here...
-    screen.draw_Level();
 }
 
 game::scenes::MenuScene::~MenuScene() {
