@@ -32,7 +32,7 @@ Screen::Screen() {
     {
         std::string image_Path = "assets/maps/" + tileset.getImagePath().string();
 
-        //load texture
+        //load texture and check if loading was successfull
         tileatlas_Texture = LoadTexture(image_Path.c_str());
         if (tileatlas_Texture.id == 0)
         {
@@ -96,6 +96,63 @@ void Screen::draw_Level() const {
                     };
 
                     DrawTextureRec(tileatlas_Texture, srcRect, destPos, WHITE);
+                }
+            }
+        }
+        //Processing Object layers
+        else if (layer.getType() == tson::LayerType::ObjectGroup)
+        {
+            std::cout << "Processing Object Layer: " << layer.getName() << std::endl;
+
+            //Iterate through each object in the object group
+            for (auto& object : layer.getObjects())
+            {
+                std::cout << "Object Name: " << object.getName()
+                << ", Type: " << object.getType()
+                << ", Position: (" << object.getPosition().x << ", " << object.getPosition().y << ")"
+                << ", Size: (" << object.getSize().x << ", " << object.getSize().y << ")" << std::endl;
+
+                //Add any specific Object layer functionalities here
+                //For example: Walls, Player Spawns, Enemy Spawns, audio/environmental triggers...
+
+                //If the object has a gid (is a tile object), it can be drawn
+                //object that are visually represented by a tile may use this
+                if (object.getGid() > 0)
+                {
+                    tson::Tile* tile = nullptr;
+                    //Iterate through the tilesets to find the one containing this gid
+                    for (auto& tileset : map->getTilesets())
+                    {
+                        //check if gid is within this tileset
+                        if (object.getGid() >= tileset.getFirstgid() &&
+                            object.getGid() < (tileset.getFirstgid() + tileset.getTileCount()))
+                        {
+                            //calculate the local ID within this tileset
+                            uint32_t localTileId = object.getGid() - tileset.getFirstgid();
+                            //get the tile from the tileset using it's local Id
+                            tile = tileset.getTile(localTileId);
+                            if (tile != nullptr)
+                            {
+                                //found the tile, no need to keep searching
+                                break;
+                            }
+                        }
+                    }
+                    if (tile != nullptr)
+                    {
+                        tson::Rect drawingRect = tile->getDrawingRect();
+                        Rectangle srcRect = {
+                            static_cast<float>(drawingRect.x),
+                            static_cast<float>(drawingRect.y),
+                            static_cast<float>(drawingRect.width),
+                            static_cast<float>(drawingRect.height)
+                        };
+                        Vector2 destPos = {
+                            static_cast<float>(object.getPosition().x),
+                            static_cast<float>(object.getPosition().y)
+                        };
+                        DrawTextureRec(tileatlas_Texture, srcRect, destPos, WHITE);
+                    }
                 }
             }
         }
