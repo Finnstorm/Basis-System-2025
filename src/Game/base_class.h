@@ -1,8 +1,10 @@
 //
-// Created by Manza on 4/29/2025.
+// Created by Kruse on 23/05/2025.
 //
 
-#pragma once
+#ifndef RAYLIBSTARTER_BASE_CLASS_H
+#define RAYLIBSTARTER_BASE_CLASS_H
+
 
 class base_class {
 protected:
@@ -20,3 +22,6 @@ public:
     float GET_SPEED() const { return speed; }
     int GET_DAMAGE() const { return damage; }
 };
+
+
+#endif //RAYLIBSTARTER_BASE_CLASS_H

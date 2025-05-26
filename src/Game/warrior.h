@@ -1,8 +1,10 @@
 //
-// Created by Manza on 4/30/2025.
+// Created by Kruse on 23/05/2025.
 //
 
-#pragma once
+#ifndef RAYLIBSTARTER_WARRIOR_H
+#define RAYLIBSTARTER_WARRIOR_H
+
 
 #include "base_class.h"
 #include "config.h"
@@ -20,3 +22,6 @@ public:
     void UPDATE(float delta_time) override;
     void DRAW() const;
 };
+
+
+#endif //RAYLIBSTARTER_WARRIOR_H

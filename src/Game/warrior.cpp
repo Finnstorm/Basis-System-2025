@@ -1,9 +1,10 @@
 //
-// Created by Manza on 4/30/2025.
+// Created by Kruse on 23/05/2025.
 //
 
 #include "warrior.h"
 #include <iostream>
+#include "config.h"
 
 warrior::warrior() {
     hp = game::Config::warrior_hp;
