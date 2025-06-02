@@ -104,16 +104,39 @@ void Screen::draw_Level() const {
         {
             std::cout << "Processing Object Layer: " << layer.getName() << std::endl;
 
+            //get the name of the current Layer
+            const std::string& layer_Name = layer.getName();
+
             //Iterate through each object in the object group
-            for (auto& object : layer.getObjects())
-            {
+            for (auto& object : layer.getObjects()) {
                 std::cout << "Object Name: " << object.getName()
                 << ", Type: " << object.getType()
                 << ", Position: (" << object.getPosition().x << ", " << object.getPosition().y << ")"
                 << ", Size: (" << object.getSize().x << ", " << object.getSize().y << ")" << std::endl;
 
-                //Add any specific Object layer functionalities here
+                //Check for certain layer Names
+                //Add any specific Object layer functionalities here, depending on the type of layer
                 //For example: Walls, Player Spawns, Enemy Spawns, audio/environmental triggers...
+                if (layer_Name == "walls")
+                {
+                    std::cout << " This layer contains walls." << std::endl;
+                }
+
+                else if (layer_Name == "consumable")
+                {
+                    std::cout << " This layer contains consumables." << std::endl;
+                }
+
+                else if (layer_Name == "levelSpawns")
+                {
+                    std::cout << " This layer contains level spawns." << std::endl;
+                }
+
+                else if (layer_Name == "levelSpawns")
+                {
+                    std::cout << " This layer contains level spawns." << std::endl;
+                }
+
 
                 //If the object has a gid (is a tile object), it can be drawn
                 //object that are visually represented by a tile may use this

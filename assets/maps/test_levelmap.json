@@ -2416,7 +2416,7 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"C:\/ Users\/marce\/OneDrive - SRH\/Uni\/Projektarbeit2\/Basis-System-2025\/assets\/maps\/test_Tileset.json"
+         "source":"C:\/Users\/marce\/CLionProjects\/Basis-System-2025\/assets\/maps\/test_Tileset.json"
         }],
  "tilewidth":16,
  "type":"map",
