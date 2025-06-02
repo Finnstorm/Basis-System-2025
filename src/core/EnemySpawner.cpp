@@ -1,8 +1,10 @@
 #include "EnemySpawner.h"
 
+#include "raylib.h"
+
 spawner::spawner(Rectangle spawner_Area,
                  const std::vector<Rectangle>& obstacle_List,
-                 std::vector<enemy*>& enemy_List,
+                 std::vector<enemy::Enemy_Base_Class*>& enemy_List,
                  float spawn_Rate,
                  int max_Enemies)
     : spawner_Area(spawner_Area),
@@ -44,7 +46,7 @@ void spawner::trySpawn(Vector2 spawn_Position) {
         return;
 
     // Gegner erzeugen
-    enemy* new_Enemy = createEnemy(spawn_Position);
+    enemy::Enemy_Base_Class* new_Enemy = createEnemy(spawn_Position);
 
     if (new_Enemy) {
         enemy_List.push_back(new_Enemy);
@@ -58,12 +60,14 @@ bool spawner::isSpaceFree(const Rectangle& newHitbox) const {
             return false;
         }
     }
+
     // Kollision mit existierenden Gegnern prüfen
     for (const auto& e : enemy_List) {
         if (CheckCollisionRecs(newHitbox, e->getHitbox())) {
             return false;
         }
     }
+
     return true;
 }
 
