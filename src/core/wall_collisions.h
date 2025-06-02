@@ -36,7 +36,8 @@ namespace game::core
 
         /* Überprüft, ob eine Kollision zwischen einer Wand und dem
         Spielerrec aus Playerinput.cpp erfolgt */
-        virtual bool CheckCollision(const Rectangle& playerRect) const {
+        virtual bool CheckCollision(const Rectangle& playerRect) const
+        {
             return CheckCollisionRecs(rect, playerRect);
         }
 

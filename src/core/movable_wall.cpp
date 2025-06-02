@@ -9,7 +9,7 @@
 namespace game::core
 {
 
-    void MovableWall::TriggerMove(Player::Direction)
+    void Movable_Wall::TriggerMove(Player::Direction)
     {
         if (!isMoving)
         {
@@ -27,7 +27,7 @@ namespace game::core
         }
     }
 
-    void MovableWall::Update(float dt)
+    void Movable_Wall::Update(float dt)
     {
         if (isMoving && movedDistance < Config::tile_Size) {
             float moveStep = speed * dt;
