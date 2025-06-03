@@ -23,7 +23,7 @@ namespace game::core
     Player(Vector2 start_Position, float move_Speed);
 
     // Wird mit jedem Frame aufgerufen, um Position zu aktualisieren
-    Direction Update();
+    Vector2 Update();
 
     // Zeichnet den Spieler
     void Draw();

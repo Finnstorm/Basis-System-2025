@@ -4,8 +4,8 @@
 #include <raylib.h>
 #include <store.h>
 #include "scenes.h"
-#include "renderer.h"
 #include "game_scene.h"
+#include <iostream>
 #include "../core/collision_check.h"
 
 using namespace std::string_literals;
@@ -30,60 +30,81 @@ game::scenes::GameScene::~GameScene() {
 
 void game::scenes::GameScene::Update()
 {
-    if (up_player_ != nullptr) {
-        Vector2 old_player_position = up_player_->Get_Position(); // Alte Position speichern
+    if (up_player_ != nullptr)
+    {
+        // 1. Berechne die beabsichtigte Bewegung für diesen Frame
+        Vector2 intended_movement = up_player_->Update(); // Ruft die modifizierte Player::Update() auf
 
-        up_player_->Update(); // Spieler bewegt sich basierend auf Input
+        // 2. Hole aktuelle Position und Größe des Spielers
+        Vector2 current_position = up_player_->Get_Position();
+        float player_w = game::Config::player_Width;    // Gemäß deinem Styleguide player_Width
+        float player_h = game::Config::player_Height;   // Gemäß deinem Styleguide player_Height
 
-        Rectangle player_rect = {
-            up_player_->Get_Position().x - game::Config::player_Width / 2.0f,
-            up_player_->Get_Position().y - game::Config::player_Height / 2.0f,
-            game::Config::player_Width,
-            game::Config::player_Height
+        // Temporäre neue Position für X-Achsen-Bewegung
+        Vector2 position_after_x_move = current_position;
+        position_after_x_move.x += intended_movement.x;
+        up_player_->Set_Position(position_after_x_move); // Spieler erstmal auf X-Achse bewegen
+
+        Rectangle player_rect_x = {
+            position_after_x_move.x - player_w / 2.0f,
+            current_position.y - player_h / 2.0f, // Y-Position ist noch die alte
+            player_w,
+            player_h
         };
 
-        // Kollisionsprüfung mit allen Wänden
-        for (const auto& wall : game_map_screen_.walls) { // Zugriff auf walls in unserem Screen-Objekt
-            if (game::core::check_collision(player_rect, wall.GetRect())) {
-                // Kollision gefunden! Setze Spieler auf alte Position zurück.
-                // Bessere Kollisionsauflösung wäre, den Spieler nur in der Achse zurückzusetzen,
-                // in der die Kollision primär stattfand, um "Hängenbleiben" zu ermöglichen.
-                // Aber für den Anfang ist das Zurücksetzen der einfachste Weg.
+        // 3. Kollisionsprüfung und -behandlung für die X-Achse
+        for (const auto& wall : game_map_screen_.walls)
+        {
+            if (game::core::check_collision(player_rect_x, wall.GetRect()))
+            {
+                std::cout << "Collision X with wall!" << std::endl;
+                // Kollision auf X-Achse
+                if (intended_movement.x > 0) // Bewegt sich nach rechts
+                {
+                    // Spieler an der linken Kante der Wand positionieren
+                    position_after_x_move.x = wall.GetRect().x - player_w / 2.0f - 0.01f; // kleiner Offset
+                }
+                else if (intended_movement.x < 0) // Bewegt sich nach links
+                {
+                    // Spieler an der rechten Kante der Wand positionieren
+                    position_after_x_move.x = wall.GetRect().x + wall.GetRect().width + player_w / 2.0f + 0.01f; // kleiner Offset
+                }
+                up_player_->Set_Position(position_after_x_move); // Korrigierte X-Position setzen
+                break; // Nur eine Kollision pro Achse pro Frame auflösen
+            }
+        }
 
-                // up_player_->Set_Position(old_player_position); // Du bräuchtest eine Set_Position Methode im Player
+        // Aktuelle Position nach X-Kollisionsbehandlung holen (könnte sich geändert haben)
+        Vector2 position_after_y_move = up_player_->Get_Position();
+        position_after_y_move.y += intended_movement.y;
+        up_player_->Set_Position(position_after_y_move); // Spieler erstmal auf Y-Achse bewegen
 
-                // Da Playerinput.cpp keine Set_Position hat, müssen wir es anders machen:
-                // Wir verhindern die Bewegung, indem wir die aktuelle Position so anpassen,
-                // dass sie der alten entspricht, oder genauer: die Überlappung auflösen.
-                // Für den allerersten, einfachsten Test:
-                // Wir können die Logik in Player::Update so anpassen, dass sie die Wände direkt prüft,
-                // oder wir geben Player::Update eine Referenz auf die Wände.
-                // Oder, für jetzt am einfachsten, wir implementieren das Zurücksetzen hier rudimentär,
-                // indem wir die Bewegungskomponente, die zur Kollision führte, negieren.
-                // Das ist aber unsauber.
+        Rectangle player_rect_y = {
+            position_after_y_move.x - player_w / 2.0f, // X-Position ist die (ggf. korrigierte) von oben
+            position_after_y_move.y - player_h / 2.0f,
+            player_w,
+            player_h
+        };
 
-                // IDEALERWEISE: Playerinput.cpp würde eine Methode haben wie:
-                // player_resolve_collision(const Rectangle& wall_rect, Vector2 old_pos)
-                // Oder Playerinput::Update nimmt die Wände als Parameter.
-
-                // ---- EINFACHSTE VARIANTE FÜR JETZT (aber nicht perfekt): ----
-                // Wenn eine Kollision auftritt, setzen wir die Spielerkoordinaten direkt zurück.
-                // Dafür bräuchten wir eine Methode wie `up_player_->Set_Position(old_player_position);`
-                // Da wir die nicht haben, ist dieser einfache Ansatz hier schwierig sauber umzusetzen.
-
-                // ---- BESSERER ANSATZ (kleiner Umbau in Playerinput): ----
-                // Wir lassen Playerinput::Update die Kollisionen selbst prüfen oder bekommen sie übergeben.
-                // Für den Moment machen wir es hier in GameScene, indem wir die Position des Spielers
-                // direkt manipulieren, wenn eine Set_Position Methode existiert.
-
-                // --- Annahme: Du fügst Player::Set_Position hinzu ---
-                // In Playerinput.h: void Set_Position(Vector2 new_position);
-                // In Playerinput.cpp: void Player::Set_Position(Vector2 new_position) { this->current_position = new_position; }
-                up_player_->Set_Position(old_player_position); // Wenn Set_Position existiert
-
-                // Wichtig: Wenn mehrere Kollisionen in einem Frame passieren könnten, muss man das hier
-                // eventuell robuster gestalten oder nach der ersten Kollision abbrechen.
-                break; // Verlasse die Schleife nach der ersten erkannten Kollision für diesen Frame
+        // 4. Kollisionsprüfung und -behandlung für die Y-Achse
+        for (const auto& wall : game_map_screen_.walls)
+        {
+            if (game::core::check_collision(player_rect_y, wall.GetRect()))
+            {
+                std::cout << "Collision Y with wall!" << std::endl;
+                // Kollision auf Y-Achse
+                if (intended_movement.y > 0) // Bewegt sich nach unten
+                {
+                    // Spieler an der oberen Kante der Wand positionieren
+                    position_after_y_move.y = wall.GetRect().y - player_h / 2.0f - 0.01f;
+                }
+                else if (intended_movement.y < 0) // Bewegt sich nach oben
+                {
+                    // Spieler an der unteren Kante der Wand positionieren
+                    position_after_y_move.y = wall.GetRect().y + wall.GetRect().height + player_h / 2.0f + 0.01f;
+                }
+                up_player_->Set_Position(position_after_y_move); // Korrigierte Y-Position setzen
+                break; // Nur eine Kollision pro Achse pro Frame auflösen
             }
         }
     }

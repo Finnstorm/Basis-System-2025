@@ -30,81 +30,77 @@ namespace game::core
     }
 
     // Prüft Tasteneingabe, normalisiert bewegung, kontrolliert Angriffsdauer, setzt Spieler Richtung
-    Player::Direction Player::Update()
+    Vector2 Player::Update()
     {
-        Vector2 movement_vector = {0.0f, 0.0f};
+    Vector2 movement_this_frame = {0.0f, 0.0f};
+    Vector2 input_direction = {0.0f, 0.0f};
 
-        // Delta-Zeit von der globalen Instanz holen
-        float delta_time = 0.0f;
+    float delta_time = 0.0f;
+    if (game::core::Store::dtm != nullptr)
+    {
+        delta_time = game::core::Store::dtm->Get_Dt();
+    }
 
-        if (game::core::Store::dtm != nullptr)
-        {
-            delta_time = game::core::Store::dtm->Get_Dt();
-        }
-
-        // Cooldown Timer aktualisieren
-        if (current_attack_cooldown_timer > 0.0f)
-        {
+    // Cooldown Timer aktualisieren
+    if (current_attack_cooldown_timer > 0.0f) // current_attack_cooldown_timer ist Member
+    {
         current_attack_cooldown_timer -= delta_time;
-        if (current_attack_cooldown_timer < 0.0f) // Sicherstellen, dass er nicht negativ wird
+        if (current_attack_cooldown_timer < 0.0f)
         {
             current_attack_cooldown_timer = 0.0f;
         }
     }
-    // Tasteneingabe prüfen
-    if (IsKeyDown(key_Up))    movement_vector.y -= 1.0f;
-    if (IsKeyDown(key_Down))  movement_vector.y += 1.0f;
-    if (IsKeyDown(key_Left))  movement_vector.x -= 1.0f;
-    if (IsKeyDown(key_Right)) movement_vector.x += 1.0f;
 
-    // Bewegung normalisieren (diagonal = gleiche Geschwindigkeit)
-    if (movement_vector.x != 0.0f || movement_vector.y != 0.0f)
+    // Tasteneingabe für Bewegung prüfen
+    if (IsKeyDown(key_Up))    input_direction.y -= 1.0f;
+    if (IsKeyDown(key_Down))  input_direction.y += 1.0f;
+    if (IsKeyDown(key_Left))  input_direction.x -= 1.0f;
+    if (IsKeyDown(key_Right)) input_direction.x += 1.0f;
+
+    // Bewegung berechnen, wenn Input vorhanden ist
+    if (input_direction.x != 0.0f || input_direction.y != 0.0f)
     {
-        float length = sqrtf(movement_vector.x * movement_vector.x + movement_vector.y * movement_vector.y);
-        movement_vector.x /= length;
-        movement_vector.y /= length;
+        float length = sqrtf(input_direction.x * input_direction.x + input_direction.y * input_direction.y);
+        // Normalisierter Richtungsvektor (input_direction wird hier direkt für die Richtung verwendet)
+        Vector2 normalized_direction = {input_direction.x / length, input_direction.y / length};
 
-        if (game::core::Store::dtm != nullptr)
-        {
-            delta_time = game::core::Store::dtm->Get_Dt();
-        }
-
-        current_position.x += movement_vector.x * movement_speed * delta_time;
-        current_position.y += movement_vector.y * movement_speed * delta_time;
+        // Berechne die Bewegung für diesen Frame
+        movement_this_frame.x = normalized_direction.x * movement_speed * delta_time;
+        movement_this_frame.y = normalized_direction.y * movement_speed * delta_time;
     }
+    // Wenn kein Input, bleibt movement_this_frame {0.0f, 0.0f}
 
     // Nahkampfangriff starten
-        if (IsKeyPressed(key_Melee_Attack) && !is_attacking && current_attack_cooldown_timer <= 0.0f)
-        {
-            is_attacking = true;
-            attack_timer = attack_duration; // attack_duration kommt jetzt aus Config via Konstruktor
-        }
+    if (IsKeyPressed(key_Melee_Attack) && !is_attacking && current_attack_cooldown_timer <= 0.0f)
+    {
+        is_attacking = true;
+        attack_timer = attack_duration;
+    }
 
     // Angriff aktualisieren
-        if (is_attacking)
+    if (is_attacking)
+    {
+        attack_timer -= delta_time;
+        if (attack_timer <= 0.0f)
         {
-            attack_timer -= delta_time; // delta_time von oben verwenden
-
-            if (attack_timer <= 0.0f)
-            {
-                is_attacking = false;
-                attack_timer = 0.0f;
-                // Cooldown starten, NACHDEM der Angriff beendet ist
-                current_attack_cooldown_timer = attack_Cooldown; // attack_cooldown kommt aus Config via Konstruktor
-            }
+            is_attacking = false;
+            attack_timer = 0.0f;
+            current_attack_cooldown_timer = attack_Cooldown; // attack_Cooldown ist Member
         }
+    }
 
-    // Richtung setzen
-    if (movement_vector.x < 0 && movement_vector.y < 0) last_direction = LeftUp;
-    else if (movement_vector.x > 0 && movement_vector.y < 0) last_direction = RightUp;
-    else if (movement_vector.x < 0 && movement_vector.y > 0) last_direction = LeftDown;
-    else if (movement_vector.x > 0 && movement_vector.y > 0) last_direction = RightDown;
-    else if (movement_vector.x < 0) last_direction = Left;
-    else if (movement_vector.x > 0) last_direction = Right;
-    else if (movement_vector.y < 0) last_direction = Up;
-    else if (movement_vector.y > 0) last_direction = Down;
+    // Richtung setzen basierend auf der reinen Eingabe (input_direction)
+    if (input_direction.x < 0 && input_direction.y < 0) last_direction = LeftUp;
+    else if (input_direction.x > 0 && input_direction.y < 0) last_direction = RightUp;
+    else if (input_direction.x < 0 && input_direction.y > 0) last_direction = LeftDown;
+    else if (input_direction.x > 0 && input_direction.y > 0) last_direction = RightDown;
+    else if (input_direction.x < 0) last_direction = Left;
+    else if (input_direction.x > 0) last_direction = Right;
+    else if (input_direction.y < 0) last_direction = Up;
+    else if (input_direction.y > 0) last_direction = Down;
+    // Wenn keine Bewegungseingabe, bleibt last_direction unverändert.
 
-    return last_direction;
+    return movement_this_frame;
     }
 
     Vector2 Player::Get_Position() const
