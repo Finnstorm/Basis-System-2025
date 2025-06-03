@@ -12,8 +12,6 @@ add_library(core STATIC game.h game.cpp store.h scene.h stage.h stage.cpp render
         enemy_base_class.h
         objects.cpp
         objects.h
-        consumables.cpp
-        consumables.h
         Walls.cpp
         Walls.h
         Spawnpoints.cpp

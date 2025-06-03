@@ -10,7 +10,6 @@
 #include "scenes/screen.h"
 #include "config.h.in"
 #include "Walls.h"
-#include "consumables.h"
 #include "enemy_base_class.h"
 
 using namespace std::string_literals;

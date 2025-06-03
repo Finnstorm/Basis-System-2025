@@ -131,14 +131,6 @@ void Screen::draw_Level() const {
                     vec_walls.push_back(Walls(temp,temp2));
                 }
 
-                else if (layer_Name == "consumable")
-                {
-                    Vector2 temp;
-                    temp.x=object.getPosition().x;
-                    temp.y=object.getPosition().y;
-                    vec_cons.push_back(consumables(temp,object.getName()));
-                }
-
                 else if (layer_Name == "levelSpawns")
                 {
                     std::cout << " This layer contains level spawns." << std::endl;

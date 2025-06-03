@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "raylib.h"
+
 namespace enemy
 {
     class Enemy_Base_Class
