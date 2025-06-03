@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include "screen.h"
+#include "../config.h.Puzzle1.in"
 
 Screen::Screen() {
 
@@ -55,80 +56,71 @@ Screen::~Screen()
 {
     UnloadTexture(tileatlas_Texture);
 }
-void Screen::Load_Object_Layers()
-{
-    if (!levelmap.contains("layers")) {
-        std::cerr << "Levelmap does not contain 'layers' array!" << std::endl;
+void Screen::Load_Object_Layers() {
+    if (!levelmap.contains("layers") || !levelmap["layers"].is_array()) {
+        std::cerr << "ERROR in Load_Object_Layers: 'levelmap' does not contain 'layers' array or 'layers' is not an array!" << std::endl;
         return;
     }
 
-    for (const auto& layer : levelmap["layers"])
-        {
-        // Wir suchen eine Objektebene ('objectgroup') mit dem spezifischen Namen "Wall".
-        // Es ist auch wichtig zu prüfen, ob die Felder existieren und den richtigen Typ haben.
+    walls.clear(); // Wichtig: Vor dem Neuladen den Vektor leeren
+
+    for (const auto& layer : levelmap["layers"]) {
         if (layer.contains("type") && layer["type"].is_string() && layer["type"] == "objectgroup" &&
-            layer.contains("name") && layer["name"].is_string() && layer["name"] == "Wall" &&
-            layer.contains("objects") && layer["objects"].is_array()) { // Prüfen, ob "objects" ein Array ist
+            layer.contains("name") && layer["name"].is_string() && layer["name"] == "Wall" && // Weiterhin die Objektebene "Wall"
+            layer.contains("objects") && layer["objects"].is_array()) {
 
-            std::cout << "Found 'Wall' object layer." << std::endl; // Debug-Ausgabe
+            std::cout << "INFO: Found 'Wall' object layer. Processing objects..." << std::endl;
 
-            // Iteriere durch alle Objekte in dieser "Wall"-Ebene.
             for (const auto& object_data : layer["objects"]) {
-                // Standardwerte für die Objekt-Eigenschaften, falls sie in der JSON fehlen.
-                float x = 0.0f, y = 0.0f, width = 0.0f, height = 0.0f;
-                std::string obj_type_str = "Wall"; // Standard-Typ, falls kein Typ/Klasse im Objekt definiert ist.
+                float x = 0.0f, y = 0.0f, width = 0.0f, height = 0.0f; // Für statische Walls aus Tiled
+                std::string object_class_type = "Wall"; // Standard
 
-                // Lese die geometrischen Daten des Objekts.
                 if (object_data.contains("x") && object_data["x"].is_number()) x = object_data["x"];
                 if (object_data.contains("y") && object_data["y"].is_number()) y = object_data["y"];
+
+                // Für statische "Wall"-Objekte können Breite/Höhe aus Tiled kommen
                 if (object_data.contains("width") && object_data["width"].is_number()) width = object_data["width"];
                 if (object_data.contains("height") && object_data["height"].is_number()) height = object_data["height"];
 
-                // ---- HIER IST DIE WICHTIGSTE ÄNDERUNG ----
-                // Lese den Typ des Objekts. Tiled speichert das "Klasse"-Feld als "class" in der JSON.
                 if (object_data.contains("class") && object_data["class"].is_string()) {
-                    obj_type_str = object_data["class"];
-                    // std::cout << "Object 'class' field found: " << obj_type_str << std::endl; // Debug
+                    object_class_type = object_data["class"];
+                } else if (object_data.contains("type") && object_data["type"].is_string()) {
+                    object_class_type = object_data["type"];
                 }
-                // Fallback 1: Falls es doch mal als "type" direkt im Objekt steht
-                else if (object_data.contains("type") && object_data["type"].is_string()) {
-                    obj_type_str = object_data["type"];
-                    // std::cout << "Object 'type' field found: " << obj_type_str << std::endl; // Debug
-                }
-                // Fallback 2: Falls es in den "properties" als Eigenschaft namens "type" definiert ist
-                else if (object_data.contains("properties") && object_data["properties"].is_array()) {
-                    for (const auto& prop : object_data["properties"]) {
-                        if (prop.contains("name") && prop["name"].is_string() && prop["name"] == "type" &&
-                            prop.contains("value") && prop["value"].is_string()) {
-                            obj_type_str = prop["value"];
-                            // std::cout << "Object 'type' property found: " << obj_type_str << std::endl; // Debug
-                            break; // Typ gefunden, Schleife über Properties kann beendet werden.
-                        }
-                        // Man könnte hier auch nach einer Property "class" suchen, wenn das vorkommen könnte.
-                    }
-                }
-                // ---- ENDE DER WICHTIGSTEN ÄNDERUNG ----
+                // ... (ggf. Fallback für Properties) ...
 
-                Rectangle rect = {x, y, width, height};
+                std::cout << "  Loading object: Class/Type='" << object_class_type
+                          << "', X=" << x << ", Y=" << y << std::endl;
 
-                std::cout << "Loading object: Type=" << obj_type_str << ", X=" << x << ", Y=" << y << ", W=" << width
-                          << ", H=" << height << std::endl; // Debug-Ausgabe
+                Vector2 initial_pos = {x, y};
 
-                // Erstelle das entsprechende C++ Objekt basierend auf dem ausgelesenen Typ.
-                // Momentan erstellen wir nur 'Wall'-Objekte.
-                if (obj_type_str == "Wall") {
-                    walls.emplace_back(rect, obj_type_str); // Füge eine neue Wand zum Vektor hinzu.
+                if (object_class_type == "Wall") {
+                    // Für eine statische Wand nehmen wir Breite und Höhe aus Tiled
+                    walls.push_back(std::make_unique<game::core::Wall>(
+                        Rectangle{x, y, width, height}, // Nimmt direkt das Rechteck aus Tiled
+                        object_class_type
+                    ));
+                } else if (object_class_type == "Movable_Wall_1") { // Spezifisch für die erste Wand
+                    walls.push_back(std::make_unique<game::core::Movable_Wall>(
+                        initial_pos,
+                        Vector2{puzzle1::Config_Puzzle1::movable_Wall_1_Target_X,
+                            game::Config::Puzzle1::movable_Wall_1_Target_Y},
+                        game::Config::movable_Wall_1_Sprite_Path_Inactive_Top,
+                        game::Config::Puzzle1::movable_Wall_1_Sprite_Path_Inactive_Bottom,
+                        game::Config::Puzzle1::movable_Wall_1_Sprite_Path_Active_Top,
+                        game::Config::Puzzle1::movable_Wall_1_Sprite_Path_Active_Bottom
+                    ));
                 }
-                // Später könntest du hier erweitern, um z.B. 'Movable_Wall' zu erstellen:
-                // else if (obj_type_str == "Movable_Wall") {
-                //     // Hier müsstest du ggf. weitere Properties für Movable_Wall auslesen (z.B. Bewegungsrichtung, Geschwindigkeit)
-                //     // Vector2 moveDir = {0,0}; float moveSpeed = 0.0f;
-                //     // ... (Logik zum Auslesen der zusätzlichen Properties) ...
-                //     // walls.emplace_back(game::core::Movable_Wall(rect, obj_type_str, moveDir, moveSpeed)); // Beispiel
-                // }
+                // Hier später: else if (object_class_type == "Movable_Wall_2") { ... } usw.
+                // ODER eine datengetriebene Lösung, die anhand einer ID oder des Namens des Objekts in Tiled
+                // die richtigen Config-Werte für Target und Sprites auswählt. Für den Anfang ist das spezifische okay.
+                else {
+                    std::cout << "  WARNING: Unknown object class/type encountered or not yet handled: " << object_class_type << std::endl;
+                }
             }
         }
     }
+    std::cout << "INFO: Finished processing object layers. Total walls loaded: " << walls.size() << std::endl;
 }
 
 void Screen::draw_Level() const
