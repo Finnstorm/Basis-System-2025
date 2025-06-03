@@ -1,0 +1,98 @@
+#pragma once
+
+#include <raylib.h>
+
+namespace puzzle1
+{
+    class Config_Puzzle1 final
+    {
+    public:
+
+        // --- Gemeinsame Eigenschaften für alle Movable Walls in Puzzle 1 ---
+        // Visuelle Größe einer Movable Wall (basierend auf 2x2 Kacheln)
+        inline static constexpr float movable_Wall_Visual_Width = game::Config::tile_Size * 2.0f;
+        inline static constexpr float movable_Wall_Visual_Height = game::Config::tile_Size * 2.0f;
+
+        // Hitbox-Dimensionen (kleiner als die visuelle Größe, um Überlappung zu ermöglichen)
+
+        // Beispiel: volle Breite
+        inline static constexpr float movable_Wall_Hitbox_Width = game::Config::tile_Size * 2.0f;
+
+        // Beispiel: nur die untere Kachelreihe als Hitbox
+        inline static constexpr float movable_Wall_Hitbox_Height = game::Config::tile_Size * 1.0f;
+
+        // Hitbox-Offset relativ zur oberen linken Ecke des visuellen 2x2 Sprites
+
+        // Y-Offset von tile_Size bedeutet wo die Hitbox der Wand beginnt. Standard gerade = oberes Tile bleibt frei
+        inline static constexpr float movable_Wall_Hitbox_Offset_X = 0.0f;
+        inline static constexpr float movable_Wall_Hitbox_Offset_Y = game::Config::tile_Size * 1.0f;
+
+        // Verhalten (kann später pro Wand angepasst werden, falls nötig)
+        inline static constexpr float movable_Wall_Sprite_Movement_Speed = 64.0f; // Geschwindigkeit der Sprite-Transition
+        inline static constexpr float movable_Wall_Move_Cooldown = 0.5f;    // Abklingzeit nach Bewegung
+        inline static constexpr float movable_Wall_Push_Delay = 0.2f;       // Verzögerung vor Bewegung durch Spieler
+
+        // --- Movable Wall 1 (Spezifische Daten) ---
+        // Zielposition für Wand 1 (Pixel-Koordinaten)
+        inline static constexpr float movable_Wall_1_Target_X = 200.0f; // Beispiel
+        inline static constexpr float movable_Wall_1_Target_Y = 100.0f; // Beispiel
+
+        // Zielposition für Wand 2 (Pixel-Koordinaten)
+        inline static constexpr float movable_Wall_1_Target_X = 200.0f; // Beispiel
+        inline static constexpr float movable_Wall_1_Target_Y = 100.0f; // Beispiel
+
+        // Zielposition für Wand 3 (Pixel-Koordinaten)
+        inline static constexpr float movable_Wall_1_Target_X = 200.0f; // Beispiel
+        inline static constexpr float movable_Wall_1_Target_Y = 100.0f; // Beispiel
+
+        // Zielposition für Wand 4 (Pixel-Koordinaten)
+        inline static constexpr float movable_Wall_1_Target_X = 200.0f; // Beispiel
+        inline static constexpr float movable_Wall_1_Target_Y = 100.0f; // Beispiel
+
+        // Zielposition für Wand 5 (Pixel-Koordinaten)
+        inline static constexpr float movable_Wall_1_Target_X = 200.0f; // Beispiel
+        inline static constexpr float movable_Wall_1_Target_Y = 100.0f; // Beispiel
+
+
+        // Sprite-Pfade für Wand 1
+        // Die _Top Sprites werden über dem Spieler gezeichnet, die _Bottom Sprites unter dem Spieler (bei Überlappung)
+        inline static constexpr const char* movable_Wall_1_Sprite_Path_Inactive_Top = "assets/graphics/Movable_Wall_1/wall_1_inactive_top.png";
+        inline static constexpr const char* movable_Wall_1_Sprite_Path_Inactive_Bottom = "assets/graphics/Movable_Wall_1/wall_1_inactive_bottom.png";
+
+        inline static constexpr const char* movable_Wall_1_Sprite_Path_Active_Top = "assets/graphics/Movable_Wall_1/wall_1_active_top.png";
+        inline static constexpr const char* movable_Wall_1_Sprite_Path_Active_Bottom = "assets/graphics/Movable_Wall_1/wall_1_active_bottom.png";
+
+        // Sprite-Pfade für Wand 2
+        // Die _Top Sprites werden über dem Spieler gezeichnet, die _Bottom Sprites unter dem Spieler (bei Überlappung)
+        inline static constexpr const char* movable_Wall_2_Sprite_Path_Inactive_Top = "assets/graphics/Movable_Wall_2/wall_2_inactive_top.png";
+        inline static constexpr const char* movable_Wall_2_Sprite_Path_Inactive_Bottom = "assets/graphics/Movable_Wall_2/wall_2_inactive_bottom.png";
+
+        inline static constexpr const char* movable_Wall_2_Sprite_Path_Active_Top = "assets/graphics/Movable_Wall_2/wall_2_active_top.png";
+        inline static constexpr const char* movable_Wall_2_Sprite_Path_Active_Bottom = "assets/graphics/Movable_Wall_2/wall_2_active_bottom.png";
+
+        // Sprite-Pfade für Wand 3
+        // Die _Top Sprites werden über dem Spieler gezeichnet, die _Bottom Sprites unter dem Spieler (bei Überlappung)
+        inline static constexpr const char* movable_Wall_3_Sprite_Path_Inactive_Top = "assets/graphics/Movable_Wall_3/wall_3_inactive_top.png";
+        inline static constexpr const char* movable_Wall_3_Sprite_Path_Inactive_Bottom = "assets/graphics/Movable_Wall_3/wall_3_inactive_bottom.png";
+
+        inline static constexpr const char* movable_Wall_3_Sprite_Path_Active_Top = "assets/graphics/Movable_Wall_3/wall_3_active_top.png";
+        inline static constexpr const char* movable_Wall_3_Sprite_Path_Active_Bottom = "assets/graphics/Movable_Wall_3/wall_3_active_bottom.png";
+
+        // Sprite-Pfade für Wand 4
+        // Die _Top Sprites werden über dem Spieler gezeichnet, die _Bottom Sprites unter dem Spieler (bei Überlappung)
+        inline static constexpr const char* movable_Wall_4_Sprite_Path_Inactive_Top = "assets/graphics/Movable_Wall_4/wall_4_inactive_top.png";
+        inline static constexpr const char* movable_Wall_4_Sprite_Path_Inactive_Bottom = "assets/graphics/Movable_Wall_4/wall_4_inactive_bottom.png";
+
+        inline static constexpr const char* movable_Wall_4_Sprite_Path_Active_Top = "assets/graphics/Movable_Wall_4/wall_4_active_top.png";
+        inline static constexpr const char* movable_Wall_4_Sprite_Path_Active_Bottom = "assets/graphics/Movable_Wall_4/wall_4_active_bottom.png";
+
+        // Sprite-Pfade für Wand 5
+        // Die _Top Sprites werden über dem Spieler gezeichnet, die _Bottom Sprites unter dem Spieler (bei Überlappung)
+        inline static constexpr const char* movable_Wall_5_Sprite_Path_Inactive_Top = "assets/graphics/Movable_Wall_5/wall_5_inactive_top.png";
+        inline static constexpr const char* movable_Wall_5_Sprite_Path_Inactive_Bottom = "assets/graphics/Movable_Wall_5/wall_5_inactive_bottom.png";
+
+        inline static constexpr const char* movable_Wall_5_Sprite_Path_Active_Top = "assets/graphics/Movable_Wall_5/wall_5_active_top.png";
+        inline static constexpr const char* movable_Wall_5_Sprite_Path_Active_Bottom = "assets/graphics/Movable_Wall_5/wall_5_active_bottom.png";
+
+    };
+}
