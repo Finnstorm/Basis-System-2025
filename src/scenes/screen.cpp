@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include "screen.h"
-#include "../Vectors.h"
 #include "Walls.h"
 #include <vector>
 
@@ -118,28 +117,6 @@ void Screen::draw_Level() const {
                           << ", Size: (" << object.getSize().x << ", " << object.getSize().y << ")" << std::endl;
 
                 //Check for certain layer Names
-                //Add any specific Object layer functionalities here, depending on the type of layer
-                //For example: Walls, Player Spawns, Enemy Spawns, audio/environmental triggers...
-                if (layer_Name == "walls")
-                {
-                    Vector2 temp;
-                    temp.x=object.getPosition().x;
-                    temp.y=object.getPosition().y;
-                    Vector2 temp2;
-                    temp2.x=object.getSize().x;
-                    temp2.y=object.getSize().y;
-                    vec_walls.push_back(Walls(temp,temp2));
-                }
-
-                else if (layer_Name == "levelSpawns")
-                {
-                    std::cout << " This layer contains level spawns." << std::endl;
-                }
-
-                else if (layer_Name == "levelSpawns")
-                {
-                    std::cout << " This layer contains level spawns." << std::endl;
-                }
 
 
                 //If the object has a gid (is a tile object), it can be drawn
