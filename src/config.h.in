@@ -14,8 +14,11 @@ namespace game
         inline static constexpr const char* kProjectVersionPatch = "@PROJECT_VERSION_PATCH@";
 
         // Width and Height of the game stage. The stage will be scaled with the window size
-        inline static constexpr int kStageWidth = 512;
-        inline static constexpr int kStageHeight = 288;
+        inline static constexpr int kVirtualStageWidth = 512;
+        inline static constexpr int kVirtualStageHeight = 320;
+
+        inline static constexpr int kWindowedModeWidth = 1280;
+        inline static constexpr int kWindowedModeHeight = 720;
 
         // Target FPS, default is 60 fps
         inline static constexpr int kTargetFps = 60;

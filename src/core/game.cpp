@@ -4,26 +4,68 @@
 #include "store.h"
 #include "stage.h"
 #include "../scenes/menu_scene.h"
+#include "../Config.h.in"
 
 using namespace std::string_literals;
 
-game::core::Game::Game(int stage_width, int stage_height, bool full_screen, int target_fps, int window_flags,
-                       int texture_filter, int exit_key, bool mouse, bool audio, const char *project_name)
-        : stage_width_(stage_width), stage_height_(stage_height), audio_(audio), mouse_(mouse) {
-    SetConfigFlags(window_flags);
-    InitWindow(stage_width, stage_height, project_name);
-    SetWindowMinSize(stage_width / 2, stage_height / 2);
+game::core::Game::Game
+    (int virtual_render_width, int virtual_render_height, // Parameter für die virtuelle Bühnengröße
+    bool full_screen,
+    int target_fps,
+    int config_window_flags, // Die Flags aus der Config
+    int texture_filter,
+    int exit_key,
+    bool mouse,
+    bool audio,
+    const char *project_name)
+    : stage_width_(virtual_render_width),   // Speichert die virtuelle Breite (z.B. 512)
+      stage_height_(virtual_render_height), // Speichert die virtuelle Höhe (z.B. 288)
+      audio_(audio),
+      mouse_(mouse)
+{
+    int init_flags = config_window_flags; // Start mit den Basis-Flags aus der Config
+
+    if (full_screen)
+    {
+        // Füge das Vollbild-Flag hinzu, falls es nicht schon da ist
+        // (Obwohl es besser ist, es hier explizit zu managen)
+        init_flags |= FLAG_FULLSCREEN_MODE;
+        // Alternativ: init_flags = FLAG_FULLSCREEN_MODE | FLAG_VSYNC_HINT | ... (nur die für Vollbild relevanten)
+
+        // Für Vollbild: InitWindow mit 0,0 sollte die native Desktop-Auflösung verwenden.
+        // Raylib setzt dann GetScreenWidth()/Height() auf die Desktop-Werte.
+        SetConfigFlags(init_flags);
+        InitWindow(0, 0, project_name);
+    }
+    else
+    {
+        // Für Fenstermodus: Verwende die dedizierten Fenstergrößen-Konstanten
+        // Stelle sicher, dass FLAG_FULLSCREEN_MODE hier nicht gesetzt ist, falls es in config_window_flags war
+        init_flags &= ~FLAG_FULLSCREEN_MODE; // Entferne Fullscreen-Flag, falls vorhanden
+        init_flags |= FLAG_WINDOW_RESIZABLE; // Stelle sicher, dass Resizable gesetzt ist für Fenstermodus (optional)
+
+        SetConfigFlags(init_flags);
+        InitWindow(game::Config::kWindowedModeWidth, game::Config::kWindowedModeHeight, project_name);
+    }
+
+    // SetWindowMinSize ist eher für den Fenstermodus relevant, um zu verhindern,
+    // dass das Fenster zu klein gezogen wird.
+    // Die Mindestgröße könnte sich an der Hälfte der virtuellen Bühne orientieren.
+    if (!full_screen) {
+        SetWindowMinSize(this->stage_width_ / 2, this->stage_height_ / 2);
+    }
+
     SetTargetFPS(target_fps);
 
-    // Render texture initialization, used to hold the rendering result, so we can easily resize it
+    // Die RenderTexture wird IMMER mit der virtuellen Bühnengröße erstellt
     this->render_target_ = LoadRenderTexture(this->stage_width_, this->stage_height_);
-    // Set texture scale filter to use
     SetTextureFilter(this->render_target_.texture, texture_filter);
 
     SetExitKey(exit_key);
 
-    if (full_screen)
-        ToggleFullscreen();
+    // Die explizite ToggleFullscreen()-Funktion wird nicht mehr benötigt,
+    // da InitWindow das bereits über die Flags handhaben sollte.
+    // if (full_screen) ToggleFullscreen(); // ENTFERNEN
 
     if (audio)
         InitAudioDevice();

@@ -112,6 +112,11 @@ namespace game::core
         return this->current_position;
     }
 
+    void Player::Set_Position(Vector2 new_position)
+    {
+        this->current_position = new_position;
+    }
+
     bool Player::Is_Attacking() const
     {
         return this->is_attacking;

@@ -31,6 +31,9 @@ namespace game::core
     // Gibt die aktuelle Spielerposition zurück
     Vector2 Get_Position() const;
 
+    // Setzt die Spielerposition direkt. Nützlich für Kollisionsauflösung oder Teleportation.
+    void Set_Position(Vector2 new_position);
+
     // Gibt an, ob gerade ein Angriff ausgeführt wird
     bool Is_Attacking() const;
 

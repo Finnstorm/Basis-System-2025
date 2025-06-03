@@ -3,6 +3,7 @@
 #include <memory>
 #include <Playerinput.h>
 #include <scene.h>
+#include "screen.h"
 
 
 namespace game::scenes
@@ -20,5 +21,6 @@ namespace game::scenes
     private:
         // Pointer to the player object, managed by this scene
         std::unique_ptr<game::core::Player> up_player_;
+        Screen game_map_screen_;
     };
 }

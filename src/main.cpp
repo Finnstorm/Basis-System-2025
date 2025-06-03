@@ -24,12 +24,20 @@ int main()
     // Weise Adresse dem Zeiger in Store zu
     game::core::Store::dtm = &dtm;
 
-    game::core::Game game(game::Config::kStageWidth, game::Config::kStageHeight, game::Config::kFullScreen,
-                          game::Config::kTargetFps, game::Config::kWindowFlags, game::Config::kTextureFilter,
-                          game::Config::kExitKey,game::Config::kUseMouse, game::Config::kAudio,
-                          game::Config::kProjectName);
+    game::core::Game game_instance(
+            game::Config::kVirtualStageWidth,  // Übergib die virtuelle Breite (512)
+            game::Config::kVirtualStageHeight, // Übergib die virtuelle Höhe (288)
+            game::Config::kFullScreen,
+            game::Config::kTargetFps,
+            game::Config::kWindowFlags,        // Übergib die allgemeinen Fenster-Flags
+            game::Config::kTextureFilter,
+            game::Config::kExitKey,
+            game::Config::kUseMouse,
+            game::Config::kAudio,
+            game::Config::kProjectName
+        );
 
-    game.Run("menu"s, std::make_unique<game::scenes::MenuScene>());
+    game_instance.Run("menu"s, std::make_unique<game::scenes::MenuScene>());
 
     return EXIT_SUCCESS;
 }
