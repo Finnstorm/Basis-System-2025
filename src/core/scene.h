@@ -2,9 +2,8 @@
 
 #include <map>
 #include <string>
-
+#include <Playerinput.h>
 #include <raylib.h>
-
 #include "actor.h"
 
 namespace game::core {
@@ -42,5 +41,8 @@ namespace game::core {
          * @brief The Draw() method can be used to output graphics. Note that the elements of the actor map are drawn automatically.
          */
         virtual void Draw() = 0;
+
+    private:
+        std::unique_ptr<game::core::Player> player_;
     };
 }

@@ -1,9 +1,8 @@
 #pragma once
 
 #include <map>
-
 #include <raylib.h>
-
+#include "DeltaTimeMachine.h"
 #include "stage.h"
 #include "actor.h"
 
@@ -12,6 +11,10 @@ namespace game::core {
      * @brief A central place to share globally accessible objects that should be accessible from anywhere.
      */
     struct Store final {
+
+        /// Pointer to the glubal delta time machine
+        inline static DT::timemachine* dtm = nullptr;
+
         /// The Stage object is responsible for the scene change and for updating and drawing the scene contents
         inline static std::unique_ptr<game::core::Stage> stage = nullptr;
 

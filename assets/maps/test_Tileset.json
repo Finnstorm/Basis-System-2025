@@ -1,0 +1,14 @@
+{ "columns":27,
+ "image":"..\/..\/..\/..\/..\/Admin\/Desktop\/testassets.png",
+ "imageheight":144,
+ "imagewidth":432,
+ "margin":0,
+ "name":"testassets",
+ "spacing":0,
+ "tilecount":243,
+ "tiledversion":"1.11.2",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":"1.10"
+}

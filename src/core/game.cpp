@@ -1,7 +1,6 @@
 #include <raylib.h>
 #include "../scenes/screen.h"
 #include "game.h"
-
 #include "store.h"
 #include "stage.h"
 #include "../scenes/menu_scene.h"
@@ -79,9 +78,15 @@ void game::core::Game::Run(const std::string& scene_name, std::unique_ptr<game::
         this->DrawRenderTexture();
         EndDrawing();
 
+        // Update the delta time machine
+        if (game::core::Store::dtm != nullptr) // Zeiger soll nicht auf null zeigen
+        {
+            game::core::Store::dtm->Update();
+        }
 
         // Increment game tick counter
         game::core::Store::ticks++;
+
     } // Main game loop end
 }
 

@@ -8,7 +8,7 @@
 
 namespace game::core
 {
-    void HandleWallCollisions(Rectangle& playerRect, float& playerX,
+    /*void HandleWallCollisions(Rectangle& playerRect, float& playerX,
         float& playerY, float playerSpeed, DT::timemachine& deltaTimeMachine, Player::Direction direction)
     {
         float dt = deltaTimeMachine.Get_Dt();
@@ -29,6 +29,6 @@ namespace game::core
 
             wall->Update(dt);
         }
-    }
+    }*/
 
 } // namespace game::core

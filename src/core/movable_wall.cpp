@@ -8,8 +8,7 @@
 //Diese komplette Datei ist Teamspezifisch
 namespace game::core
 {
-
-    void Movable_Wall::TriggerMove(Player::Direction)
+    /*void Movable_Wall::TriggerMove(Player::Direction)
     {
         if (!isMoving)
         {
@@ -41,6 +40,6 @@ namespace game::core
             rect.y += direction.y * moveStep;
             movedDistance += moveStep;
         }
-    }
+    }*/
 
 } // namespace game::core

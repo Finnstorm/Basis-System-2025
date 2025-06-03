@@ -23,16 +23,16 @@ namespace game::core
     Player(Vector2 start_Position, float move_Speed);
 
     // Wird mit jedem Frame aufgerufen, um Position zu aktualisieren
-    Direction Update(DT::timemachine& deltaTimeMachine);
+    Direction Update();
 
     // Zeichnet den Spieler
     void Draw();
 
     // Gibt die aktuelle Spielerposition zurück
-    Vector2 GetPosition() const;
+    Vector2 Get_Position() const;
 
     // Gibt an, ob gerade ein Angriff ausgeführt wird
-    bool IsAttacking() const;
+    bool Is_Attacking() const;
 
     // Gibt die Hitbox dese aktuellen Angriffs zurück
     Rectangle GetAttackHitbox() const;
@@ -40,14 +40,14 @@ namespace game::core
 private:
 
     // Aktuelle Position des Spielers
-    Vector2 position;
+    Vector2 current_position;
 
     // Bewegungsgeschwindigkeit
-    float speed;
+    float movement_speed;
 
     // Abmessung der Spielfigur
-    float width = 20.0f;
-    float height = 30.0f;
+    float player_width;
+    float player_height;
 
     // Tastenzuweisung für die Bewegung
     int key_Up;
@@ -59,12 +59,14 @@ private:
     int key_Melee_Attack;
 
     // Angriffssteuerung
-    bool attacking=false;
-    float attackDuration=0.3f;
-    float attackTimer = 0.0f;
+    bool is_attacking=false;
+    float attack_duration;
+    float attack_timer = 0.0f;
+    float attack_Cooldown;
+    float current_attack_cooldown_timer = 0.0f;
 
     // Zuletzt registrierte Bewegungsrichtung
-    Direction lastDirection = Down;
+    Direction last_direction = Down;
     };
 }
 
