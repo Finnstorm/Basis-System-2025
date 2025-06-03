@@ -6,6 +6,8 @@ include(../cmake/nlohmann_json.cmake)
 
 project(game VERSION 0.1.0 LANGUAGES CXX)
 
+include_directories(${CMAKE_BINARY_DIR})
+
 include(../cmake/doxygen.cmake)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -21,6 +23,7 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 # Add config.h.in file
 configure_file(config.h.in config.h)
+configure_file(config.h.Puzzle1.in config.h.Puzzle1)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
 "${PROJECT_BINARY_DIR}"
