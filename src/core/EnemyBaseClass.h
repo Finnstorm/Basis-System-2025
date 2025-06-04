@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "raylib.h"
+
 namespace enemy
 {
     class Enemy_Base_Class
@@ -40,11 +42,13 @@ namespace enemy
         void set_Health (int new_Health);
         //health ist erstmal der einzige Wert den wir während der Laufzeit durch Schaden verändern wollen
 
+        //Pathfinding Logik
+        virtual void Enemy_Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time);
+
         //Methoden welche noch entwickelt werden müssen
         virtual void Enemy_Attack() = 0;
         virtual void Enemy_Take_Damage() = 0;
         virtual void Enemy_Draw() = 0;
-        virtual void Enemy_Pathfinding() = 0;
         //Wir nutzen "= 0". Dadurch wird die Klasse abstrakt und MUSS überschrieben werden
 
     };
