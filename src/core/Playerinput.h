@@ -40,6 +40,8 @@ namespace game::core
     // Gibt die Hitbox dese aktuellen Angriffs zurück
     Rectangle GetAttackHitbox() const;
 
+    Direction Get_Last_Direction() const;
+
 private:
 
     // Aktuelle Position des Spielers

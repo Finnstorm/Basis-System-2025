@@ -1,7 +1,7 @@
 #pragma once
 
 #include <raylib.h>
-
+#include "../config.h.in"
 namespace puzzle1
 {
     class Config_Puzzle1 final
@@ -38,20 +38,20 @@ namespace puzzle1
         inline static constexpr float movable_Wall_1_Target_Y = 100.0f; // Beispiel
 
         // Zielposition für Wand 2 (Pixel-Koordinaten)
-        inline static constexpr float movable_Wall_1_Target_X = 200.0f; // Beispiel
-        inline static constexpr float movable_Wall_1_Target_Y = 100.0f; // Beispiel
+        inline static constexpr float movable_Wall_2_Target_X = 200.0f; // Beispiel
+        inline static constexpr float movable_Wall_2_Target_Y = 100.0f; // Beispiel
 
         // Zielposition für Wand 3 (Pixel-Koordinaten)
-        inline static constexpr float movable_Wall_1_Target_X = 200.0f; // Beispiel
-        inline static constexpr float movable_Wall_1_Target_Y = 100.0f; // Beispiel
+        inline static constexpr float movable_Wall_3_Target_X = 200.0f; // Beispiel
+        inline static constexpr float movable_Wall_3_Target_Y = 100.0f; // Beispiel
 
         // Zielposition für Wand 4 (Pixel-Koordinaten)
-        inline static constexpr float movable_Wall_1_Target_X = 200.0f; // Beispiel
-        inline static constexpr float movable_Wall_1_Target_Y = 100.0f; // Beispiel
+        inline static constexpr float movable_Wall_4_Target_X = 200.0f; // Beispiel
+        inline static constexpr float movable_Wall_4_Target_Y = 100.0f; // Beispiel
 
         // Zielposition für Wand 5 (Pixel-Koordinaten)
-        inline static constexpr float movable_Wall_1_Target_X = 200.0f; // Beispiel
-        inline static constexpr float movable_Wall_1_Target_Y = 100.0f; // Beispiel
+        inline static constexpr float movable_Wall_5_Target_X = 200.0f; // Beispiel
+        inline static constexpr float movable_Wall_5_Target_Y = 100.0f; // Beispiel
 
 
         // Sprite-Pfade für Wand 1

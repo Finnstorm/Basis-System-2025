@@ -6,7 +6,7 @@
 #include <fstream>
 #include <string>
 #include "screen.h"
-#include "../config.h.Puzzle1.in"
+#include "../config.Puzzle1.h.in"
 
 Screen::Screen() {
 
@@ -72,48 +72,99 @@ void Screen::Load_Object_Layers() {
             std::cout << "INFO: Found 'Wall' object layer. Processing objects..." << std::endl;
 
             for (const auto& object_data : layer["objects"]) {
-                float x = 0.0f, y = 0.0f, width = 0.0f, height = 0.0f; // Für statische Walls aus Tiled
-                std::string object_class_type = "Wall"; // Standard
+                float x = 0.0f, y = 0.0f, width = 0.0f, height = 0.0f;
 
-                if (object_data.contains("x") && object_data["x"].is_number()) x = object_data["x"];
-                if (object_data.contains("y") && object_data["y"].is_number()) y = object_data["y"];
+            if (object_data.contains("x") && object_data["x"].is_number()) x = object_data["x"];
+            if (object_data.contains("y") && object_data["y"].is_number()) y = object_data["y"];
+            if (object_data.contains("width") && object_data["width"].is_number()) width = object_data["width"];   // Für statische "Wall"
+            if (object_data.contains("height") && object_data["height"].is_number()) height = object_data["height"]; // Für statische "Wall"
 
-                // Für statische "Wall"-Objekte können Breite/Höhe aus Tiled kommen
-                if (object_data.contains("width") && object_data["width"].is_number()) width = object_data["width"];
-                if (object_data.contains("height") && object_data["height"].is_number()) height = object_data["height"];
-
-                if (object_data.contains("class") && object_data["class"].is_string()) {
-                    object_class_type = object_data["class"];
-                } else if (object_data.contains("type") && object_data["type"].is_string()) {
-                    object_class_type = object_data["type"];
+            // Ermittle object_class_type EINMAL
+            std::string object_class_type = "Wall"; // Standard-Typ, falls nichts anderes gefunden wird
+            if (object_data.contains("class") && object_data["class"].is_string()) {
+                object_class_type = object_data["class"];
+            } else if (object_data.contains("type") && object_data["type"].is_string()) {
+                object_class_type = object_data["type"];
+                std::cout << "WARNING: Object used 'type' field instead of 'class'. Value: " << object_class_type << std::endl;
+            } else if (object_data.contains("properties") && object_data["properties"].is_array()) {
+                for (const auto& prop : object_data["properties"]) {
+                    if (prop.contains("name") && prop["name"].is_string() && prop["name"] == "type" &&
+                        prop.contains("value") && prop["value"].is_string()) {
+                        object_class_type = prop["value"];
+                        std::cout << "WARNING: Object used 'type' property. Value: " << object_class_type << std::endl;
+                        break;
+                    }
                 }
-                // ... (ggf. Fallback für Properties) ...
+            }
 
-                std::cout << "  Loading object: Class/Type='" << object_class_type
-                          << "', X=" << x << ", Y=" << y << std::endl;
+            // Definiere initial_pos EINMAL
+            Vector2 initial_pos = {x, y};
 
-                Vector2 initial_pos = {x, y};
+            std::cout << "  Loading object: Class/Type='" << object_class_type
+                      << "', X=" << x << ", Y=" << y;
+            if (object_class_type == "Wall") { // Nur für statische Wände die Breite/Höhe aus Tiled loggen
+                std::cout << ", W=" << width << ", H=" << height;
+            }
+            std::cout << std::endl;
 
-                if (object_class_type == "Wall") {
-                    // Für eine statische Wand nehmen wir Breite und Höhe aus Tiled
-                    walls.push_back(std::make_unique<game::core::Wall>(
-                        Rectangle{x, y, width, height}, // Nimmt direkt das Rechteck aus Tiled
-                        object_class_type
-                    ));
-                } else if (object_class_type == "Movable_Wall_1") { // Spezifisch für die erste Wand
-                    walls.push_back(std::make_unique<game::core::Movable_Wall>(
-                        initial_pos,
-                        Vector2{puzzle1::Config_Puzzle1::movable_Wall_1_Target_X,
-                            game::Config::Puzzle1::movable_Wall_1_Target_Y},
-                        game::Config::movable_Wall_1_Sprite_Path_Inactive_Top,
-                        game::Config::Puzzle1::movable_Wall_1_Sprite_Path_Inactive_Bottom,
-                        game::Config::Puzzle1::movable_Wall_1_Sprite_Path_Active_Top,
-                        game::Config::Puzzle1::movable_Wall_1_Sprite_Path_Active_Bottom
-                    ));
-                }
-                // Hier später: else if (object_class_type == "Movable_Wall_2") { ... } usw.
-                // ODER eine datengetriebene Lösung, die anhand einer ID oder des Namens des Objekts in Tiled
-                // die richtigen Config-Werte für Target und Sprites auswählt. Für den Anfang ist das spezifische okay.
+
+            // Jetzt die if/else if Kette basierend auf dem EINMAL ermittelten object_class_type
+            if (object_class_type == "Wall") {
+                walls.push_back(std::make_unique<game::core::Wall>(
+                    Rectangle{x, y, width, height}, // Benutzt x, y, width, height von oben
+                    object_class_type
+                ));
+            }
+                    else if (object_class_type == "Movable_Wall_1") {
+                        walls.push_back(std::make_unique<game::core::Movable_Wall>(
+                            initial_pos, // Startposition aus Tiled
+                            Vector2{puzzle1::Config_Puzzle1::movable_Wall_1_Target_X, puzzle1::Config_Puzzle1::movable_Wall_1_Target_Y},
+                            puzzle1::Config_Puzzle1::movable_Wall_1_Sprite_Path_Inactive_Top,
+                            puzzle1::Config_Puzzle1::movable_Wall_1_Sprite_Path_Inactive_Bottom,
+                            puzzle1::Config_Puzzle1::movable_Wall_1_Sprite_Path_Active_Top,
+                            puzzle1::Config_Puzzle1::movable_Wall_1_Sprite_Path_Active_Bottom
+                        ));
+                    }
+                    else if (object_class_type == "Movable_Wall_2") {
+                        walls.push_back(std::make_unique<game::core::Movable_Wall>(
+                            initial_pos, // Startposition aus Tiled
+                            Vector2{puzzle1::Config_Puzzle1::movable_Wall_2_Target_X, puzzle1::Config_Puzzle1::movable_Wall_2_Target_Y},
+                            puzzle1::Config_Puzzle1::movable_Wall_2_Sprite_Path_Inactive_Top,
+                            puzzle1::Config_Puzzle1::movable_Wall_2_Sprite_Path_Inactive_Bottom,
+                            puzzle1::Config_Puzzle1::movable_Wall_2_Sprite_Path_Active_Top,
+                            puzzle1::Config_Puzzle1::movable_Wall_2_Sprite_Path_Active_Bottom
+                        ));
+                    }
+                    else if (object_class_type == "Movable_Wall_3") {
+                        walls.push_back(std::make_unique<game::core::Movable_Wall>(
+                            initial_pos, // Startposition aus Tiled
+                            Vector2{puzzle1::Config_Puzzle1::movable_Wall_3_Target_X, puzzle1::Config_Puzzle1::movable_Wall_3_Target_Y},
+                            puzzle1::Config_Puzzle1::movable_Wall_3_Sprite_Path_Inactive_Top,
+                            puzzle1::Config_Puzzle1::movable_Wall_3_Sprite_Path_Inactive_Bottom,
+                            puzzle1::Config_Puzzle1::movable_Wall_3_Sprite_Path_Active_Top,
+                            puzzle1::Config_Puzzle1::movable_Wall_3_Sprite_Path_Active_Bottom
+                        ));
+                    }
+                    else if (object_class_type == "Movable_Wall_4") {
+                        walls.push_back(std::make_unique<game::core::Movable_Wall>(
+                            initial_pos, // Startposition aus Tiled
+                            Vector2{puzzle1::Config_Puzzle1::movable_Wall_4_Target_X, puzzle1::Config_Puzzle1::movable_Wall_4_Target_Y},
+                            puzzle1::Config_Puzzle1::movable_Wall_4_Sprite_Path_Inactive_Top,
+                            puzzle1::Config_Puzzle1::movable_Wall_4_Sprite_Path_Inactive_Bottom,
+                            puzzle1::Config_Puzzle1::movable_Wall_4_Sprite_Path_Active_Top,
+                            puzzle1::Config_Puzzle1::movable_Wall_4_Sprite_Path_Active_Bottom
+                        ));
+                    }
+                    else if (object_class_type == "Movable_Wall_5") {
+                        walls.push_back(std::make_unique<game::core::Movable_Wall>(
+                            initial_pos, // Startposition aus Tiled
+                            Vector2{puzzle1::Config_Puzzle1::movable_Wall_5_Target_X, puzzle1::Config_Puzzle1::movable_Wall_5_Target_Y},
+                            puzzle1::Config_Puzzle1::movable_Wall_5_Sprite_Path_Inactive_Top,
+                            puzzle1::Config_Puzzle1::movable_Wall_5_Sprite_Path_Inactive_Bottom,
+                            puzzle1::Config_Puzzle1::movable_Wall_5_Sprite_Path_Active_Top,
+                            puzzle1::Config_Puzzle1::movable_Wall_5_Sprite_Path_Active_Bottom
+                        ));
+                    }
                 else {
                     std::cout << "  WARNING: Unknown object class/type encountered or not yet handled: " << object_class_type << std::endl;
                 }

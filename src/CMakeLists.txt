@@ -23,7 +23,7 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 # Add config.h.in file
 configure_file(config.h.in config.h)
-configure_file(config.h.Puzzle1.in config.h.Puzzle1)
+configure_file(config.Puzzle1.h.in config.h.Puzzle1)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
 "${PROJECT_BINARY_DIR}"

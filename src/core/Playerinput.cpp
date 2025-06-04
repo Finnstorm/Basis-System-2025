@@ -107,7 +107,10 @@ namespace game::core
     {
         return this->current_position;
     }
-
+    Player::Direction Player::Get_Last_Direction() const
+    {
+        return this->last_direction;
+    }
     void Player::Set_Position(Vector2 new_position)
     {
         this->current_position = new_position;

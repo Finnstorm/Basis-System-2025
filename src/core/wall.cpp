@@ -1,34 +1,22 @@
 //
 // Created by $Will on 01.06.2025.
 //
+// wall_collisions.cpp
 #include "wall_collisions.h"
-#include "collision_check.h"
-#include "DeltaTimeMachine.h"
-#include "Playerinput.h"
 
-namespace game::core
-{
-    /*void HandleWallCollisions(Rectangle& playerRect, float& playerX,
-        float& playerY, float playerSpeed, DT::timemachine& deltaTimeMachine, Player::Direction direction)
-    {
-        float dt = deltaTimeMachine.Get_Dt();
+namespace game::core {
 
-        for (auto& wall : walls) //Variable Wall soll aus dem Vector kommen in welchem die Walls gespeichert sind
-            {
-            if (wall->CheckCollision(playerRect))
-                {
-                if (auto* movable = dynamic_cast<Movable_Wall*>(wall))
-                {
-                    movable ->TriggerMove(direction);
-                }
+    // Implementierung für Wall::Update
+    void Wall::Update(float delta_time, const std::vector<Wall*>& all_walls) {
+        // Für eine statische Standard-Wand gibt es hier normalerweise nichts zu tun.
+    }
 
-                // Blockiere Bewegung: Position zurücksetzen
-                playerRect.x = playerX;
-                playerRect.y = playerY;
-            }
-
-            wall->Update(dt);
-        }
-    }*/
+    // Implementierung für Wall::Draw
+    void Wall::Draw() const {
+        // Optionale Debug-Anzeige der Hitbox für statische Wände
+        // if (type_ == "Wall") { // Nur wenn der Typ "Wall" ist
+        //     DrawRectangleLinesEx(rect_, 1, DARKGRAY);
+        // }
+    }
 
 } // namespace game::core
