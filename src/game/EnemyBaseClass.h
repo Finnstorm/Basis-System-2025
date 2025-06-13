@@ -16,7 +16,7 @@ namespace enemy
 
         std::string enemy_Name;
         int enemy_Health;
-        int enemy_Movement_Speed;
+        float enemy_Movement_Speed;
         int enemy_Damage;
         int enemy_Value; // Score etc.
         Rectangle enemy_Hitbox;
@@ -30,17 +30,20 @@ namespace enemy
         //Destruktor
         virtual ~Enemy_Base_Class();
 
+        // This default implementation can be inherited by all enemies.
+        virtual void Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time);
+
         // Diese Methoden sind erstmal ein Standard. Virtuell heißt sie können überschrieben werden aber ohne
         // = 0 müssen sie nicht unbedingt überschrieben werden und können als Standard genutzt werden.
         void Take_Damage(int damage_amount);
         virtual void Attack();
         virtual void Draw();
-        virtual void Pathfinding()=0;
         virtual void Update();
 
         int get_Health() const { return enemy_Health; }
         int get_Damage() const { return enemy_Damage; }
         Rectangle get_Hitbox() const { return enemy_Hitbox; }
+        float get_Movement_Speed() const;
     };
 }
 
