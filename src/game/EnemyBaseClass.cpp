@@ -28,6 +28,11 @@ void Enemy_Base_Class::Take_Damage(int damage_amount)
     enemy_Health -= damage_amount;
     }
 
+    float enemy::Enemy_Base_Class::get_Movement_Speed() const
+    {
+    return this->enemy_Movement_Speed;
+    }
+
     void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time)
 {
     // Berechnet den Richtungs-Vektor vom Gegner zum Ziel.
