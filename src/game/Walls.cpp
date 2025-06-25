@@ -3,14 +3,41 @@
 //
 
 #include "Walls.h"
-Walls::Walls(Vector2 position, Vector2 size) {
+#include "CollisionManager.h"
 
-    this->size=size;
-    this->pos=position;
-    Rectangle hb(this->pos.x, this->pos.y, this->size.x, this->size.y);
-    this->hitbox=hb;
+Walls::Walls(Vector2 position, Vector2 size, Collision_Manager* manager)
+{
+    hitbox = { position.x, position.y, size.x, size.y };
+    manager_ptr = manager;
 
+    if (manager_ptr)
+    {
+        manager_ptr->Regist_Object(this);
+    }
+}
+Walls::~Walls()
+{
+    if (manager_ptr)
+    {
+        manager_ptr->Unregist_Object(this);
+    }
 }
 
-void Walls::draw() {
+Collision_Type Walls::Get_Collision_Type() const
+{
+    return Collision_Type::WALL;
+}
+
+//Core Methoden
+void Tick(float delta_time)
+{
+
+}
+void Walls::On_Collision(Collidable* other)
+{
+
+}
+void Walls::Draw()
+{
+
 }

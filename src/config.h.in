@@ -44,16 +44,18 @@ namespace game {
         // Player Settings
         inline static constexpr bool enable_Health_Drain = true; // HP-Drain durch Zeit an/aus
         inline static constexpr float player_Health_Drain_Rate = 1.0f; // HP-Verlust pro Sekunde
-        inline static constexpr int player_Hitbox_Width = 32;
-        inline static constexpr int player_Hitbox_Height = 48;
 
-        // PlayerClass1
-        inline static constexpr int player_Class_1_Max_Health = 1000;
-        inline static constexpr float player_Class_1_Movement_Speed = 16.0f;
-        inline static constexpr int player_Class_1_Damage = 10;
-        inline static constexpr const char* player_Class_1_Sprite_Path = "assets/graphics/player_Class_1.png";
+        // Player_Class_One
+        inline static constexpr const char* player_Class_One_Sprite_Path = "assets/graphics/player/class1_sheet.png";
+        inline static constexpr int player_Class_One_Max_Health = 120;
+        inline static constexpr float player_Class_One_Movement_Speed = 180.0f;
+        inline static constexpr int player_Class_One_Damage = 12;
+        inline static constexpr int player_Class_One_Frame_Width = 16;
+        inline static constexpr int player_Class_One_Frame_Height = 16;
+        inline static constexpr int player_Class_One_Walk_Anim_Frames = 4;
+        inline static constexpr int player_Class_One_Anim_Speed = 15;
 
-        // EnemyClass1
+        // Enemy_Class_One
         inline static constexpr int enemy_Class_1_Health = 50;
         inline static constexpr float enemy_Class_1_Movement_Speed = 100.0f;
         inline static constexpr int enemy_Class_1_Damage = 5;
@@ -62,14 +64,14 @@ namespace game {
         inline static constexpr int enemy_Class_1_Hitbox_Width = 32;
         inline static constexpr int enemy_Class_1_Hitbox_Height = 32;
 
-        // Objects
-                inline static constexpr const char consumables_path ="assets/graphics/ball.png"
+        // Control Settings
+        inline static constexpr const int key_Up = KEY_W;
+        inline static constexpr const int key_Down = KEY_S;
+        inline static constexpr const int key_Left = KEY_A;
+        inline static constexpr const int key_Right = KEY_D;
 
-
-            // Control Settings
-                inline static constexpr const int key_Up = KEY_W;
-                inline static constexpr const int key_Down = KEY_S;
-                inline static constexpr const int key_Left = KEY_A;
-                inline static constexpr const int key_Right = KEY_D;
+        inline static constexpr const int key_Melee_Attack = KEY_J;
+        inline static constexpr const int key_Ranged_Attack = KEY_K;
+        inline static constexpr const int key_Use_Item = KEY_L;
     };
 }

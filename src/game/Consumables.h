@@ -6,15 +6,28 @@
 #define RAYLIBSTARTER_CONSUMABLES_H
 
 
-#include "Objects.h"
-#include "config.h"
+#include "Collidable.h"
 
-class Consumables: public Objects
+class Collision_Manager;
+class Consumables : public Collidable
 {
+protected:
+    Rectangle hitbox;
+    Texture2D texture;
+    std::string name;
+    Collision_Manager* manager_ptr;
+
 public:
-    Consumables(Vector2,std::string);
-    void draw() override;
+    Consumables(Vector2 position, std::string name, Collision_Manager* manager);
+    ~Consumables();
+
+    Rectangle Get_Hitbox() const override;
+    Collision_Type Get_Collision_Type() const override;
+
+    void Tick(float delta_time);
+    void On_Collision(Collidable* other) override;
+    void Draw();
 };
 
 
-#endif //RAYLIBSTARTER_CONSUMABLES_H
+#endif //RAYLIBSTA

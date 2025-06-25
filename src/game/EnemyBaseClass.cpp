@@ -3,7 +3,7 @@
 //
 
 #include "EnemyBaseClass.h"
-
+#include "CollisionManager.h"
 #include <cmath>
 
 namespace enemy
@@ -29,11 +29,11 @@ void Enemy_Base_Class::Take_Damage(int damage_amount)
     }
 
     float enemy::Enemy_Base_Class::get_Movement_Speed() const
-    {
+{
     return this->enemy_Movement_Speed;
-    }
+}
 
-    void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time)
+void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time)
 {
     // Berechnet den Richtungs-Vektor vom Gegner zum Ziel.
     float delta_Vector_X = target_Position_X - this->enemy_Hitbox.x;
@@ -63,9 +63,15 @@ void Enemy_Base_Class::Take_Damage(int damage_amount)
     }
 }
 
-void Enemy_Base_Class::Attack(){}
+//Core Methoden
+void Enemy_Base_Class::Tick(float delta_time)
+    {
+    }
+void Enemy_Base_Class::On_Collision(Collidable* other)
+{
 
-void Enemy_Base_Class::Draw() {}
-
-void Enemy_Base_Class::Update(){}
+}
+void Enemy_Base_Class::Draw()
+{
+}
 }
