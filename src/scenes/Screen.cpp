@@ -67,15 +67,14 @@ void Screen::Draw_Level() const
     //Iterate through the map layers
     for (auto& layer : map->getLayers())
         {
-        if (layer.getType() == tson::LayerType::TileLayer)
-        {
+        if (layer.getType() == tson::LayerType::TileLayer) {
             //get Tilelayer Data
             auto& tile_Layer = layer.getTileData();
 
             //Iterate through each Tile
             for (const auto& pair : tile_Layer)
                 //'pair.first' is a std::tuple<int, int> representing the Tile's grid position
-                //'pair.second' is a pointer to the tson::Tile object
+                    //'pair.second' is a pointer to the tson::Tile object
             {
                 // Extract x and y coordinates from the tuple
                 int x = std::get<0>(pair.first);
@@ -85,28 +84,35 @@ void Screen::Draw_Level() const
                 if (tile != nullptr) { //Check if there is a tile at the current posiotion
                     tson::Rect drawingRect = tile->getDrawingRect();
                     tson::Vector2f worldPos = {
-                            static_cast<float>(x * map->getTileSize().x),
-                            static_cast<float>(y * map->getTileSize().y)
-                    };
+                        static_cast<float>(x * map->getTileSize().x),
+                        static_cast<float>(y * map->getTileSize().y)
+                };
 
                     Rectangle srcRect = {
-                            static_cast<float>(drawingRect.x),
-                            static_cast<float>(drawingRect.y),
-                            static_cast<float>(drawingRect.width),
-                            static_cast<float>(drawingRect.height)
-                    };
+                        static_cast<float>(drawingRect.x),
+                        static_cast<float>(drawingRect.y),
+                        static_cast<float>(drawingRect.width),
+                        static_cast<float>(drawingRect.height)
+                };
 
                     Vector2 destPos = {
-                            static_cast<float>(worldPos.x),
-                            static_cast<float>(worldPos.y)
-                    };
+                        static_cast<float>(worldPos.x),
+                        static_cast<float>(worldPos.y)
+                };
 
                     DrawTextureRec(tileatlas_Texture, srcRect, destPos, WHITE);
                 }
             }
         }
-            //Processing Object layers
-        else if (layer.getType() == tson::LayerType::ObjectGroup)
+    }
+}
+
+void Screen::Load_Tiled_Objects() const
+{
+    //Processing Object layers
+    for (auto& layer : map->getLayers())
+    {
+        if (layer.getType() == tson::LayerType::ObjectGroup)
         {
             std::cout << "Processing Object Layer: " << layer.getName() << std::endl;
 
