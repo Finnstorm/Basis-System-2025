@@ -8,10 +8,8 @@
 
 namespace enemy
 {
-Enemy_Base_Class::Enemy_Base_Class(std::string name, int health, float movement_speed, int damage, int value,
-    const char* sprite_path, Vector2 start_position, int width, int height)
-    : enemy_Name(name), enemy_Health(health), enemy_Movement_Speed(movement_speed), enemy_Damage(damage),
-      enemy_Value(value)
+    Enemy_Base_Class::Enemy_Base_Class(std::string name, int health, int movement_speed, int damage, int value,
+                const char* sprite_path, Vector2 start_position, int width, int height, Collision_Manager* manager)
     {
     enemy_Hitbox = {start_position.x, start_position.y, (float)width, (float)height};
     sprite = LoadTexture(sprite_path);
@@ -28,7 +26,7 @@ void Enemy_Base_Class::Take_Damage(int damage_amount)
     enemy_Health -= damage_amount;
     }
 
-    float enemy::Enemy_Base_Class::get_Movement_Speed() const
+    int Enemy_Base_Class::get_Movement_Speed() const
 {
     return this->enemy_Movement_Speed;
 }

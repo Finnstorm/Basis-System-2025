@@ -29,7 +29,7 @@ namespace game {
 
         ~Projectile();
 
-        void Update(float delta_time);
+        void Tick(float delta_time);
 
         void Draw() const;
     };
