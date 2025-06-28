@@ -13,6 +13,7 @@ public:
     Screen();
     ~Screen();
     void Draw_Level() const;
+    void Load_Tiled_Objects() const;
 
 private:
     std::unique_ptr<tson::Map> map;
