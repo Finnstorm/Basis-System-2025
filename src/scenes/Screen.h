@@ -12,7 +12,7 @@ class Screen
 public:
     Screen();
     ~Screen();
-    void Draw_Level() const;
+    void Draw_Level(Camera2D) const;
 
 private:
     std::unique_ptr<tson::Map> map;

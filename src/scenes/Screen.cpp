@@ -54,7 +54,7 @@ Screen::~Screen()
     }
 }
 
-void Screen::Draw_Level() const
+void Screen::Draw_Level(Camera2D cam) const
 {
 
     //make sure the map is loaded before drawing
@@ -63,7 +63,8 @@ void Screen::Draw_Level() const
         std::cerr << "Cannot draw level: Map not loaded." << std::endl;
         return;
     }
-
+    BeginMode2D(cam);
+    //BeginDrawing();
     //Iterate through the map layers
     for (auto& layer : map->getLayers())
         {
@@ -195,4 +196,6 @@ void Screen::Draw_Level() const
             }
         }
     }
+
+    EndMode2D();
 }

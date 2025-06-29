@@ -36,13 +36,15 @@ void game::scenes::GameScene::Update()
     }
     mp.Tick(dtm.Get_Dt());
 
-
+    cam.Cam_Movement();
     dtm.Update();
 }
 
 void game::scenes::GameScene::Draw()
 {
-   screen.Draw_Level();
+BeginDrawing();
+    ClearBackground(WHITE);
+   screen.Draw_Level(cam.cam);
    mp.Draw();
-
+    EndDrawing();
 }
