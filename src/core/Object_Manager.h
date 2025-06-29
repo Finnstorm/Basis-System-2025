@@ -1,34 +1,26 @@
 #pragma once
 
 #include <vector>
-#include <memory>
-#include <algorithm> // Für std::remove
-#include "Actor.h"
+#include <algorithm>
 
-
+#include "../game/Collidable.h"
 
 class Object_Manager
 {
-private:
-    // Hier speichern Zeiger auf die verwalteten Actor-Objekte.
-    // Der Manager ist nicht Eigentümer dieser Objekte sie werden woanders erstellt und gelöscht (z.B in Scene).
-    std::vector<game::core::Actor*> actors_to_manage;
+public:
+    //öffentliche Vektor, der alle vom Manager verwalteten Collidable-Objekte speichert.
+    std::vector<Collidable*> managed_objects;
 
 public:
-    // Konstruktor:
-    Object_Manager(Rectangle world_Bounds);
+    // Konstruktor des Object_Manager.
+    Object_Manager();
 
-    // Methoden zum Registrieren und Deregistrieren von Actor-Objekten
+    // Fügt ein Collidable-Objekt zur Liste Objekte hinzu.
+    void AddObject(Collidable* object);
 
-    void Regist_Object(game::core::Actor* actor); // Verwaltet Actor, nicht Collidable
-    void Unregist_Object(game::core::Actor* actor); // Verwaltet Actor, nicht Collidable
+    // Entfernt ein bestimmtes Collidable-Objekt aus der Liste.
+    void RemoveObject(Collidable* object);
 
-    // Hauptmethode, die alle verwalteten Actor-Objekte aktualisiert und zeichnet.
-
-    void Draw();
-
-    // Methode, um alle Actor-Objekte aus dem Manager zu entfernen (z.B. bei einem Szenenwechsel).
-    void Clear_All_Objects();
-
+    // Leert die gesamte Liste der verwalteten Objekte.
+    void Object_Manager::ClearAllObjects();
 };
-

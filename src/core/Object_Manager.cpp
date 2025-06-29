@@ -1,61 +1,26 @@
-#include "Object_Manager.h"
+#include "ObjectManager.h"
 #include <iostream>
 
-// Konstruktor
-Object_Manager::Object_Manager(Rectangle world_Bounds)
+// Implementierung des Konstruktors.
+Object_Manager::Object_Manager()
 {
 
 }
 
-// Methode zum Registrieren eines Actor-Objekts
-void Object_Manager::Regist_Object(game::core::Actor* actor)
+void Object_Manager::AddObject(Collidable* object)
 {
-    actors_to_manage.push_back(actor);
+    managed_objects.push_back(object);
 
 }
 
-// Methode zum Deregistrieren eines Actor-Objekts
-void Object_Manager::Unregist_Object(game::core::Actor* actor)
+void Object_Manager::RemoveObject(Collidable* object)
 {
-    // Entfernen des Actors
-    actors_to_manage.erase(std::remove(actors_to_manage.begin(), actors_to_manage.end(), actor), actors_to_manage.end());
-
+    managed_objects.erase(std::remove(managed_objects.begin(), managed_objects.end(), object), managed_objects.end());
 }
 
-// Hauptmethode, die alle verwalteten Actor-Objekte aktualisiert und zeichnet.
-void Object_Manager::Draw()
+
+void Object_Manager::ClearAllObjects()
 {
-
-    // Methode um alle verwalteten Actors zu aktualisieren und zu zeichnen.
-
-
-    for (game::core::Actor* actor : actors_to_manage)
-    {
-        if (actor) {
-            actor->Update(); // Ruft die Update-Methode des einzelnen Actors auf
-
-            // Update in Actors benötigt ?
-        }
-    }
-
-
-    // Achtung: Stage::Draw() zeichnet bereits Actors.
-    // draw in actors benötigt !!!
-
-    for (game::core::Actor* actor : actors_to_manage)
-    {
-        if (actor) { // Sicherheitscheck
-            actor->Draw(); // Ruft die Draw-Methode des einzelnen Actors auf
-        }
-    }
-
+    managed_objects.clear();
 
 }
-
-// Methode um alle Actor-Objekte aus dem Manager zu entfernen
-void Object_Manager::Clear_All_Objects()
-{
-    actors_to_manage.clear();
-
-}
-
