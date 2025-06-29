@@ -20,6 +20,8 @@ add_subdirectory(scenes)
 add_executable(${PROJECT_NAME} main.cpp
         Vectors.h
         game/Inventory/InventoryBaseClass.h
+        game/Inventory/Inventory.h
+        game/Inventory/Inventory.cpp
 )
 
 # Add config.h.in file
