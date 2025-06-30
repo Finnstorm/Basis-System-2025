@@ -10,6 +10,8 @@
 #include "CollisionManager.h"
 #include "../Config.h.in"
 #include "raymath.h"
+#include "Projectile.h"
+
 
 class Collision_Manager;
 
@@ -34,13 +36,18 @@ protected:
 	Facing_Direction facing_Direction;
 	bool is_Moving;
 
+	float projectile_Speed;
+	std::vector<std::unique_ptr<game::Projectile>> sp_projectiles;
+
+
 public:
 	// Konstruktor
-	Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position,
+	Player_Base_Class(int max_Health, float movement_Speed, int damage, float projectile_Speed, Vector2 start_Position,
 			Collision_Manager* manager);
 
 	// Destruktor
 	~Player_Base_Class() override;
+
 	void Player_Input();
 	void Tick(float delta_time);
 	void On_Collision(Collidable* other) override;

@@ -24,7 +24,7 @@ namespace game {
         // Define if the game uses a mouse/mouse pointer
         // The mouse position is then accessible in game::core::Store in the mouse_position attribute
         // Please do not use the Raylib function GetMousePosition()
-        inline static constexpr const bool kUseMouse = false;
+        inline static constexpr const bool kUseMouse = true;
 
         // Raylib window config flags, e.g. for resizable window and vertical synchronisation
         // Default: GAME_CONFIG_FLAGS FLAG_WINDOW_RESIZABLE | FLAG_VSYNC_HINT | FLAG_MSAA_4X_HINT
@@ -50,6 +50,8 @@ namespace game {
         inline static constexpr int player_Class_One_Max_Health = 120;
         inline static constexpr float player_Class_One_Movement_Speed = 180.0f;
         inline static constexpr int player_Class_One_Damage = 12;
+        inline static constexpr float player_Class_One_Projectile_Speed = 300.0f;
+        inline static constexpr const char* player_Projectile_Sprite_Path = "assets/graphics/ball.png"; //PLACEHOLDER PFAD
 
         // Enemy_Class_One
         inline static constexpr int enemy_Class_1_Health = 50;
@@ -67,7 +69,7 @@ namespace game {
         inline static constexpr const int key_Right = KEY_D;
 
         inline static constexpr const int key_Melee_Attack = KEY_J;
-        inline static constexpr const int key_Ranged_Attack = KEY_K;
+        inline static constexpr const int key_Ranged_Attack = MOUSE_BUTTON_LEFT;
         inline static constexpr const int key_Use_Item = KEY_L;
     };
 }

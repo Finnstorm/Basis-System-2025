@@ -3,12 +3,14 @@
 //
 
 #include "PlayerBaseClass.h"
+#include "../core/Store.h"
+#include <cmath>
 
 // Konstruktor
-Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position,
+Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, float projectile_Speed, Vector2 start_Position,
      Collision_Manager* manager)
     : player_Max_Health(max_Health), player_Health((float)max_Health), player_Movement_Speed(movement_Speed),
-      player_Damage(damage), player_Hitbox({ start_Position.x, start_Position.y, 16.0f, 16.0f }),
+      player_Damage(damage), projectile_Speed(projectile_Speed), player_Hitbox({ start_Position.x, start_Position.y, 16.0f, 16.0f }),
       previous_Position(start_Position), manager_Ptr(manager), melee_Cooldown(0.0f), ranged_Cooldown(0.0f),
       inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false)
 {
@@ -75,6 +77,10 @@ void Player_Base_Class::Tick(float delta_time)
 
     if (melee_Cooldown > 0) melee_Cooldown -= delta_time;
     if (ranged_Cooldown > 0) ranged_Cooldown -= delta_time;
+
+    for (auto& p : sp_projectiles) {
+    	p->Tick(delta_time);
+	}
 }
 
 // Phase 3 :: Kollisionsreaktion falls der Collisionmanager eine Kollision mit einem anderen Objekt feststellt
@@ -101,7 +107,9 @@ void Player_Base_Class::On_Collision(Collidable* other)
 // Draw Methode ist noch nicht klar, wie das mit der Visualisierung laufen wird
 void Player_Base_Class::Draw()
 {
-
+	for (const auto& p : sp_projectiles) {
+        p->Draw();
+	}
 }
 
 // Um die beiden Attack Methoden weiter auszuarbeiten, braucht es die passenden Klassen
@@ -109,10 +117,40 @@ void Player_Base_Class::Melee_Attack()
 {
 	melee_Cooldown = 0.0f;
 }
+
 void Player_Base_Class::Ranged_Attack()
 {
-	ranged_Cooldown = 0.0f;
+
+    // Hole die Mausposition aus dem globalen Store
+    Vector2 target_Position = game::core::Store::mouse_Position;
+
+    // Berechne den Richtungsvektor vom Spieler zur Maus
+    float delta_vector_x = target_Position.x - this->player_Hitbox.x;
+    float delta_vector_y = target_Position.y - this->player_Hitbox.y;
+    float distance_to_target = std::sqrt(delta_vector_x * delta_vector_x + delta_vector_y * delta_vector_y);
+
+    // Nur schießen, wenn die Distanz größer als Null ist
+    if (distance_to_target > 0) {
+        // Normalisiere den Vektor, um nur die Richtung zu erhalten
+        Vector2 fire_direction = {
+            delta_vector_x / distance_to_target,
+            delta_vector_y / distance_to_target
+        };
+
+        // Erstelle ein neues Projektil und füge es dem Vektor hinzu
+        sp_projectiles.push_back(std::make_unique<game::Projectile>(
+            Vector2{this->player_Hitbox.x, this->player_Hitbox.y},
+            fire_direction,
+            this->projectile_Speed,
+            this->player_Damage,
+            game::Config::player_Projectile_Sprite_Path
+        ));
+
+        // Setze den Cooldown zurück
+		ranged_Cooldown = 0.5f; //PLACEHOLDER ZAHL - darf man ändern.
+    }
 }
+
 
 // Funktion für die Tick Methode welche die aktuelle Position speichert, falls das Objekt zurück gesetzt werden soll
 void Player_Base_Class::Update_Previous_Position()
