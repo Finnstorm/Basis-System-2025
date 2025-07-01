@@ -13,12 +13,15 @@ Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int d
       inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false)
 {
     // 2. Registriere Objekt beim Manager
+
+}
+
+void Player_Base_Class::Register_Player() {
     if (manager_Ptr)
     {
         manager_Ptr->Regist_Object(this);
     }
 }
-
 // Destruktor
 Player_Base_Class::~Player_Base_Class()
 {

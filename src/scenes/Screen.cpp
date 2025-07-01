@@ -40,6 +40,7 @@ Screen::Screen()
         if (tileatlas_Texture.id == 0)
         {
             std::cerr << "Failed to load tile atlas texture: " << image_Path << std::endl;
+            exit(EXIT_FAILURE);
         }
         //breaking after one tileset_Texture
         break;
@@ -54,7 +55,7 @@ Screen::~Screen()
     }
 }
 
-void Screen::Draw_Level(Camera2D cam) const
+void Screen::Draw_Level(std::shared_ptr<Cam> kamera) const
 {
 
     //make sure the map is loaded before drawing
@@ -63,7 +64,11 @@ void Screen::Draw_Level(Camera2D cam) const
         std::cerr << "Cannot draw level: Map not loaded." << std::endl;
         return;
     }
-    BeginMode2D(cam);
+    if (tileatlas_Texture.id==0){
+        std::cerr<<"draw level skipped tileatlas not loaded";
+        return;
+    }
+    BeginMode2D(kamera->cam);
     //BeginDrawing();
     //Iterate through the map layers
     for (auto& layer : map->getLayers())

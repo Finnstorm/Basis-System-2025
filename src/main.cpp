@@ -7,7 +7,7 @@
 #include <raylib.h>
 #include <Game.h>
 #include "scenes/Screen.h"
-#include "config.h.in"
+
 #include "MenuScene.h"
 
 

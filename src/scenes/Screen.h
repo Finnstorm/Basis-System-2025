@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <memory>
 #include <../../external/tileson/tileson.hpp>
+#include "Cam.h"
 
 
 class Screen
@@ -12,7 +13,7 @@ class Screen
 public:
     Screen();
     ~Screen();
-    void Draw_Level(Camera2D) const;
+    void Draw_Level(std::shared_ptr<Cam>) const;
 
 private:
     std::unique_ptr<tson::Map> map;

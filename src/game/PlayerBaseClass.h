@@ -43,6 +43,7 @@ public:
 
 	// Destruktor
 	~Player_Base_Class() override;
+    void Register_Player();
 	void Player_Input();
 	void Tick(float delta_time);
 	void On_Collision(Collidable* other) override;

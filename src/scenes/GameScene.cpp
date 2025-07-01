@@ -15,7 +15,9 @@
 using namespace std::string_literals;
 
 game::scenes::GameScene::GameScene()
-{dtm.Start();
+{
+    cam=std::make_shared<Cam>();
+    dtm.Start();
     // Your scene initialization code here...
 
 
@@ -36,7 +38,7 @@ void game::scenes::GameScene::Update()
     }
     mp.Tick(dtm.Get_Dt());
 
-    cam.Cam_Movement();
+    this->cam->Cam_Movement();
     dtm.Update();
 }
 
@@ -44,7 +46,8 @@ void game::scenes::GameScene::Draw()
 {
 BeginDrawing();
     ClearBackground(WHITE);
-   screen.Draw_Level(cam.cam);
-   mp.Draw();
-    EndDrawing();
+    screen.Draw_Level(this->cam);
+    mp.Draw();
+    DrawRectangle(1,1,100,100,RED);
+
 }

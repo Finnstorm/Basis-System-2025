@@ -26,7 +26,7 @@ namespace game::scenes
 
         Screen screen;
 
-        Cam cam{};
+        std::shared_ptr<Cam> cam;
 
     private:
         // Add private members here...
