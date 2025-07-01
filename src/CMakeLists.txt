@@ -19,13 +19,11 @@ add_subdirectory(scenes)
 
 add_executable(${PROJECT_NAME} main.cpp
         Vectors.h
-        game/Inventory/InventoryBaseClass.h
-        game/Inventory/Inventory.h
-        game/Inventory/Inventory.cpp
+        game/PlayerBaseClass.cpp
 )
 
 # Add config.h.in file
-configure_file(config.h.in ${CMAKE_BINARY_DIR}/config.h)
+configure_file(config.h.in config.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
 "${PROJECT_BINARY_DIR}"
