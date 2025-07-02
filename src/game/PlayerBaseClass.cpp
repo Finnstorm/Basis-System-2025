@@ -43,10 +43,10 @@ void Player_Base_Class::Player_Input()
         Ranged_Attack();
     }
 
-    if (IsKeyPressed(game::Config::key_Use_Item) && inventory_Is_Full)
+    /*if (IsKeyPressed(game::Config::key_Use_Item) && inventory_Is_Full)
     {
         Use_Item();
-    }
+    }*/
 }
 
 // Phase 2 :: Verwaltung für alles was das Objekt über eine gewisse Zeit machen soll
@@ -107,6 +107,7 @@ void Player_Base_Class::On_Collision(Collidable* other)
 // Draw Methode ist noch nicht klar, wie das mit der Visualisierung laufen wird
 void Player_Base_Class::Draw()
 {
+    DrawTexture(this->maintex, this->player_Hitbox.x,player_Hitbox.y,WHITE);
 	for (const auto& p : sp_projectiles) {
         p->Draw();
 	}
@@ -117,7 +118,6 @@ void Player_Base_Class::Melee_Attack()
 {
 	melee_Cooldown = 0.0f;
 }
-
 void Player_Base_Class::Ranged_Attack()
 {
 
@@ -150,7 +150,6 @@ void Player_Base_Class::Ranged_Attack()
 		ranged_Cooldown = 0.5f; //PLACEHOLDER ZAHL - darf man ändern.
     }
 }
-
 
 // Funktion für die Tick Methode welche die aktuelle Position speichert, falls das Objekt zurück gesetzt werden soll
 void Player_Base_Class::Update_Previous_Position()

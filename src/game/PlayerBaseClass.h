@@ -36,6 +36,8 @@ protected:
 	Facing_Direction facing_Direction;
 	bool is_Moving;
 
+    Texture2D maintex= LoadTexture("assets/graphics/ball.png");
+
 	float projectile_Speed;
 	std::vector<std::unique_ptr<game::Projectile>> sp_projectiles;
 
@@ -47,7 +49,6 @@ public:
 
 	// Destruktor
 	~Player_Base_Class() override;
-
 	void Player_Input();
 	void Tick(float delta_time);
 	void On_Collision(Collidable* other) override;
