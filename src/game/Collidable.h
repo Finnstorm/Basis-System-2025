@@ -28,5 +28,6 @@ public:
     virtual Rectangle Get_Hitbox() const = 0;
     virtual Collision_Type Get_Collision_Type() const = 0;
     virtual void On_Collision(Collidable* other) = 0;
+    virtual void Set_Position(Vector2 position){}
 };
 #endif //COLLIDABLE_H
