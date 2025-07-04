@@ -1,0 +1,14 @@
+{ "columns":45,
+ "image":"..\/Tileset-pngs\/Forest-Top-Down-2D-Game-Tileset3.png",
+ "imageheight":960,
+ "imagewidth":1440,
+ "margin":0,
+ "name":"Forest-Top-Down-2D-Game-Tileset3",
+ "spacing":0,
+ "tilecount":1350,
+ "tiledversion":"1.11.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}

@@ -3,48 +3,14 @@
 #include <string>
 #include "Screen.h"
 #include "../Vectors.h"
-#include "../game/Walls.h"
 #include <vector>
+#include "../config.h.in"
+#include "GameScene.h"
 
-Screen::Screen()
-{
-    //Create a Tileson parser Object
-    tson::Tileson parser;
+extern Object_Manager g_objectManager;
+// in main erstellen: object_Manager g_objectManager;
 
-    //Attempt to parse Tiled map file
-    //the parse function return a std::unique_ptr<tson::Map>
-    map = parser.parse(levelmap_Path);
-
-    //Check if the map was loaded successfully
-    if (map == nullptr)
-    {
-        std::cerr << "Failed to open or parse level map" << levelmap_Path << std::endl;
-        return;
-    }
-
-    //Check if the map version is supported by Tileson
-    if (map->getStatus() != tson::ParseStatus::OK)
-    {
-        std::cerr << "Error parsing map: " << map->getStatusMessage() << std::endl;
-        return;
-    }
-
-    //Iterate through all tilesets defined in the Tile map
-    //A Tilemap can have multiple tilesets. We're loading the texture of the first one
-    for (auto& tileset : map->getTilesets())
-    {
-        std::string image_Path = "assets/graphics/pngs/"+tileset.getImagePath().string();
-
-        //load texture and check if loading was successfull
-        tileatlas_Texture = LoadTexture(image_Path.c_str());
-        if (tileatlas_Texture.id == 0)
-        {
-            std::cerr << "Failed to load tile atlas texture: " << image_Path << std::endl;
-        }
-        //breaking after one tileset_Texture
-        break;
-    }
-}
+Screen::Screen(int* level_Ptr) : Level_Nbr_Ptr(level_Ptr) {}
 
 Screen::~Screen()
 {
@@ -54,8 +20,42 @@ Screen::~Screen()
     }
 }
 
-void Screen::Draw_Level() const
+void Screen::Load_Levelmap()
 {
+    int Level = *Level_Nbr_Ptr;
+    tson::Tileson parser;
+    std::string levelmap_Path = game::Config::GetLevelMapPath(Level);
+
+    map = parser.parse(levelmap_Path);
+
+    if (map == nullptr || map->getStatus() != tson::ParseStatus::OK) {
+        std::cerr << "Failed to load or parse map: " << levelmap_Path << std::endl;
+        std::cerr << "Status: " << map->getStatusMessage() << "\n";
+        return;
+    }
+
+    // Load texture
+    for (auto& tileset : map->getTilesets()) {
+        std::string image_Path_Raw = tileset.getImagePath().string();
+
+        if (image_Path_Raw.substr(0, 3) == "../") {
+            image_Path_Raw = image_Path_Raw.substr(3);
+        }
+
+        std::string image_Path = "../../assets/Tiled/" + image_Path_Raw;
+        tileatlas_Texture = LoadTexture(image_Path.c_str());
+
+        if (tileatlas_Texture.id == 0) {
+            std::cerr << "Failed to load tile atlas texture: " << image_Path << std::endl;
+        }
+        break;
+    }
+
+}
+
+void Screen::Draw_Level()
+{
+    Load_Levelmap();
 
     //make sure the map is loaded before drawing
     if (map == nullptr)
@@ -107,94 +107,72 @@ void Screen::Draw_Level() const
     }
 }
 
-void Screen::Load_Tiled_Objects() const
+void Screen::LoadGameObjects(bool includeEnemySpawnersAsCollidables)
 {
+    if (map == nullptr)
+    {
+        std::cerr << "Kann Spielobjekte nicht laden: Karte ist nicht geladen" << std::endl;
+    }
+
     //Processing Object layers
     for (auto& layer : map->getLayers())
     {
         if (layer.getType() == tson::LayerType::ObjectGroup)
         {
-            std::cout << "Processing Object Layer: " << layer.getName() << std::endl;
-
-            //get the name of the current Layer
             const std::string& layer_Name = layer.getName();
 
-            //Iterate through each object in the object group
-            for (auto& object : layer.getObjects()) {
-                std::cout << "Object Name: " << object.getName()
-                          << ", Type: " << object.getType()
-                          << ", Position: (" << object.getPosition().x << ", " << object.getPosition().y << ")"
-                          << ", Size: (" << object.getSize().x << ", " << object.getSize().y << ")" << std::endl;
+            for (auto& object : layer.getObjects())
+            {
 
-                //Check for certain layer Names
-                //Add any specific Object layer functionalities here, depending on the type of layer
-                //For example: Walls, Player Spawns, Enemy Spawns, audio/environmental triggers...
-                /*if (layer_Name == "walls")
+                if (layer_Name == "walls")
                 {
-                    Vector2 temp;
-                    temp.x=object.getPosition().x;
-                    temp.y=object.getPosition().y;
-                    Vector2 temp2;
-                    temp2.x=object.getSize().x;
-                    temp2.y=object.getSize().y;
-                    vec_walls.push_back(Walls(temp,temp2,));
-                }
+                    Vector2 temp_pos;
+                    temp_pos.x = static_cast<float>(object.getPosition().x);
+                    temp_pos.y = static_cast<float>(object.getPosition().y);
+                    Vector2 temp_size;
+                    temp_size.x = static_cast<float>(object.getSize().x);
+                    temp_size.y = static_cast<float>(object.getSize().y);
 
+                    Walls* new_wall = new Walls(temp_pos, temp_size /*, ggf. weitere Konstruktor-Parameter */);
+                    g_objectManager.AddObject(new_wall);
+                    std::cout << "Wand zu Object Manager hinzugefügt: " << new_wall << std::endl;
+                }
                 else if (layer_Name == "consumable")
                 {
-                    Vector2 temp;
-                    temp.x=object.getPosition().x;
-                    temp.y=object.getPosition().y;
-                    vec_cons.push_back(Consumables(temp,object.getName(),));
+                    Vector2 temp_pos;
+                    temp_pos.x = static_cast<float>(object.getPosition().x);
+                    temp_pos.y = static_cast<float>(object.getPosition().y);
+
+                    Consumables* new_consumable = new Consumables(temp_pos, object.getName() /*, ggf. weitere Konstruktor-Parameter */);
+                    g_objectManager.AddObject(new_consumable);
+                    std::cout << "Verbrauchsgegenstand zu Object Manager hinzugefügt: " << new_consumable << std::endl;
                 }
 
-                else if (layer_Name == "levelSpawns")
-                {
-                    std::cout << " This layer contains level spawns." << std::endl;
-                }
-
-                else if (layer_Name == "levelSpawns")
-                {
-                    std::cout << " This layer contains level spawns." << std::endl;
-                }*/
 
 
-                //If the object has a gid (is a tile object), it can be drawn
-                //object that are visually represented by a tile may use this
                 if (object.getGid() > 0)
                 {
                     tson::Tile* tile = nullptr;
-                    //Iterate through the tilesets to find the one containing this gid
                     for (auto& tileset : map->getTilesets())
                     {
-                        //check if gid is within this tileset
                         if (object.getGid() >= tileset.getFirstgid() &&
                             object.getGid() < (tileset.getFirstgid() + tileset.getTileCount()))
                         {
-                            //calculate the local ID within this tileset
                             uint32_t localTileId = object.getGid() - tileset.getFirstgid();
-                            //get the tile from the tileset using it's local Id
                             tile = tileset.getTile(localTileId);
-                            if (tile != nullptr)
-                            {
-                                //found the tile, no need to keep searching
-                                break;
-                            }
+                            if (tile != nullptr) break;
                         }
                     }
                     if (tile != nullptr)
                     {
                         tson::Rect drawingRect = tile->getDrawingRect();
                         Rectangle srcRect = {
-                                static_cast<float>(drawingRect.x),
-                                static_cast<float>(drawingRect.y),
-                                static_cast<float>(drawingRect.width),
-                                static_cast<float>(drawingRect.height)
-                        };
+                            static_cast<float>(drawingRect.x), static_cast<float>(drawingRect.y),
+                            static_cast<float>(drawingRect.width), static_cast<float>(drawingRect.height)
+                    };
                         Vector2 destPos = {
-                                static_cast<float>(object.getPosition().x),
-                                static_cast<float>(object.getPosition().y)
-                        };
+                            static_cast<float>(object.getPosition().x), static_cast<float>(object.getPosition().y)
+                    };
                         DrawTextureRec(tileatlas_Texture, srcRect, destPos, WHITE);
                     }
                 }

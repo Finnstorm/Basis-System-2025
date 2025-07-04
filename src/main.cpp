@@ -19,6 +19,7 @@ using namespace std::string_literals;
 
 int main()
 {
+    std::cout << "Working directory: " << std::filesystem::current_path() << std::endl;
 
     game::core::Game game(game::Config::kStageWidth, game::Config::kStageHeight, game::Config::kFullScreen,
                           game::Config::kTargetFps, game::Config::kWindowFlags, game::Config::kTextureFilter,

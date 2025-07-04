@@ -8,13 +8,12 @@
 #include "PauseScene.h"
 #include "Renderer.h"
 #include "SpriteAnimated.h"
-
 #include "../game/PlayerClassOne.h"
 #include "../core/CollisionManager.h"
 
 using namespace std::string_literals;
 
-game::scenes::GameScene::GameScene()
+game::scenes::GameScene::GameScene() : screen(&Level_Nbr)
 {dtm.Start();
     // Your scene initialization code here...
 
@@ -42,7 +41,8 @@ void game::scenes::GameScene::Update()
 
 void game::scenes::GameScene::Draw()
 {
-   screen.Draw_Level();
-   mp.Draw();
+    //screen.Load_Levelmap();
+    screen.Draw_Level();
+    mp.Draw();
 
 }

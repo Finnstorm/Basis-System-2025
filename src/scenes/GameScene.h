@@ -1,5 +1,5 @@
 #pragma once
-#include <Scene.h>
+#include "Scene.h"
 #include "Screen.h"
 #include "CollisionManager.h"
 #include "../game/PlayerClassOne.h"
@@ -23,7 +23,9 @@ namespace game::scenes
 
         void Draw() override;
 
-        Screen screen;
+        int Level_Nbr = 1;
+
+        Screen screen = Screen(&Level_Nbr);
 
     private:
         // Add private members here...

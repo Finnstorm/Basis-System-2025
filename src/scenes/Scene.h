@@ -42,5 +42,7 @@ namespace game::core
          * @brief The Draw() method can be used to output pngs. Note that the elements of the actor map are drawn automatically.
          */
         virtual void Draw() = 0;
+
+        int Level_Nbr = 1;
     };
 }

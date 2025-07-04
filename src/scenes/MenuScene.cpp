@@ -1,7 +1,6 @@
 #include "MenuScene.h"
 #include <string>
 #include <raylib.h>
-#include "Screen.h"
 #include <Store.h>
 #include "GameScene.h"
 #include "../Vectors.h"

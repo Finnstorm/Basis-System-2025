@@ -69,5 +69,21 @@ namespace game {
         inline static constexpr const int key_Melee_Attack = KEY_J;
         inline static constexpr const int key_Ranged_Attack = KEY_K;
         inline static constexpr const int key_Use_Item = KEY_L;
+
+        // Levelmap-file paths
+        // Lvl_Nbr gets changed on level transition, thus also altering the path where Screen.Draw_Level() loads the
+        // levelmap from
+        inline static std::string GetLevelMapPath(int Lvl_Nbr) {
+            switch (Lvl_Nbr) {
+                case 1:
+                    return "../../assets/Tiled/Levelmaps/lvl1.json";
+                case 2:
+                    return "../../assets/Tiled/Levelmaps/lvl2.json";
+                case 3:
+                    return "assets/maps/level3.json";
+                default:
+                    return "assets/maps/default.json";
+            }
+        }
     };
 }

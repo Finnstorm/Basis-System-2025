@@ -1,0 +1,37 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "Levelmaps/lvl1.json": {
+            "scale": 1.254,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 363.237639553429,
+                "y": 430.22328548644344
+            }
+        },
+        "Levelmaps/lvl2.json": {
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 340.5,
+                "y": 449.5
+            }
+        }
+    },
+    "last.imagePath": "C:/Uni/ProjektarbeitII/BasisSystem/assets/Tiled/Tileset-pngs",
+    "map.height": 25,
+    "map.lastUsedFormat": "json",
+    "map.width": 25,
+    "openFiles": [
+    ],
+    "project": "Multiple-Tilesets-Test.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.lastUsedFormat": "json"
+}
