@@ -1,6 +1,7 @@
 //
-// Created by Kruse on 29/06/2025.
+// Created by Kruse on 02/07/2025.
 //
+
 
 #include "Animations.h"
 Animations::Animations(Vector2 sprite_size,const char* filename,int FC,int spl) {
@@ -10,8 +11,8 @@ Animations::Animations(Vector2 sprite_size,const char* filename,int FC,int spl) 
     this->sprites_per_line=spl;
 }
 void Animations::First_Frame() {
-target.x=0;
-target.y=0;
+    target.x=0;
+    target.y=0;
     this->current_Frame=0;
 }
 void Animations::Next_Frame() {

@@ -3,21 +3,21 @@
 //
 
 #include "Cam.h"
-#include "config.h"
 #include <raylib.h>
 
-void Cam::Cam_Movement() {
-    if (IsKeyDown(KEY_W)){
-        this->cam.target.y= this->cam.target.y-10;
-    }
-    if (IsKeyDown(KEY_S)){
-        this->cam.target.y= this->cam.target.y+10;
-    }
-    if (IsKeyDown(KEY_A)){
-        this->cam.target.x= this->cam.target.x-10;
-    }
-    if (IsKeyDown(KEY_D)){
-        this->cam.target.x= this->cam.target.x+10;
-    }
+#include "Cam.h"
+#include "config.h"
 
+#include <raylib.h>
+#include <cmath>
+#include <iostream>
+
+Cam::Cam(Player_Base_Class& mp):pao(mp) {
+
+}
+void Cam::Cam_Movement(double dtm) {
+    Vector2 mpp=pao.Get_Player_Pos();
+    this->cam.target.x=mpp.x;
+    this->cam.target.y=mpp.y;
+    std::cout<<cam.target.x<<"  "<<cam.target.y<<"\n";
 }

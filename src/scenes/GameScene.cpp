@@ -15,9 +15,10 @@
 using namespace std::string_literals;
 
 game::scenes::GameScene::GameScene()
-{
-    cam=std::make_shared<Cam>();
-    dtm.Start();
+{dtm.Start();
+    cam=std::make_shared<Cam>(this->mp);
+    screen.Load_Tiled_Objects(objectManager,p_cm);
+
     // Your scene initialization code here...
 
 
@@ -38,16 +39,17 @@ void game::scenes::GameScene::Update()
     }
     mp.Tick(dtm.Get_Dt());
 
-    this->cam->Cam_Movement();
+    this->cam->Cam_Movement(dtm.Get_Dt());
     dtm.Update();
 }
 
 void game::scenes::GameScene::Draw()
 {
-BeginDrawing();
+    BeginDrawing();
     ClearBackground(WHITE);
     screen.Draw_Level(this->cam);
     mp.Draw();
-    DrawRectangle(1,1,100,100,RED);
+
+
 
 }

@@ -28,6 +28,8 @@ namespace game::scenes
 
         std::shared_ptr<Cam> cam;
 
+        Object_Manager objectManager;
+
     private:
         // Add private members here...
     };

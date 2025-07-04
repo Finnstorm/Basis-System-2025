@@ -22,7 +22,9 @@ add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.
         ../game/PlayerClassOne.h
         ../game/PlayerBaseClass.cpp
         Animations.cpp
-        Animations.h)
+        Animations.h
+        Object_Manager.cpp
+        Object_Manager.h)
 
 target_include_directories(core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 
