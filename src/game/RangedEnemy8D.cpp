@@ -28,9 +28,10 @@
 
 namespace enemy {
     Ranged_Enemy_8_Directional::Ranged_Enemy_8_Directional(std::string name, int health, float movement_speed, int damage, int value,
-                                                         const char* sprite_path, Vector2 start_position, int width, int height,
+                                                         const char* enemy_sprite_path, const char* proj_sprite_path,
+                                                         Vector2 start_position, int width, int height,
                                                          float attack_range, float attack_cooldown, float projectile_speed, Collision_Manager* manager)
-        : Enemy_Base_Class(name, health, movement_speed, damage, value, sprite_path, start_position, width, height, manager),
+        : Enemy_Base_Class(name, health, movement_speed, damage, value, enemy_sprite_path, proj_sprite_path, start_position, width, height, manager),
           attack_range(attack_range),
           attack_cooldown(attack_cooldown),
           projectile_speed(projectile_speed),
@@ -48,7 +49,6 @@ namespace enemy {
         for (auto& p : sp_projectiles) {
             p->Tick(delta_time);
         }
-        // Add logic to remove inactive projectiles from the vector to save memory.
     }
 
     void Ranged_Enemy_8_Directional::Draw() const {
@@ -60,8 +60,8 @@ namespace enemy {
     }
 
     void Ranged_Enemy_8_Directional::Attack(float target_Position_X, float target_Position_Y) {
-        float delta_vector_x = target_Position_X - this->enemy_Hitbox.x;
-        float delta_vector_y = target_Position_Y - this->enemy_Hitbox.y;
+        float delta_vector_x = target_Position_X - this->hitbox.x;
+        float delta_vector_y = target_Position_Y - this->hitbox.y;
         float distance_to_target = std::sqrt(delta_vector_x * delta_vector_x + delta_vector_y * delta_vector_y);
 
         if (distance_to_target <= attack_range) {
@@ -85,10 +85,10 @@ namespace enemy {
             }
 
             // Enter in *** the path of the projectile .png -> "***"
-            sp_projectiles.push_back(std::make_unique<game::Projectile>(
-                Vector2{this->enemy_Hitbox.x, this->enemy_Hitbox.y},
+            sp_projectiles.push_back(std::make_unique<game::Enemy_Projectile>(
+                Vector2{this->hitbox.x, this->hitbox.y},
                 fire_direction, this->projectile_speed, this->enemy_Damage,
-                "***"
+                this->projectile_sprite_path
             ));
             time_since_last_attack = 0.0f;
         }

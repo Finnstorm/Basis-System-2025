@@ -51,7 +51,7 @@ namespace game {
         inline static constexpr float player_Class_One_Movement_Speed = 100.0f;
         inline static constexpr int player_Class_One_Damage = 12;
         inline static constexpr float player_Class_One_Projectile_Speed = 300.0f;
-        inline static constexpr const char* player_Projectile_Sprite_Path = "assets/graphics/ball.png"; //PLACEHOLDER PFAD
+        inline static constexpr const char* player_Projectile_Sprite_Path = "assets/graphics/ball.png"; //PLACEHOLDER Pfad für Player-Projectile
 
         // Enemy_Class_One
         inline static constexpr int enemy_Class_1_Health = 50;
@@ -61,6 +61,8 @@ namespace game {
         inline static constexpr const char* enemy_Class_1_Sprite_Path = "assets/graphics/enemy_Class_1.png";
         inline static constexpr int enemy_Class_1_Hitbox_Width = 32;
         inline static constexpr int enemy_Class_1_Hitbox_Height = 32;
+        inline static constexpr const char* enemy_Class_1_Projectile_Sprite_Path = "assets/graphics/ball.png"; //PLACEHOLDER Pfad für Gegner-Projectile
+
 
         // Control Settings
         inline static constexpr const int key_Up = KEY_W;

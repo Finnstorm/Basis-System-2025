@@ -11,7 +11,7 @@ namespace enemy {
     Melee_Enemy::Melee_Enemy(std::string name, int health, float movement_speed, int damage, int value,
                              const char* sprite_path, Vector2 start_position, int width, int height,
                              float attack_range, float attack_cooldown, Collision_Manager* manager)
-        : Enemy_Base_Class(name, health, movement_speed, damage, value, sprite_path, start_position, width, height, manager),
+        : Enemy_Base_Class(name, health, movement_speed, damage, value, sprite_path, nullptr, start_position, width, height, manager),
           attack_range(attack_range),
           attack_cooldown(attack_cooldown),
           time_since_last_attack(0.0f) {}
@@ -25,8 +25,8 @@ namespace enemy {
 
         // Check conditions for an attack
         if (time_since_last_attack >= attack_cooldown) {
-            float delta_vector_x = target_Position_X - this->enemy_Hitbox.x;
-            float delta_vector_y = target_Position_Y - this->enemy_Hitbox.y;
+            float delta_vector_x = target_Position_X - this->hitbox.x;
+            float delta_vector_y = target_Position_Y - this->hitbox.y;
             float distance_to_target = std::sqrt(delta_vector_x * delta_vector_x + delta_vector_y * delta_vector_y);
 
             if (distance_to_target <= attack_range) {

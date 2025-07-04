@@ -9,7 +9,7 @@
 #include "CollisionManager.h"
 #include "../Config.h.in"
 #include "raymath.h"
-#include "Projectile.h"
+#include "PlayerProjectile.h"
 
 
 class Collision_Manager;
@@ -38,7 +38,7 @@ protected:
     Texture2D maintex= LoadTexture("assets/graphics/ball.png");
 
 	float projectile_Speed;
-	std::vector<std::unique_ptr<game::Projectile>> sp_projectiles;
+	std::vector<std::unique_ptr<game::Player_Projectile>> sp_projectiles;
 
 
 public:

@@ -131,8 +131,8 @@ void Player_Base_Class::Ranged_Attack()
     Vector2 target_Position = game::core::Store::mouse_Position;
 
     // Berechne den Richtungsvektor vom Spieler zur Maus
-    float delta_vector_x = target_Position.x - this->player_Hitbox.x;
-    float delta_vector_y = target_Position.y - this->player_Hitbox.y;
+    float delta_vector_x = target_Position.x - this->hitbox.x;
+    float delta_vector_y = target_Position.y - this->hitbox.y;
     float distance_to_target = std::sqrt(delta_vector_x * delta_vector_x + delta_vector_y * delta_vector_y);
 
     // Nur schießen, wenn die Distanz größer als Null ist
@@ -144,8 +144,8 @@ void Player_Base_Class::Ranged_Attack()
         };
 
         // Erstelle ein neues Projektil und füge es dem Vektor hinzu
-        sp_projectiles.push_back(std::make_unique<game::Projectile>(
-            Vector2{this->player_Hitbox.x, this->player_Hitbox.y},
+        sp_projectiles.push_back(std::make_unique<game::Player_Projectile>(
+            Vector2{this->hitbox.x, this->hitbox.y},
             fire_direction,
             this->projectile_Speed,
             this->player_Damage,

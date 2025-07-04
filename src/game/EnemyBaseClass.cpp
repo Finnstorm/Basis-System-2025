@@ -9,10 +9,10 @@
 namespace enemy
 {
     Enemy_Base_Class::Enemy_Base_Class(std::string name, int health, int movement_speed, int damage, int value,
-                const char* sprite_path, Vector2 start_position, int width, int height, Collision_Manager* manager)
+                const char* enemy_sprite_path, const char* proj_sprite_path, Vector2 start_position, int width, int height, Collision_Manager* manager)
     {
     hitbox = {start_position.x, start_position.y, (float)width, (float)height};
-    sprite = LoadTexture(sprite_path);
+    sprite = LoadTexture(enemy_sprite_path);
     }
 
 Enemy_Base_Class::~Enemy_Base_Class()
@@ -34,8 +34,8 @@ void Enemy_Base_Class::Take_Damage(int damage_amount)
 void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time)
 {
     // Berechnet den Richtungs-Vektor vom Gegner zum Ziel.
-    float delta_Vector_X = target_Position_X - this->enemy_Hitbox.x;
-    float delta_Vector_Y = target_Position_Y - this->enemy_Hitbox.y;
+    float delta_Vector_X = target_Position_X - this->hitbox.x;
+    float delta_Vector_Y = target_Position_Y - this->hitbox.y;
 
     // Berechnet die exakte Distanz zum Ziel.
     float distance_To_Target = std::sqrt(delta_Vector_X * delta_Vector_X + delta_Vector_Y * delta_Vector_Y);
@@ -56,8 +56,8 @@ void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Positio
         float movement_Step_Size = current_Movement_Speed * delta_Time;
 
         // Bewegt die Hitbox des Gegners um den kleinen Schritt in die korrekte Richtung.
-        this->enemy_Hitbox.x += normalized_Direction_X * movement_Step_Size;
-        this->enemy_Hitbox.y += normalized_Direction_Y * movement_Step_Size;
+        this->hitbox.x += normalized_Direction_X * movement_Step_Size;
+        this->hitbox.y += normalized_Direction_Y * movement_Step_Size;
     }
 }
 
