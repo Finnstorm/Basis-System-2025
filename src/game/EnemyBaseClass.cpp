@@ -11,7 +11,7 @@ namespace enemy
     Enemy_Base_Class::Enemy_Base_Class(std::string name, int health, int movement_speed, int damage, int value,
                 const char* sprite_path, Vector2 start_position, int width, int height, Collision_Manager* manager)
     {
-    enemy_Hitbox = {start_position.x, start_position.y, (float)width, (float)height};
+    hitbox = {start_position.x, start_position.y, (float)width, (float)height};
     sprite = LoadTexture(sprite_path);
     }
 
