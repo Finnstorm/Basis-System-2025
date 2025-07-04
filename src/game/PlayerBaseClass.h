@@ -57,5 +57,8 @@ public:
 
     Collision_Type Get_Collision_Type() const override;
     Vector2 Get_Player_Pos();
+	void Set_Position(Vector2 position);
+
+	void Take_Damage(int damage);
 };
 

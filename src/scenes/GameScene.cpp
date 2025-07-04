@@ -8,7 +8,6 @@
 #include "PauseScene.h"
 #include "Renderer.h"
 #include "SpriteAnimated.h"
-
 #include "../game/PlayerClassOne.h"
 #include "../core/CollisionManager.h"
 
@@ -41,6 +40,7 @@ void game::scenes::GameScene::Update()
 
     this->cam->Cam_Movement(dtm.Get_Dt());
     dtm.Update();
+    objectManager.Cleanup_Objects();
 }
 
 void game::scenes::GameScene::Draw()

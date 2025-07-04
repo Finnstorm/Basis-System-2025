@@ -20,19 +20,21 @@ namespace enemy
         int enemy_Health;
         int enemy_Movement_Speed;
         int enemy_Damage;
+        const float attack_Cooldown_Duration;
+        float attack_Cooldown_Timer;
         int enemy_Value;
+        bool is_Moving;
         Texture2D sprite;
         Collision_Manager* manager_ptr;
 
     public:
-        Enemy_Base_Class(std::string name, int health, float movement_speed, int damage, int value,
-            const char* sprite_path, Vector2 start_position, int width, int height, Collision_Manager* manager);
+        Enemy_Base_Class(std::string name, int health, float movement_Speed, int damage, int value,
+            const char* sprite_Path, Vector2 start_Position, int width, int height, Collision_Manager* manager,
+            float cooldown_Duration);
 
         virtual ~Enemy_Base_Class();
 
         void Take_Damage(int damage_amount);
-        virtual void Range_Attack();
-        virtual void Melee_Attack();
         virtual void Pathfinding()=0;
 
         int Get_Health() const { return enemy_Health; }

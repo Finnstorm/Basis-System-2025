@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include "PlayerBaseClass.h"
+#include "CollisionResponse.h"
+#include "Consumables.h"
+#include "EnemyBaseClass.h"
 
 // Konstruktor
 Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position,
@@ -88,22 +91,56 @@ void Player_Base_Class::Tick(float delta_time)
 // Phase 3 :: Kollisionsreaktion falls der Collisionmanager eine Kollision mit einem anderen Objekt feststellt
 void Player_Base_Class::On_Collision(Collidable* other)
 {
-	Collision_Type otherType = other->Get_Collision_Type();
+	Collision_Type other_Type = other->Get_Collision_Type();
 
-    if (otherType == Collision_Type::WALL ||
-        otherType == Collision_Type::ENEMY_SPAWNER ||
-        otherType == Collision_Type::ENEMY)
+    switch(other_Type)
     {
-		Rectangle wall_Hitbox = other->Get_Hitbox();
-        if (CheckCollisionRecs({hitbox.x, previous_Position.y, hitbox.width, hitbox.height}, wall_Hitbox))
+        case Collision_Type::WALL:
+        case Collision_Type::ENEMY_SPAWNER:
+        case Collision_Type::ENEMY:
         {
-            hitbox.y = previous_Position.y;
+            if (this->is_Moving)
+            {
+                CollisionResponse::Resolve_Overlap(this, other);
+            }
+            break;
         }
-        if (CheckCollisionRecs({previous_Position.x, hitbox.y, hitbox.width, hitbox.height}, wall_Hitbox))
+
+        case Collision_Type::ENEMY_PROJECTILE:
         {
-            hitbox.x = previous_Position.x;
-		}
-	}
+            /*if(auto* projectile = dynamic_cast<Enemy_Projectile*>(other))
+            {
+                this->Take_Damage(projectile->Get_Damage());
+            }
+            CollisionResponse::Mark_For_Destruction(other);*/
+            break;
+        }
+
+        case Collision_Type::CONSUMABLE:
+        {
+            /* // Wir brauchen eine Basis-Klasse "Consumable", von der alle Items erben.
+            if(auto* item = dynamic_cast<Consumables*>(other)) // Annahme: Es gibt eine Klasse Consumable
+            {
+                if(item->Is_Inventory_Item()) // Methode in Consumable, die den bool zurückgibt
+                {
+                    // Logik, um das Item dem Inventar hinzuzufügen
+                    // inventory.Add(item);
+                }
+                else
+                {
+                    // Item wird sofort verwendet (z.B. Heilung)
+                    item->Apply_Effect(this); // Jedes Item weiß selbst, was es tut
+                }
+
+                // In jedem Fall wird das Item aus der Welt entfernt
+                CollisionResponse::Mark_For_Destruction(other);
+            } */
+            break;
+        }
+
+        default:
+            break;
+    }
 }
 
 // Draw Methode ist noch nicht klar, wie das mit der Visualisierung laufen wird
@@ -130,6 +167,12 @@ void Player_Base_Class::Update_Previous_Position()
     previous_Position.y = hitbox.y;
 }
 
+// In PlayerBaseClass.cpp hinzufügen:
+void Player_Base_Class::Set_Position(Vector2 position)
+{
+    this->hitbox.x = position.x;
+    this->hitbox.y = position.y;
+}
 // Methode aus der Tick welche die aktuelle Blickrichtung zurück geben soll. Wird später fürs Zeichnen und für die
 // Angriffe genutzt
 void Player_Base_Class::Update_Facing_Direction()
@@ -161,4 +204,9 @@ Collision_Type Player_Base_Class::Get_Collision_Type() const
 
 Vector2 Player_Base_Class::Get_Player_Pos() {
     return this->player_Pos;
+}
+
+void Player_Base_Class::Take_Damage(int damage_amount)
+{
+    player_Health -= damage_amount;
 }
