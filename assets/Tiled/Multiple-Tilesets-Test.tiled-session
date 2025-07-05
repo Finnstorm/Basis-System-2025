@@ -3,25 +3,32 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "Tilesets/Lvl1_Forest.json",
     "expandedProjectPaths": [
+        ".",
+        "Tilesets",
+        "Levelmaps"
     ],
     "fileStates": {
         "Levelmaps/lvl1.json": {
             "scale": 1.254,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 363.237639553429,
-                "y": 430.22328548644344
+                "x": 425.43859649122805,
+                "y": 399.9202551834131
             }
         },
         "Levelmaps/lvl2.json": {
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 340.5,
-                "y": 449.5
+                "x": 400.5,
+                "y": 399.5
             }
+        },
+        "Tilesets/Lvl1_Forest.json": {
+            "scaleInDock": 2,
+            "scaleInEditor": 1
         }
     },
     "last.imagePath": "C:/Uni/ProjektarbeitII/BasisSystem/assets/Tiled/Tileset-pngs",
@@ -29,9 +36,15 @@
     "map.lastUsedFormat": "json",
     "map.width": 25,
     "openFiles": [
+        "Tilesets/Lvl1_Forest.json",
+        "Levelmaps/lvl1.json",
+        "Levelmaps/lvl2.json"
     ],
     "project": "Multiple-Tilesets-Test.tiled-project",
     "recentFiles": [
+        "Levelmaps/lvl2.json",
+        "Levelmaps/lvl1.json",
+        "Tilesets/Lvl1_Forest.json"
     ],
     "tileset.lastUsedFormat": "json"
 }

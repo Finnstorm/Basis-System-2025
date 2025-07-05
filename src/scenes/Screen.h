@@ -22,7 +22,7 @@ class Screen
 public:
     Screen(int* Level_Ptr);
     ~Screen();
-    void Draw_Level();
+    void Draw_Level(bool aboveObjects);
     void LoadGameObjects(bool includeEnemySpawnersAsCollidables = false); // VERÄNDERUNG: Parametername angepasst
     void Load_Levelmap();
 
