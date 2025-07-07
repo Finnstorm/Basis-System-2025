@@ -16,28 +16,15 @@ using namespace std::string_literals;
 
 game::scenes::GameScene::GameScene()
 {
+   {
     dtm.Start();
     cam=std::make_shared<Cam>(this->mp);
     screen.Load_Tiled_Objects(objectManager,p_cm);
+    screen.Load_Tiled_Objects(objectManager);
 
     // Your scene initialization code here...
 
-}
-
-game::scenes::GameScene::~GameScene()
-{
-    // Your scene cleanup code here...
-}
-
-void game::scenes::GameScene::Update()
-{
-    // Your process input and update game scene code here...
-    if (IsKeyPressed(KEY_ESCAPE))
-        game::core::Store::stage->SwitchToNewScene("pause"s, std::make_unique<PauseScene>());
-    if (IsKeyPressed(KEY_L)){
-        ToggleFullscreen();
-    }
-    mp.Tick(dtm.Get_Dt());
+ void game::scenes::GameScene::Update()
 
     this->cam->Cam_Movement(dtm.Get_Dt());
     objectManager.Cleanup_Objects();
@@ -45,8 +32,7 @@ void game::scenes::GameScene::Update()
     dtm.Update();
 }
 
-void game::scenes::GameScene::Draw()
-{
+ void game::scenes::GameScene::Draw()
     BeginDrawing();
     ClearBackground(WHITE);
     screen.Draw_Level(this->cam);

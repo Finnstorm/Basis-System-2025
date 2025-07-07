@@ -14,6 +14,8 @@ namespace game::scenes
         Rectangle wb{0,0,game::Config::kStageWidth,game::Config::kStageHeight};
         Collision_Manager* p_cm;
         Player_Class_One mp{sp,p_cm};
+        Collision_Manager* p_cm =new Collision_Manager(wb,objectManager.managed_objects);
+        Player_Class_One mp{sp};
         DT::timemachine dtm;
     public:
         GameScene();
