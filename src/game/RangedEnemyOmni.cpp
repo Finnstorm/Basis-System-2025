@@ -11,7 +11,7 @@ namespace enemy {
                                           const char* enemy_sprite_path, const char* proj_sprite_path,
                                           Vector2 start_position, int width, int height,
                                          float attack_range, float attack_cooldown, float projectile_speed, Collision_Manager* manager)
-        : Enemy_Base_Class(name, health, movement_speed, damage, value, enemy_sprite_path, proj_sprite_path, start_position, width, height, manager),
+          : Enemy_Base_Class(name, health, movement_speed, damage, value, enemy_sprite_path, proj_sprite_path, start_position, width, height, manager,attack_cooldown),
           attack_range(attack_range),
           attack_cooldown(attack_cooldown),
           projectile_speed(projectile_speed),

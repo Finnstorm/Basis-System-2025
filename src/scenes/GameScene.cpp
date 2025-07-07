@@ -18,7 +18,7 @@ game::scenes::GameScene::GameScene()
 {
     dtm.Start();
     cam=std::make_shared<Cam>(this->mp);
-    screen.Load_Tiled_Objects(objectManager);
+    screen.Load_Tiled_Objects(objectManager,p_cm);
 
     // Your scene initialization code here...
 
