@@ -32,26 +32,26 @@ namespace enemy {
         void Attack(float target_Position_X, float target_Position_Y);
 
     public:
-       /**
-       * @brief Constructs a new Omnidirectional Ranged Enemy.
-       * @param name Name of the enemy.
-       * @param health Initial health points.
-       * @param movement_speed Speed of the enemy.
-       * @param damage Damage dealt per attack.
-       * @param value Score value when defeated.
-       * @param enemy_sprite_path File path to the Enemy sprite texture.
-       * @param proj_sprite_path File path to the Enemy Projectile sprite texture.
-       * @param start_position Initial world position.
-       * @param width Width of the enemy hitbox.
-       * @param height Height of the enemy hitbox.
-       * @param attack_range Maximum distance to attack.
-       * @param attack_cooldown Minimum time between attacks.
-       * @param projectile_speed The speed of fired projectiles.
-       */
+        /**
+        * @brief Constructs a new Omnidirectional Ranged Enemy.
+        * @param name Name of the enemy.
+        * @param health Initial health points.
+        * @param movement_speed Speed of the enemy.
+        * @param damage Damage dealt per attack.
+        * @param value Score value when defeated.
+        * @param enemy_sprite_path File path to the Enemy sprite texture.
+        * @param proj_sprite_path File path to the Enemy Projectile sprite texture.
+        * @param start_position Initial world position.
+        * @param width Width of the enemy hitbox.
+        * @param height Height of the enemy hitbox.
+        * @param attack_range Maximum distance to attack.
+        * @param attack_cooldown Minimum time between attacks.
+        * @param projectile_speed The speed of fired projectiles.
+        */
         Ranged_Enemy_Omni(std::string name, int health, float movement_speed, int damage, int value,
-                           const char* enemy_sprite_path, const char* proj_sprite_path,
-                           Vector2 start_position, int width, int height,
-                           float attack_range, float attack_cooldown, float projectile_speed, Collision_Manager* manager);
+                          const char* enemy_sprite_path, const char* proj_sprite_path,
+                          Vector2 start_position, int width, int height,
+                          float attack_range, float attack_cooldown, float projectile_speed);
 
         ~Ranged_Enemy_Omni() override = default;
 
