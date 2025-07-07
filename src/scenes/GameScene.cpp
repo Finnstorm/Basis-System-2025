@@ -37,6 +37,7 @@ void game::scenes::GameScene::Update()
     if (IsKeyPressed(KEY_L)){
         ToggleFullscreen();
     }
+    mp.Player_Input();
     mp.Tick(dtm.Get_Dt());
 
     this->cam->Cam_Movement(dtm.Get_Dt());
