@@ -11,7 +11,6 @@
 #include "raymath.h"
 #include "PlayerProjectile.h"
 
-
 class Collision_Manager;
 
 enum Facing_Direction {UP, DOWN, LEFT, RIGHT, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT};
@@ -37,13 +36,12 @@ protected:
 
     Texture2D maintex= LoadTexture("assets/graphics/ball.png");
 
-	float projectile_Speed;
-	std::vector<std::unique_ptr<game::Player_Projectile>> sp_projectiles;
-
+    float projectile_Speed;
+    std::vector<std::unique_ptr<game::Player_Projectile>> sp_projectiles;
 
 public:
 	// Konstruktor
-	Player_Base_Class(int max_Health, float movement_Speed, int damage, float projectile_Speed, Vector2 start_Position,
+	Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position,
 			Collision_Manager* manager);
 
 	// Destruktor
@@ -62,5 +60,7 @@ public:
 
     Collision_Type Get_Collision_Type() const override;
     Vector2 Get_Player_Pos();
+
+    void Take_Damage(int damage);
 };
 

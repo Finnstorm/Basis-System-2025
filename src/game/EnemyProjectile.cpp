@@ -40,9 +40,7 @@ namespace game {
     }
 
     // Get_Hitbox: Gibt die Kollisionsbox zurück
-    Rectangle Enemy_Projectile::Get_Hitbox() const {
-        return hitbox;
-    }
+
 
     // Get_Collision_Type: Gibt den Typ zurück hier für Gegner
     Collision_Type Enemy_Projectile::Get_Collision_Type() const {

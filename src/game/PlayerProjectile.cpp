@@ -46,11 +46,6 @@ namespace game {
         DrawTextureV(sprite, position, WHITE);
     }
 
-    // Get_Hitbox: Gibt die Kollisionsbox zurück
-    Rectangle Player_Projectile::Get_Hitbox() const {
-        return hitbox;
-    }
-
     // Get_Collision_Type: Sagt dem CollisionManager um welchen Typ es sich handelt
     Collision_Type Player_Projectile::Get_Collision_Type() const {
         return Collision_Type::PLAYER_PROJECTILE;

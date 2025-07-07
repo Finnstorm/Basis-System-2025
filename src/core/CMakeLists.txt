@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.cpp renderer.h renderer.cpp texture2d.cpp texture2d.h sprite.h sprite.cpp spriteAnimated.cpp spriteAnimated.h actor.cpp actor.h
+add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.cpp renderer.h renderer.cpp texture2d.cpp texture2d.h sprite.h sprite.cpp SpriteAnimated.cpp SpriteAnimated.h actor.cpp actor.h
         DeltaTimeMachine.cpp
         DeltaTimeMachine.h
         Cam.cpp
@@ -13,15 +13,6 @@ add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.
         ../game/Walls.h
         ../game/Spawnpoints.cpp
         ../game/Spawnpoints.h
-        ../game/AttackDirection.h
-        ../game/EnemyProjectile.cpp
-        ../game/EnemyProjectile.h
-        ../game/MeleeEnemy.cpp
-        ../game/MeleeEnemy.h
-        ../game/RangedEnemy8D.cpp
-        ../game/RangedEnemy8D.h
-        ../game/RangedEnemyOmni.cpp
-        ../game/RangedEnemyOmni.h
         ../game/Collidable.h
         CollisionManager.cpp
         CollisionManager.h
@@ -34,8 +25,18 @@ add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.
         Animations.h
         Object_Manager.cpp
         Object_Manager.h
+        ../game/EnemyProjectile.cpp
+        ../game/EnemyProjectile.h
+        ../game/MeleeEnemy.cpp
+        ../game/MeleeEnemy.h
         ../game/PlayerProjectile.cpp
-        ../game/PlayerProjectile.h)
+        ../game/PlayerProjectile.h
+        ../game/RangedEnemy8D.cpp
+        ../game/RangedEnemy8D.h
+        ../game/RangedEnemyOmni.cpp
+        ../game/RangedEnemyOmni.h
+        ../game/CollisionResponse.cpp
+        ../game/CollisionResponse.h)
 
 target_include_directories(core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 

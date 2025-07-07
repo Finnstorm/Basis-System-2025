@@ -4,14 +4,13 @@
 
 #include <iostream>
 #include "PlayerBaseClass.h"
-#include "../core/Store.h"
-#include <cmath>
+#include "Store.h"
 
 // Konstruktor
-Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, float projectile_Speed, Vector2 start_Position,
+Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position,
      Collision_Manager* manager)
     : player_Max_Health(max_Health), player_Health((float)max_Health), player_Movement_Speed(movement_Speed),
-      player_Damage(damage), projectile_Speed(projectile_Speed),
+      player_Damage(damage),
       previous_Position(start_Position), manager_Ptr(manager), melee_Cooldown(0.0f), ranged_Cooldown(0.0f),
       inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false)
 {
@@ -112,7 +111,6 @@ void Player_Base_Class::On_Collision(Collidable* other)
 // Draw Methode ist noch nicht klar, wie das mit der Visualisierung laufen wird
 void Player_Base_Class::Draw()
 {
-    DrawRectangleLinesEx(hitbox,2,RED);
     DrawTexture(this->maintex, this->hitbox.x,hitbox.y,WHITE);
     for (const auto& p : sp_projectiles) {
         p->Draw();
@@ -126,7 +124,6 @@ void Player_Base_Class::Melee_Attack()
 }
 void Player_Base_Class::Ranged_Attack()
 {
-
     // Hole die Mausposition aus dem globalen Store
     Vector2 target_Position = game::core::Store::mouse_Position;
 
@@ -139,21 +136,21 @@ void Player_Base_Class::Ranged_Attack()
     if (distance_to_target > 0) {
         // Normalisiere den Vektor, um nur die Richtung zu erhalten
         Vector2 fire_direction = {
-            delta_vector_x / distance_to_target,
-            delta_vector_y / distance_to_target
+                delta_vector_x / distance_to_target,
+                delta_vector_y / distance_to_target
         };
 
         // Erstelle ein neues Projektil und füge es dem Vektor hinzu
         sp_projectiles.push_back(std::make_unique<game::Player_Projectile>(
-            Vector2{this->hitbox.x, this->hitbox.y},
-            fire_direction,
-            this->projectile_Speed,
-            this->player_Damage,
-            game::Config::player_Projectile_Sprite_Path
+                Vector2{this->hitbox.x, this->hitbox.y},
+                fire_direction,
+                this->projectile_Speed,
+                this->player_Damage,
+                game::Config::player_Projectile_Sprite_Path
         ));
 
         // Setze den Cooldown zurück
-		ranged_Cooldown = 0.5f; //PLACEHOLDER ZAHL - darf man ändern.
+        ranged_Cooldown = 0.5f; //PLACEHOLDER ZAHL - darf man ändern.
     }
 }
 
@@ -195,4 +192,8 @@ Collision_Type Player_Base_Class::Get_Collision_Type() const
 
 Vector2 Player_Base_Class::Get_Player_Pos() {
     return this->player_Pos;
+}
+void Player_Base_Class::Take_Damage(int damage_amount)
+{
+    player_Health -= damage_amount;
 }

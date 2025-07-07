@@ -34,7 +34,6 @@ namespace game {
         void Tick(float delta_time);
         void Draw() const;
 
-        Rectangle Get_Hitbox() const;
         Collision_Type Get_Collision_Type() const override;
         void On_Collision(Collidable* other) override;
     };
