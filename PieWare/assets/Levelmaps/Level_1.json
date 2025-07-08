@@ -67,6 +67,12 @@
          "id":1,
          "name":"Background",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"IsAboveObjects",
+                 "type":"bool",
+                 "value":false
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":96,
@@ -138,6 +144,12 @@
          "id":3,
          "name":"Below_Player",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"IsAboveObjects",
+                 "type":"bool",
+                 "value":false
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":96,
@@ -209,6 +221,12 @@
          "id":2,
          "name":"Above_ Player",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"IsAboveObjects",
+                 "type":"bool",
+                 "value":true
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":96,
