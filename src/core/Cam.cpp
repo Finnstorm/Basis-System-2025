@@ -16,6 +16,7 @@ Cam::Cam(Player_Base_Class& mp):pao(mp) {
 
 }
 void Cam::Cam_Movement(double dtm) {
-    Vector2 mpp=pao.Get_Player_Pos();
-    this->cam.target= (Vector2){mpp.x-100,mpp.y-50};
-}
+    Vector2 mpp=pao.Get_Player_Center();
+    int temp= game::Config::kStageWidth/2;
+    this->cam.target= mpp;
+}//(Vector2){mpp.x+game::Config::kStageWidth/2,mpp.y+game::Config::kStageHeight/2}
