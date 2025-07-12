@@ -6,21 +6,24 @@
 #define PLAYERCLASSONE_H
 
 
-
+#include <map>
 #include "PlayerBaseClass.h"
 #include "Animations.h"
+#include "RepeatAnimation.h"
 
 class Player_Class_One : public Player_Base_Class
 {
 private:
-    Vector2 size{80,80};
-
+    Vector2 size = game::Config::player_Hittbox;
+    std::map<Facing_Direction, RepeatAnimation> walking_Animations;
+    std::map<Facing_Direction, RepeatAnimation> idle_Animations;
 
 public:
     Animations test_animation{size,"assets/graphics/anim_sprite.png",9,3};
     Player_Class_One(Vector2 start_Position);
     ~Player_Class_One();
     void Draw() override;
+    void Tick(float delta_time) override;
 
 };
 

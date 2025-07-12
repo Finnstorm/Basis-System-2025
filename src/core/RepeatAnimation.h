@@ -10,17 +10,20 @@
 class RepeatAnimation {
 
     private:
-        int current_Frame=0;
+        int current_Frame = 0;
+        float time_accumulator = 0.0f;
+        float time_per_frame;
         int frame_Count;
         int sprites_per_line;
-        Vector2 size;
+
         Rectangle target;
         Texture2D spritesheet;
     public:
-    RepeatAnimation(Vector2,const char*,int,int);
-        void Next_Frame();
-        void First_Frame();
-        void Draw_Current_Frame(Vector2);
+    Vector2 size;
+    RepeatAnimation(Vector2, const char*, int, int, float speed);
+    void Update_Frame(float delta_time);
+    void First_Frame();
+    void Draw_Current_Frame(Vector2);
 
 };
 

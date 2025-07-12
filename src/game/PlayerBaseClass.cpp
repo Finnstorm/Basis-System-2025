@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "PlayerBaseClass.h"
+
+#include "CollisionResponse.h"
 #include "Store.h"
 
 // Konstruktor
@@ -13,9 +15,13 @@ Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int d
       previous_Position(start_Position), melee_Cooldown(0.0f), ranged_Cooldown(0.0f),
       inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false)
 {
-    hitbox={start_Position.x,start_Position.y,static_cast<float >(maintex.width),static_cast<float >(maintex.height)};
-    // 2. Registriere Objekt beim Manager
-
+    this->hitbox =
+    {
+        start_Position.x,
+        start_Position.y,
+        game::Config::player_Hittbox.x,
+        game::Config::player_Hittbox.y
+    };
 }
 
 // Destruktor
@@ -65,11 +71,19 @@ void Player_Base_Class::Tick(float delta_time)
         move_Direction = Vector2Normalize(move_Direction);
     }
 
-    hitbox.x += floor(move_Direction.x * player_Movement_Speed * delta_time);
-    hitbox.y += floor(move_Direction.y * player_Movement_Speed * delta_time);
+    hitbox.x += move_Direction.x * player_Movement_Speed * delta_time;
+    hitbox.y += move_Direction.y * player_Movement_Speed * delta_time;
     player_Pos.x=hitbox.x;
     player_Pos.y=hitbox.y;
 
+    if (is_Moving)
+    {
+        currentState = WALKING;
+    }
+    else
+    {
+        currentState = IDLE;
+    }
 
     Update_Facing_Direction();
 
@@ -89,15 +103,7 @@ void Player_Base_Class::On_Collision(Collidable* other)
         otherType == Collision_Type::ENEMY_SPAWNER ||
         otherType == Collision_Type::ENEMY)
     {
-		Rectangle wall_Hitbox = other->Get_Hitbox();
-        if (CheckCollisionRecs({hitbox.x, previous_Position.y, hitbox.width, hitbox.height}, wall_Hitbox))
-        {
-            hitbox.y = previous_Position.y;
-        }
-        if (CheckCollisionRecs({previous_Position.x, hitbox.y, hitbox.width, hitbox.height}, wall_Hitbox))
-        {
-            hitbox.x = previous_Position.x;
-		}
+        CollisionResponse::Resolve_Overlap(this, other);
 	}
 }
 
@@ -188,5 +194,11 @@ void Player_Base_Class::Take_Damage(int damage_amount)
     player_Health -= damage_amount;
 }
 Vector2 Player_Base_Class::Get_Player_Center() {
-    return (Vector2){player_Pos.x+maintex.width/2,player_Pos.y+maintex.height/2};
+    return (Vector2){this->hitbox.x + this->hitbox.width / 2, this->hitbox.y + this->hitbox.height / 2};
+}
+void Player_Base_Class::Set_Position(Vector2 position)
+{
+    this->hitbox.x = position.x;
+    this->hitbox.y = position.y;
+    this->player_Pos = position;
 }
