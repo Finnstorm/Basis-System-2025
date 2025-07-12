@@ -38,5 +38,6 @@ public:
 
     virtual void Mark_For_Destruction() { this->is_Marked_For_Destruction = true; }
     bool Is_Marked_For_Destruction() const { return this->is_Marked_For_Destruction; }
+    virtual float GetYSortPosition() const { return hitbox.y + hitbox.height; }
 };
 #endif //COLLIDABLE_H
