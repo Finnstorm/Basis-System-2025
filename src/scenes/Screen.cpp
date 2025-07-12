@@ -125,12 +125,15 @@ void Screen::Draw_Level(std::shared_ptr<Cam> kamera,bool aboveObjects) {
     EndMode2D();
 }
 
-void Screen::LoadGameObjects(Object_Manager& g_objectManager) {
+void Screen::Load_Game_Objects(Object_Manager& g_Object_Manager)
+{
     if (!this->loaded){
         Load_Levelmap();
     }
-    if (map == nullptr) {
+    if (map == nullptr)
+    {
         std::cerr << "Kann Spielobjekte nicht laden: Karte ist nicht geladen" << std::endl;
+        return;
     }
 
     //Processing Object layers
@@ -139,7 +142,7 @@ void Screen::LoadGameObjects(Object_Manager& g_objectManager) {
             const std::string &layer_Name = layer.getName();
 
             for (auto &object: layer.getObjects()) {
-                if (layer_Name == "walls") {
+                if (layer_Name == "Wall") {
                     Vector2 temp_pos;
                     temp_pos.x = static_cast<float>(object.getPosition().x);
                     temp_pos.y = static_cast<float>(object.getPosition().y);
@@ -148,16 +151,16 @@ void Screen::LoadGameObjects(Object_Manager& g_objectManager) {
                     temp_size.y = static_cast<float>(object.getSize().y);
 
                     Walls *new_wall = new Walls(temp_pos, temp_size /*, ggf. weitere Konstruktor-Parameter */);
-                    g_objectManager.AddObject(new_wall);
+                    g_Object_Manager.AddObject(new_wall);
                     std::cout << "Wand zu Object Manager hinzugefügt: " << new_wall << std::endl;
-                } else if (layer_Name == "consumable") {
+                } else if (layer_Name == "Consumable") {
                     Vector2 temp_pos;
                     temp_pos.x = static_cast<float>(object.getPosition().x);
                     temp_pos.y = static_cast<float>(object.getPosition().y);
 
                     Consumables *new_consumable = new Consumables(
                             temp_pos, object.getName() /*, ggf. weitere Konstruktor-Parameter */);
-                    g_objectManager.AddObject(new_consumable);
+                    g_Object_Manager.AddObject(new_consumable);
                     std::cout << "Verbrauchsgegenstand zu Object Manager hinzugefügt: " << new_consumable << std::endl;
                 }
 

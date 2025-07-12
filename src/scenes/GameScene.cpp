@@ -19,7 +19,7 @@ game::scenes::GameScene::GameScene()
     dtm.Start();
     objectManager.AddObject(&mp);
     cam=std::make_shared<Cam>(this->mp);
-    screen.LoadGameObjects(objectManager);
+    screen.Load_Game_Objects(objectManager);
 
     // Your scene initialization code here...
 
