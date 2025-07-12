@@ -16,7 +16,7 @@ public:
     Screen(int* Level_Ptr);
     ~Screen();
     void Draw_Level(std::shared_ptr<Cam>, bool aboveObjects) ;
-    void LoadGameObjects(Object_Manager& g_objectManager);
+    void Load_Game_Objects(Object_Manager& g_Object_Manager);
     void Load_Levelmap();
 
 private:
