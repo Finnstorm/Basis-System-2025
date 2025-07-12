@@ -25,12 +25,14 @@ void Screen::Load_Levelmap() {
     std::string levelmap_Path = game::Config::GetLevelMapPath(Level);
 
     map = parser.parse(levelmap_Path);
-
     if (map == nullptr || map->getStatus() != tson::ParseStatus::OK) {
         std::cerr << "Failed to load or parse map: " << levelmap_Path << std::endl;
         std::cerr << "Status: " << map->getStatusMessage() << "\n";
         return;
     }
+
+    map_Dimensions.x = map->getSize().x * map->getTileSize().x;
+    map_Dimensions.y = map->getSize().y * map->getTileSize().y;
 
     // Load texture
     for (auto &tileset: map->getTilesets()) {

@@ -136,7 +136,18 @@ void Enemy_Base_Class::On_Collision(Collidable* other)
             break;
     }
 }
+
 void Enemy_Base_Class::Draw()
+{
+
+}
+
+void enemy::Enemy_Base_Class::Range_Attack()
+{
+
+}
+
+    void enemy::Enemy_Base_Class::Melee_Attack()
 {
 
 }

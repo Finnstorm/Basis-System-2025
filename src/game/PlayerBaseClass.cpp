@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "PlayerBaseClass.h"
+
+#include "CollisionResponse.h"
 #include "Store.h"
 
 // Konstruktor
@@ -70,6 +72,14 @@ void Player_Base_Class::Tick(float delta_time)
     player_Pos.x=hitbox.x;
     player_Pos.y=hitbox.y;
 
+    if (is_Moving)
+    {
+        currentState = WALKING;
+    }
+    else
+    {
+        currentState = IDLE;
+    }
 
     Update_Facing_Direction();
 
@@ -89,15 +99,7 @@ void Player_Base_Class::On_Collision(Collidable* other)
         otherType == Collision_Type::ENEMY_SPAWNER ||
         otherType == Collision_Type::ENEMY)
     {
-		Rectangle wall_Hitbox = other->Get_Hitbox();
-        if (CheckCollisionRecs({hitbox.x, previous_Position.y, hitbox.width, hitbox.height}, wall_Hitbox))
-        {
-            hitbox.y = previous_Position.y;
-        }
-        if (CheckCollisionRecs({previous_Position.x, hitbox.y, hitbox.width, hitbox.height}, wall_Hitbox))
-        {
-            hitbox.x = previous_Position.x;
-		}
+        CollisionResponse::Resolve_Overlap(this, other);
 	}
 }
 

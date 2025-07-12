@@ -8,7 +8,7 @@
 #include "PauseScene.h"
 #include "Renderer.h"
 #include "SpriteAnimated.h"
-
+#include <raymath.h>
 #include "../game/PlayerClassOne.h"
 #include "../core/CollisionManager.h"
 
@@ -43,7 +43,7 @@ void game::scenes::GameScene::Update()
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
         objectManager.managed_objects[i]->Tick(dtm.Get_Dt());
     }
-    this->cam->Cam_Movement(dtm.Get_Dt());
+    this->cam->Cam_Movement(dtm.Get_Dt(), screen.Get_Map_Dimensions());
     this->p_cm->Check_Collisions();
     objectManager.Cleanup_Objects();
     dtm.Update();

@@ -14,11 +14,12 @@
 class Collision_Manager;
 
 enum Facing_Direction {UP, DOWN, LEFT, RIGHT, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT};
+enum PlayerState {IDLE, WALKING, ATTACKING_RANGED, ATTACKING_MELEE};
 
 class Player_Base_Class : public Collidable
 {
 protected:
-
+	PlayerState currentState = IDLE;
 	float player_Health;
 	int player_Max_Health;
 	float player_Movement_Speed;

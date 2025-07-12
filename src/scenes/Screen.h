@@ -18,8 +18,9 @@ public:
     void Draw_Level(std::shared_ptr<Cam>, bool aboveObjects) ;
     void Load_Game_Objects(Object_Manager& g_Object_Manager);
     void Load_Levelmap();
-
+    Vector2 Get_Map_Dimensions() const { return map_Dimensions; }
 private:
+    Vector2 map_Dimensions;
     bool includeEnemySpawnersAsCollidables=false;
     Texture2D tileatlas_Texture;
     std::unique_ptr<tson::Map> map;
