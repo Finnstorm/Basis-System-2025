@@ -3,7 +3,10 @@
 //
 
 #include "RepeatAnimation.h"
-RepeatAnimation::RepeatAnimation(Vector2 sprite_size,const char* filename,int FC,int spl) {
+
+RepeatAnimation::RepeatAnimation(Vector2 sprite_size, const char* filename, int FC, int spl, float speed)
+{
+    this->time_per_frame = speed / 10.0f;
     this->spritesheet= LoadTexture(filename);
     this->size=sprite_size;
     this->frame_Count=FC;
@@ -15,19 +18,25 @@ void RepeatAnimation::First_Frame() {
     target.y=1;
     this->current_Frame=0;
 }
-void RepeatAnimation::Next_Frame() {
-    this->current_Frame++;
 
-    if (this->frame_Count> this->current_Frame) {
-        if (this->current_Frame % this->sprites_per_line == 0 && current_Frame != 0) {
-            this->target.x = 1;
-            this->target.y = this->target.y + this->size.y;
-        } else {
-            this->target.x = this->target.x + this->size.x;
+void RepeatAnimation::Update_Frame(float delta_time)
+{
+    this->time_accumulator += delta_time;
+    if (this->time_accumulator >= this->time_per_frame)
+    {
+        this->time_accumulator -= this->time_per_frame;
+        this->current_Frame++;
+        if (this->frame_Count > this->current_Frame) {
+            if (this->current_Frame % this->sprites_per_line == 0 && current_Frame != 0) {
+                this->target.x = 1;
+                this->target.y = this->target.y + this->size.y;
+            } else {
+                this->target.x = this->target.x + this->size.x;
+            }
         }
-    }
-    if (this->current_Frame> this->frame_Count){
-        First_Frame();
+        if (this->current_Frame >= this->frame_Count){
+            First_Frame();
+        }
     }
 }
 void RepeatAnimation::Draw_Current_Frame(Vector2 pos) {
