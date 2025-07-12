@@ -31,5 +31,5 @@ void Walls::On_Collision(Collidable* other)
 }
 void Walls::Draw()
 {
-
+    //DrawRectangleLinesEx(this->hitbox, 2, RED);
 }

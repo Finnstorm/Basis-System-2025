@@ -54,8 +54,13 @@ void Player_Class_One::Tick(float delta_time)
         break;
     }
 }
+
 void Player_Class_One::Draw()
 {
+    // Schritt 1: Einen Zeiger für die aktuell aktive Animation vorbereiten.
+    RepeatAnimation* current_anim = nullptr;
+
+    // Schritt 2: Die primäre Richtung für Idle/Walk bestimmen (deine Logik, unverändert).
     Facing_Direction primaryDirection = facing_Direction;
     if (currentState == WALKING || currentState == IDLE) {
         switch (facing_Direction) {
@@ -69,20 +74,24 @@ void Player_Class_One::Draw()
     switch (currentState) {
         case WALKING:
             if (walking_Animations.count(primaryDirection)) {
-                walking_Animations.at(primaryDirection).Draw_Current_Frame(player_Pos);
+                current_anim = &walking_Animations.at(primaryDirection);
             }
-        break;
+            break;
 
         case IDLE:
-            default:
-                if (idle_Animations.count(primaryDirection)) {
-                    idle_Animations.at(primaryDirection).Draw_Current_Frame(player_Pos);
-                }
-        break;
-
-        // case ATTACKING_RANGED:
-        // Hier kommt später die Angriffslogik. Man würde die 8-direktionale
-        // facing_Direction ohne Reduzierung verwenden.
-        // break;
+        default:
+            if (idle_Animations.count(primaryDirection)) {
+                current_anim = &idle_Animations.at(primaryDirection);
+            }
+            break;
     }
+
+    if (current_anim != nullptr) {
+        this->current_Sprite_Size = current_anim->size;
+        Vector2 draw_pos;
+        draw_pos.x = this->hitbox.x - (current_anim->size.x - this->hitbox.width) / 2;
+        draw_pos.y = this->hitbox.y - (current_anim->size.y - this->hitbox.height) / 2;
+        current_anim->Draw_Current_Frame(draw_pos);
+    }
+    //DrawRectangleLinesEx(this->hitbox, 2, GREEN);
 }

@@ -19,6 +19,7 @@ enum PlayerState {IDLE, WALKING, ATTACKING_RANGED, ATTACKING_MELEE};
 class Player_Base_Class : public Collidable
 {
 protected:
+	Vector2 current_Sprite_Size;
 	PlayerState currentState = IDLE;
 	float player_Health;
 	int player_Max_Health;
@@ -62,7 +63,7 @@ public:
     Collision_Type Get_Collision_Type() const override;
     Vector2 Get_Player_Pos();
     Vector2 Get_Player_Center();
-
+	void Set_Position(Vector2 position) override;
     void Take_Damage(int damage);
 };
 

@@ -15,10 +15,11 @@ class RepeatAnimation {
         float time_per_frame;
         int frame_Count;
         int sprites_per_line;
-        Vector2 size;
+
         Rectangle target;
         Texture2D spritesheet;
     public:
+    Vector2 size;
     RepeatAnimation(Vector2, const char*, int, int, float speed);
     void Update_Frame(float delta_time);
     void First_Frame();

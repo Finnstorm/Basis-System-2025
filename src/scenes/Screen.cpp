@@ -71,8 +71,6 @@ void Screen::Draw_Level(std::shared_ptr<Cam> kamera,bool aboveObjects) {
         return;
     }
 
-    //Iterate through the map layers
-    BeginMode2D(kamera->cam);
     for (auto &layer: map->getLayers()) {
         if (!layer.isVisible() || layer.getType() != tson::LayerType::TileLayer) {
             continue;
@@ -124,7 +122,6 @@ void Screen::Draw_Level(std::shared_ptr<Cam> kamera,bool aboveObjects) {
             }
         }
     }
-    EndMode2D();
 }
 
 void Screen::Load_Game_Objects(Object_Manager& g_Object_Manager)

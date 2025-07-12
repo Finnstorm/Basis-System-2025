@@ -15,9 +15,13 @@ Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int d
       previous_Position(start_Position), melee_Cooldown(0.0f), ranged_Cooldown(0.0f),
       inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false)
 {
-    hitbox={start_Position.x,start_Position.y,static_cast<float >(maintex.width),static_cast<float >(maintex.height)};
-    // 2. Registriere Objekt beim Manager
-
+    this->hitbox =
+    {
+        start_Position.x,
+        start_Position.y,
+        game::Config::player_Hittbox.x,
+        game::Config::player_Hittbox.y
+    };
 }
 
 // Destruktor
@@ -190,5 +194,11 @@ void Player_Base_Class::Take_Damage(int damage_amount)
     player_Health -= damage_amount;
 }
 Vector2 Player_Base_Class::Get_Player_Center() {
-    return (Vector2){player_Pos.x+maintex.width/2,player_Pos.y+maintex.height/2};
+    return (Vector2){this->hitbox.x + this->hitbox.width / 2, this->hitbox.y + this->hitbox.height / 2};
+}
+void Player_Base_Class::Set_Position(Vector2 position)
+{
+    this->hitbox.x = position.x;
+    this->hitbox.y = position.y;
+    this->player_Pos = position;
 }

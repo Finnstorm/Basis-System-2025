@@ -54,21 +54,21 @@ namespace game {
         inline static constexpr Vector2 player_Spawn_Position{200,200};
         inline static constexpr Vector2 player_Hittbox{16,16};
 
-        // Player_Class_One Animations
+            // Player_Class_One Animations
 
-        // Beispielwert: 5.0f bedeutet 0.5 Sekunden pro Frame (2 Frames pro Sekunde)
-        inline static constexpr float player_Anim_Speed = 5.0f;
+            // Beispielwert: 5.0f bedeutet 0.5 Sekunden pro Frame (2 Frames pro Sekunde)
+            inline static constexpr float player_Anim_Speed = 10.0f;
 
-        inline static constexpr int player_Frame_Count = 5;
-        inline static constexpr Vector2 player_Anim_Size{16,16};
-        inline static constexpr const char* kPlayerWalkUpAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Up.png";
-        inline static constexpr const char* kPlayerWalkDownAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Down.png";
-        inline static constexpr const char* kPlayerWalkLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Left.png";
-        inline static constexpr const char* kPlayerWalkRightAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Right.png";
-        inline static constexpr const char* kPlayerIdleUpAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Up.png";
-        inline static constexpr const char* kPlayerIdleDownAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Down.png";
-        inline static constexpr const char* kPlayerIdleLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Left.png";
-        inline static constexpr const char* kPlayerIdleRightAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Right.png";
+            inline static constexpr int player_Frame_Count = 5;
+            inline static constexpr Vector2 player_Anim_Size{16,16};
+            inline static constexpr const char* kPlayerWalkUpAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Up.png";
+            inline static constexpr const char* kPlayerWalkDownAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Down.png";
+            inline static constexpr const char* kPlayerWalkLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Left.png";
+            inline static constexpr const char* kPlayerWalkRightAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Right.png";
+            inline static constexpr const char* kPlayerIdleUpAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Up.png";
+            inline static constexpr const char* kPlayerIdleDownAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Down.png";
+            inline static constexpr const char* kPlayerIdleLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Left.png";
+            inline static constexpr const char* kPlayerIdleRightAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Right.png";
 
         // Enemy_Class_One
         inline static constexpr int enemy_Class_1_Health = 50;
