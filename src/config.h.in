@@ -46,11 +46,10 @@ namespace game {
         inline static constexpr float player_Health_Drain_Rate = 1.0f; // HP-Verlust pro Sekunde
 
         // Player_Class_One
+        inline static constexpr bool allow_Move_While_Attacking = true;
         inline static constexpr int player_Class_One_Max_Health = 120;
         inline static constexpr float player_Class_One_Movement_Speed = 20.0f;
         inline static constexpr int player_Class_One_Damage = 12;
-        inline static constexpr float player_Class_One_Projectile_Speed = 300.0f;
-        inline static constexpr const char* player_Projectile_Sprite_Path = "assets/graphics/ball.png"; //PLACEHOLDER Pfad für Player-Projectile
         inline static constexpr Vector2 player_Spawn_Position{200,200};
         inline static constexpr Vector2 player_Hittbox{16,16};
 
@@ -69,6 +68,25 @@ namespace game {
             inline static constexpr const char* kPlayerIdleDownAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Down.png";
             inline static constexpr const char* kPlayerIdleLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Left.png";
             inline static constexpr const char* kPlayerIdleRightAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Right.png";
+
+            // Player_Range_Attack
+            inline static constexpr float player_Class_One_Projectile_Speed = 100.0f;
+            inline static constexpr float player_Ranged_Attack_Duration = 0.5f;
+            inline static constexpr float player_Ranged_Attack_Cooldown = 1.0f;
+            inline static constexpr int projectile_Anim_Frame_Count = 1;
+            inline static constexpr Vector2 projectile_Anim_Size = {8, 12};
+            inline static constexpr Vector2 projectile_Hitbox_Size = {8, 12};
+            inline static constexpr float projectile_Anim_Speed = 4.0f;
+            inline static constexpr float player_Ranged_Damage_Factor = 0.8f;
+
+            inline static constexpr const char* kProjectileAnimUp = "../../PieWare/assets/Spritesheets/Projectile_Up.png";
+            inline static constexpr const char* kProjectileAnimDown = "../../PieWare/assets/Spritesheets/Projectile_Down.png";
+            inline static constexpr const char* kProjectileAnimLeft = "../../PieWare/assets/Spritesheets/Projectile_Left.png";
+            inline static constexpr const char* kProjectileAnimRight = "../../PieWare/assets/Spritesheets/Projectile_Right.png";
+            inline static constexpr const char* kProjectileAnimUpLeft = "../../PieWare/assets/Spritesheets/Projectile_UpLeft.png";
+            inline static constexpr const char* kProjectileAnimUpRight = "../../PieWare/assets/Spritesheets/Projectile_UpRight.png";
+            inline static constexpr const char* kProjectileAnimDownLeft = "../../PieWare/assets/Spritesheets/Projectile_DownLeft.png";
+            inline static constexpr const char* kProjectileAnimDownRight = "../../PieWare/assets/Spritesheets/Projectile_DownRight.png";
 
         // Enemy_Class_One
         inline static constexpr int enemy_Class_1_Health = 50;

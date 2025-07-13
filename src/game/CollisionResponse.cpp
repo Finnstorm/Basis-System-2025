@@ -11,34 +11,40 @@
 
 void CollisionResponse::Resolve_Overlap(Collidable* obj_A, const Collidable* obj_B)
 {
-    // Hole die Hitboxen der beiden Objekte.
     Rectangle hitbox_A = obj_A->Get_Hitbox();
     Rectangle hitbox_B = obj_B->Get_Hitbox();
 
-    // Berechne die Überlappung auf beiden Achsen.
     float overlap_X = std::min(hitbox_A.x + hitbox_A.width, hitbox_B.x + hitbox_B.width) - std::max(hitbox_A.x, hitbox_B.x);
     float overlap_Y = std::min(hitbox_A.y + hitbox_A.height, hitbox_B.y + hitbox_B.height) - std::max(hitbox_A.y, hitbox_B.y);
 
+    const float epsilon = 0.01f;
+
     if (overlap_X < overlap_Y)
     {
-        if (hitbox_A.x < hitbox_B.x)
-        {
-            obj_A->Set_Position({ hitbox_A.x - overlap_X, hitbox_A.y });
-        }
-        else
-        {
-            obj_A->Set_Position({ hitbox_A.x + overlap_X, hitbox_A.y });
+        // Horizontale Kollision: Vergleiche die X-Mittelpunkte, um die Richtung zu bestimmen
+        float center_A_x = hitbox_A.x + hitbox_A.width / 2.0f;
+        float center_B_x = hitbox_B.x + hitbox_B.width / 2.0f;
+
+        if (center_A_x < center_B_x) {
+            // Spieler ist links von der Wand -> nach links zurückschieben
+            obj_A->Set_Position({ hitbox_A.x - (overlap_X + epsilon), hitbox_A.y });
+        } else {
+            // Spieler ist rechts von der Wand -> nach rechts zurückschieben
+            obj_A->Set_Position({ hitbox_A.x + (overlap_X + epsilon), hitbox_A.y });
         }
     }
     else
     {
-        if (hitbox_A.y < hitbox_B.y)
-        {
-            obj_A->Set_Position({ hitbox_A.x, hitbox_A.y - overlap_Y });
-        }
-        else
-        {
-            obj_A->Set_Position({ hitbox_A.x, hitbox_A.y + overlap_Y });
+        // Vertikale Kollision: Vergleiche die Y-Mittelpunkte
+        float center_A_y = hitbox_A.y + hitbox_A.height / 2.0f;
+        float center_B_y = hitbox_B.y + hitbox_B.height / 2.0f;
+
+        if (center_A_y < center_B_y) {
+            // Spieler ist über der Wand -> nach oben zurückschieben
+            obj_A->Set_Position({ hitbox_A.x, hitbox_A.y - (overlap_Y + epsilon) });
+        } else {
+            // Spieler ist unter der Wand -> nach unten zurückschieben
+            obj_A->Set_Position({ hitbox_A.x, hitbox_A.y + (overlap_Y + epsilon) });
         }
     }
 }

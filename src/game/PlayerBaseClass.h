@@ -7,13 +7,12 @@
 #include "raylib.h"
 #include "Collidable.h"
 #include "CollisionManager.h"
-#include "../Config.h.in"
-#include "raymath.h"
-#include "PlayerProjectile.h"
+namespace game { class Player_Projectile; }
 
+class Object_Manager;
 class Collision_Manager;
 
-enum Facing_Direction {UP, DOWN, LEFT, RIGHT, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT};
+enum Facing_Direction {UP, DOWN, LEFT, RIGHT, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT, NONE};
 enum PlayerState {IDLE, WALKING, ATTACKING_RANGED, ATTACKING_MELEE};
 
 class Player_Base_Class : public Collidable
@@ -29,11 +28,11 @@ protected:
     Vector2 player_Pos;
 	Vector2 previous_Position;
 	Collision_Manager* manager_Ptr;
-
+	float range_Attack_Duration;
+	float range_Attack_Cooldown;
 	float melee_Cooldown;
-	float ranged_Cooldown;
 	bool inventory_Is_Full;
-	Facing_Direction facing_Direction;
+	Facing_Direction facing_Direction = DOWN;
 	bool is_Moving;
 
 
@@ -65,5 +64,7 @@ public:
     Vector2 Get_Player_Center();
 	void Set_Position(Vector2 position) override;
     void Take_Damage(int damage);
+
+	Object_Manager* object_manager_ptr = nullptr;
 };
 

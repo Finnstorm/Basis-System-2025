@@ -4,15 +4,17 @@
 
 #include <iostream>
 #include "PlayerBaseClass.h"
-
+#include "PlayerProjectile.h"
 #include "CollisionResponse.h"
-#include "Store.h"
+#include "Object_Manager.h"
+#include "raymath.h"
+#include "../Config.h.in"
 
 // Konstruktor
 Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position)
     : player_Max_Health(max_Health), player_Health((float)max_Health), player_Movement_Speed(movement_Speed),
       player_Damage(damage),
-      previous_Position(start_Position), melee_Cooldown(0.0f), ranged_Cooldown(0.0f),
+      previous_Position(start_Position), melee_Cooldown(0.0f), range_Attack_Cooldown(0.0f),
       inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false)
 {
     this->hitbox =
@@ -38,7 +40,7 @@ void Player_Base_Class::Player_Input()
         Melee_Attack();
     }
 
-    if (IsKeyPressed(game::Config::key_Ranged_Attack) && ranged_Cooldown <= 0)
+    if (IsKeyPressed(game::Config::key_Ranged_Attack) && range_Attack_Cooldown <= 0)
     {
         Ranged_Attack();
     }
@@ -49,49 +51,52 @@ void Player_Base_Class::Player_Input()
     }*/
 }
 
-// Phase 2 :: Verwaltung für alles was das Objekt über eine gewisse Zeit machen soll
 void Player_Base_Class::Tick(float delta_time)
 {
-
-    if (game::Config::enable_Health_Drain)
-    {
-        player_Health -= game::Config::player_Health_Drain_Rate * delta_time;
-    }
     Update_Previous_Position();
 
-	Vector2 move_Direction = {0.0f, 0.0f};
-    if (IsKeyDown(game::Config::key_Up))    move_Direction.y -= 1.0f;
-    if (IsKeyDown(game::Config::key_Down))  move_Direction.y += 1.0f;
-    if (IsKeyDown(game::Config::key_Left))  move_Direction.x -= 1.0f;
-    if (IsKeyDown(game::Config::key_Right)) move_Direction.x += 1.0f;
+    // 1. Timer und Cooldowns verwalten
+    if (melee_Cooldown > 0) melee_Cooldown -= delta_time;
+    if (range_Attack_Cooldown > 0) range_Attack_Cooldown -= delta_time;
+    if (range_Attack_Duration > 0) range_Attack_Duration -= delta_time;
 
- 	is_Moving = (move_Direction.x != 0.0f || move_Direction.y != 0.0f);
-    if (is_Moving)
-    {
-        move_Direction = Vector2Normalize(move_Direction);
-    }
-
-    hitbox.x += move_Direction.x * player_Movement_Speed * delta_time;
-    hitbox.y += move_Direction.y * player_Movement_Speed * delta_time;
-    player_Pos.x=hitbox.x;
-    player_Pos.y=hitbox.y;
-
-    if (is_Moving)
-    {
-        currentState = WALKING;
-    }
-    else
-    {
+    // 2. Zustand nach Angriffsende zurücksetzen
+    if (currentState == ATTACKING_RANGED && range_Attack_Duration <= 0) {
         currentState = IDLE;
     }
 
-    Update_Facing_Direction();
-
-    if (ranged_Cooldown>0&& IsKeyDown(game::Config::key_Ranged_Attack)){
-        Ranged_Attack();
+    // 3. Bewegungslogik NUR ausführen, wenn der Zustand es erlaubt
+    Vector2 move_Direction = {0.0f, 0.0f};
+    if (currentState != ATTACKING_RANGED || game::Config::allow_Move_While_Attacking) {
+        if (IsKeyDown(game::Config::key_Up))    move_Direction.y = -1.0f;
+        if (IsKeyDown(game::Config::key_Down))  move_Direction.y = 1.0f;
+        if (IsKeyDown(game::Config::key_Left))  move_Direction.x = -1.0f;
+        if (IsKeyDown(game::Config::key_Right)) move_Direction.x = 1.0f;
     }
-    if (melee_Cooldown > 0) melee_Cooldown -= delta_time;
-    if (ranged_Cooldown > 0) ranged_Cooldown -= delta_time;
+
+    // 4. Bewegung anwenden
+    is_Moving = (move_Direction.x != 0.0f || move_Direction.y != 0.0f);
+    if(is_Moving) {
+        move_Direction = Vector2Normalize(move_Direction);
+        hitbox.x += move_Direction.x * player_Movement_Speed * delta_time;
+        hitbox.y += move_Direction.y * player_Movement_Speed * delta_time;
+    }
+    printf("Tick: Player moved to x=%.2f\n", hitbox.x);
+    // 5. Finalen Zustand für Animation bestimmen (wenn nicht angegriffen wird)
+    if (currentState != ATTACKING_RANGED) {
+        if (is_Moving) {
+            currentState = WALKING;
+        } else {
+            currentState = IDLE;
+        }
+    }
+
+    // Deine bestehende Logik bleibt erhalten
+    player_Pos = {hitbox.x, hitbox.y};
+    Update_Facing_Direction();
+    if (game::Config::enable_Health_Drain) {
+        player_Health -= game::Config::player_Health_Drain_Rate * delta_time;
+    }
 }
 
 // Phase 3 :: Kollisionsreaktion falls der Collisionmanager eine Kollision mit einem anderen Objekt feststellt
@@ -118,35 +123,43 @@ void Player_Base_Class::Melee_Attack()
 {
 	melee_Cooldown = 0.0f;
 }
+
 void Player_Base_Class::Ranged_Attack()
 {
-    // Hole die Mausposition aus dem globalen Store
-    Vector2 target_Position = game::core::Store::mouse_Position;
+    // Setze Zustand und Timer
+    currentState = ATTACKING_RANGED;
+    range_Attack_Duration = game::Config::player_Ranged_Attack_Duration;
+    range_Attack_Cooldown = game::Config::player_Ranged_Attack_Cooldown;
 
-    // Berechne den Richtungsvektor vom Spieler zur Maus
-    float delta_vector_x = target_Position.x - this->hitbox.x;
-    float delta_vector_y = target_Position.y - this->hitbox.y;
-    float distance_to_target = std::sqrt(delta_vector_x * delta_vector_x + delta_vector_y * delta_vector_y);
+    // Bestimme die Schussrichtung
+    Vector2 fire_direction = {0.0f, 0.0f};
+    switch (facing_Direction) {
+        case UP:         fire_direction = {0.0f, -1.0f}; break;
+        case DOWN:       fire_direction = {0.0f, 1.0f};  break;
+        case LEFT:       fire_direction = {-1.0f, 0.0f}; break;
+        case RIGHT:      fire_direction = {1.0f, 0.0f};  break;
+        case UP_LEFT:    fire_direction = Vector2Normalize({-1.0f, -1.0f}); break;
+        case UP_RIGHT:   fire_direction = Vector2Normalize({1.0f, -1.0f});  break;
+        case DOWN_LEFT:  fire_direction = Vector2Normalize({-1.0f, 1.0f});  break;
+        case DOWN_RIGHT: fire_direction = Vector2Normalize({1.0f, 1.0f});   break;
+        case NONE:       return;
+    }
 
-    // Nur schießen, wenn die Distanz größer als Null ist
-    if (distance_to_target > 0) {
-        // Normalisiere den Vektor, um nur die Richtung zu erhalten
-        Vector2 fire_direction = {
-                delta_vector_x / distance_to_target,
-                delta_vector_y / distance_to_target
-        };
+    float offset_distance = (hitbox.width / 2.0f) + 1;
+    Vector2 spawn_position = Vector2Add(Get_Player_Center(), Vector2Scale(fire_direction, offset_distance));
 
-        // Erstelle ein neues Projektil und füge es dem Vektor hinzu
-        sp_projectiles.push_back(std::make_unique<game::Player_Projectile>(
-                Vector2{this->hitbox.x, this->hitbox.y},
-                fire_direction,
-                this->projectile_Speed,
-                this->player_Damage,
-                game::Config::player_Projectile_Sprite_Path
-        ));
 
-        // Setze den Cooldown zurück
-        ranged_Cooldown = 0.5f; //PLACEHOLDER ZAHL - darf man ändern.
+    auto* projectile = new game::Player_Projectile(
+        spawn_position,
+        fire_direction,
+        projectile_Speed,
+        player_Damage,
+        this->facing_Direction
+    );
+
+    printf("Ranged_Attack: Versuche, Projektil zu erzeugen.\n");
+    if (object_manager_ptr) {
+        object_manager_ptr->AddObject(projectile);
     }
 }
 

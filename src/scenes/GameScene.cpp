@@ -20,8 +20,11 @@ game::scenes::GameScene::GameScene()
     objectManager.AddObject(&mp);
     cam=std::make_shared<Cam>(this->mp);
     screen.Load_Game_Objects(objectManager);
+    mp.object_manager_ptr = &objectManager;
 
-    // Your scene initialization code here...
+    p_cm = std::make_unique<Collision_Manager>(wb, objectManager.managed_objects);
+    cam = std::make_shared<Cam>(this->mp);
+    screen.Load_Game_Objects(objectManager);
 
 }
 
@@ -32,6 +35,7 @@ game::scenes::GameScene::~GameScene()
 
 void game::scenes::GameScene::Update()
 {
+    mp.Player_Input();
     for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
         objectManager.managed_objects[i]->Tick(dtm.Get_Dt());
     }

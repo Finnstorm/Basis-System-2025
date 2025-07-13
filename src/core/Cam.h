@@ -6,6 +6,7 @@
 #define RAYLIBSTARTER_CAM_H
 #include <raylib.h>
 #include "../game/PlayerBaseClass.h"
+#include "../Config.h.in"
 
 struct Cam
 {
