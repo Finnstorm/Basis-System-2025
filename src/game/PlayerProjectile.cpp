@@ -4,77 +4,53 @@
 #include "raymath.h"
 
 namespace game {
-    // Der Konstruktor bleibt fast gleich, initialisiert aber nur noch die hitbox
-    Player_Projectile::Player_Projectile(Vector2 start_position, Vector2 direction, float projectile_speed, int final_damage, Facing_Direction facing_dir)
-        : is_active(true), damage(final_damage), animation({0,0}, nullptr, 0, 0, 0)
+    Player_Projectile::Player_Projectile(Vector2 start_position, Vector2 direction, float projectile_speed, int final_damage)
+        : is_active(true), damage(final_damage)
     {
+        // Lade das EINE Sprite
+        this->sprite = LoadTexture(game::Config::kProjectileSprite);
+
+        // Berechne die Velocity EINMAL
         this->velocity = Vector2Scale(direction, projectile_speed);
+
+        // Berechne den Rotationswinkel aus dem Richtungsvektor EINMAL und speichere ihn
+        // atan2 gibt den Winkel in Radiant zurück, wir wandeln ihn in Grad um.
+        this->rotation = atan2(direction.y, direction.x) * RAD2DEG;
+
+        // Setze die Hitbox (nicht-rotiert!)
         this->hitbox = {
             start_position.x - game::Config::projectile_Hitbox_Size.x / 2.0f,
             start_position.y - game::Config::projectile_Hitbox_Size.y / 2.0f,
             game::Config::projectile_Hitbox_Size.x,
             game::Config::projectile_Hitbox_Size.y
         };
-
-        const char* anim_path = nullptr;
-        switch (facing_dir) {
-            case UP:         anim_path = game::Config::kProjectileAnimUp; break;
-            case DOWN:       anim_path = game::Config::kProjectileAnimDown; break;
-            case LEFT:       anim_path = game::Config::kProjectileAnimLeft; break;
-            case RIGHT:      anim_path = game::Config::kProjectileAnimRight; break;
-            case UP_LEFT:    anim_path = game::Config::kProjectileAnimUpLeft; break;
-            case UP_RIGHT:   anim_path = game::Config::kProjectileAnimUpRight; break;
-            case DOWN_LEFT:  anim_path = game::Config::kProjectileAnimDownLeft; break;
-            case DOWN_RIGHT: anim_path = game::Config::kProjectileAnimDownRight; break;
-        }
-
-        // Initialisiere das Animationsobjekt mit dem korrekten Sprite
-        if (anim_path) {
-            this->animation = RepeatAnimation(
-                game::Config::projectile_Anim_Size,
-                anim_path,
-                game::Config::projectile_Anim_Frame_Count,
-                game::Config::projectile_Anim_Frame_Count,
-                game::Config::projectile_Anim_Speed
-            );
-        }
-        printf("--- Projektil Erzeugt ---\n");
-        printf("Richtung: x=%.2f, y=%.2f\n", direction.x, direction.y);
-        printf("Geschwindigkeit: %.2f\n", projectile_speed);
-        printf("Finale Velocity: x=%.2f, y=%.2f\n", this->velocity.x, this->velocity.y);
-        printf("------------------------\n");
     }
 
-    Player_Projectile::~Player_Projectile() {}
+    Player_Projectile::~Player_Projectile() {
+        UnloadTexture(this->sprite);
+    }
 
     void Player_Projectile::Tick(float delta_time) {
-        printf("Projektil Tick: dt=%.4f, hitbox.x vor Bewegung=%.2f\n", delta_time, hitbox.x);
         if (!is_active) return;
-
         hitbox.x += velocity.x * delta_time;
         hitbox.y += velocity.y * delta_time;
-
-        animation.Update_Frame(delta_time);
     }
 
-    void Player_Projectile::Draw()
-    {
+    void Player_Projectile::Draw() {
         if (!is_active) return;
 
-        // Berechne die Zeichenposition, um die Hitbox zu zentrieren
-        Vector2 draw_pos;
-        draw_pos.x = this->hitbox.x - (animation.size.x - this->hitbox.width) / 2.0f;
-        draw_pos.y = this->hitbox.y - (animation.size.y - this->hitbox.height) / 2.0f;
+        // Zeichne das Sprite mit DrawTexturePro, um es rotieren zu können
+        Rectangle sourceRec = { 0.0f, 0.0f, (float)this->sprite.width, (float)this->sprite.height };
+        Rectangle destRec = { hitbox.x + hitbox.width/2, hitbox.y + hitbox.height/2, (float)this->sprite.width, (float)this->sprite.height };
+        Vector2 origin = { (float)this->sprite.width / 2, (float)this->sprite.height / 2 };
 
-        animation.Draw_Current_Frame(draw_pos);
+        DrawTexturePro(this->sprite, sourceRec, destRec, origin, this->rotation, WHITE);
 
-        // Optional: Zeichne die Hitbox zum Debuggen
-        DrawRectangleLinesEx(this->hitbox, 1, VIOLET);
+        // Optional: Debug-Hitbox zeichnen
+        // DrawRectangleLinesEx(this->hitbox, 1, VIOLET);
     }
 
-    Collision_Type Player_Projectile::Get_Collision_Type() const {
-        return Collision_Type::PLAYER_PROJECTILE;
-    }
+    Collision_Type Player_Projectile::Get_Collision_Type() const { return Collision_Type::PLAYER_PROJECTILE; }
 
     void Player_Projectile::On_Collision(Collidable* other) {
         Collision_Type other_type = other->Get_Collision_Type();

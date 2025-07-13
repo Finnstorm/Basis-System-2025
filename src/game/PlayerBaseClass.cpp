@@ -57,35 +57,35 @@ void Player_Base_Class::Player_Input()
 void Player_Base_Class::Tick(float delta_time)
 {
     Update_Previous_Position();
-
-    // 1. Timer und Cooldowns verwalten
+    if (game::Config::enable_Health_Drain) {
+        player_Health -= game::Config::player_Health_Drain_Rate * delta_time;
+    }
     if (melee_Cooldown > 0) melee_Cooldown -= delta_time;
     if (range_Attack_Cooldown > 0) range_Attack_Cooldown -= delta_time;
-    if (range_Attack_Duration > 0) range_Attack_Duration -= delta_time;
 
-    // 2. Zustand nach Angriffsende zurücksetzen
-    if (currentState == ATTACKING_RANGED && range_Attack_Duration <= 0) {
-        currentState = IDLE;
+    if (currentState == ATTACKING_RANGED) {
+        range_Attack_Duration -= delta_time;
+        if (range_Attack_Duration <= 0) {
+            currentState = IDLE;
+        }
     }
 
-    // 3. Bewegungslogik NUR ausführen, wenn der Zustand es erlaubt
-    Vector2 move_Direction = {0.0f, 0.0f};
+    is_Moving = false;
     if (currentState != ATTACKING_RANGED || game::Config::allow_Move_While_Attacking) {
+        Vector2 move_Direction = {0.0f, 0.0f};
         if (IsKeyDown(game::Config::key_Up))    move_Direction.y = -1.0f;
         if (IsKeyDown(game::Config::key_Down))  move_Direction.y = 1.0f;
         if (IsKeyDown(game::Config::key_Left))  move_Direction.x = -1.0f;
         if (IsKeyDown(game::Config::key_Right)) move_Direction.x = 1.0f;
+
+        is_Moving = (move_Direction.x != 0.0f || move_Direction.y != 0.0f);
+        if(is_Moving) {
+            move_Direction = Vector2Normalize(move_Direction);
+            hitbox.x += move_Direction.x * player_Movement_Speed * delta_time;
+            hitbox.y += move_Direction.y * player_Movement_Speed * delta_time;
+        }
     }
 
-    // 4. Bewegung anwenden
-    is_Moving = (move_Direction.x != 0.0f || move_Direction.y != 0.0f);
-    if(is_Moving) {
-        move_Direction = Vector2Normalize(move_Direction);
-        hitbox.x += move_Direction.x * player_Movement_Speed * delta_time;
-        hitbox.y += move_Direction.y * player_Movement_Speed * delta_time;
-    }
-    printf("Tick: Player moved to x=%.2f\n", hitbox.x);
-    // 5. Finalen Zustand für Animation bestimmen (wenn nicht angegriffen wird)
     if (currentState != ATTACKING_RANGED) {
         if (is_Moving) {
             currentState = WALKING;
@@ -94,15 +94,10 @@ void Player_Base_Class::Tick(float delta_time)
         }
     }
 
-    // Deine bestehende Logik bleibt erhalten
     player_Pos = {hitbox.x, hitbox.y};
     Update_Facing_Direction();
-    if (game::Config::enable_Health_Drain) {
-        player_Health -= game::Config::player_Health_Drain_Rate * delta_time;
-    }
 }
 
-// Phase 3 :: Kollisionsreaktion falls der Collisionmanager eine Kollision mit einem anderen Objekt feststellt
 void Player_Base_Class::On_Collision(Collidable* other)
 {
 	Collision_Type otherType = other->Get_Collision_Type();
@@ -115,13 +110,11 @@ void Player_Base_Class::On_Collision(Collidable* other)
 	}
 }
 
-// Draw Methode ist noch nicht klar, wie das mit der Visualisierung laufen wird
 void Player_Base_Class::Draw()
 {
     DrawTexture(this->maintex, this->hitbox.x,hitbox.y,WHITE);
 }
 
-// Um die beiden Attack Methoden weiter auszuarbeiten, braucht es die passenden Klassen
 void Player_Base_Class::Melee_Attack()
 {
 	melee_Cooldown = 0.0f;
@@ -129,12 +122,11 @@ void Player_Base_Class::Melee_Attack()
 
 void Player_Base_Class::Ranged_Attack()
 {
-    // Setze Zustand und Timer
-    currentState = ATTACKING_RANGED;
-    range_Attack_Duration = game::Config::player_Ranged_Attack_Duration;
-    range_Attack_Cooldown = game::Config::player_Ranged_Attack_Cooldown;
+    this->range_Attack_Cooldown = game::Config::player_Ranged_Attack_Cooldown;
+    this->range_Attack_Duration = game::Config::player_Ranged_Attack_Duration;
 
-    // Bestimme die Schussrichtung
+    this->currentState = ATTACKING_RANGED;
+
     Vector2 fire_direction = {0.0f, 0.0f};
     switch (facing_Direction) {
         case UP:         fire_direction = {0.0f, -1.0f}; break;
@@ -151,30 +143,26 @@ void Player_Base_Class::Ranged_Attack()
     float offset_distance = (hitbox.width / 2.0f) + 1;
     Vector2 spawn_position = Vector2Add(Get_Player_Center(), Vector2Scale(fire_direction, offset_distance));
 
+    int final_damage = static_cast<int>(this->player_Damage * game::Config::player_Ranged_Damage_Factor);
 
     auto* projectile = new game::Player_Projectile(
         spawn_position,
         fire_direction,
         projectile_Speed,
-        player_Damage,
-        this->facing_Direction
+        final_damage
     );
 
-    printf("Ranged_Attack: Versuche, Projektil zu erzeugen.\n");
     if (object_manager_ptr) {
         object_manager_ptr->AddObject(projectile);
     }
 }
 
-// Funktion für die Tick Methode welche die aktuelle Position speichert, falls das Objekt zurück gesetzt werden soll
 void Player_Base_Class::Update_Previous_Position()
 {
     previous_Position.x = hitbox.x;
     previous_Position.y = hitbox.y;
 }
 
-// Methode aus der Tick welche die aktuelle Blickrichtung zurück geben soll. Wird später fürs Zeichnen und für die
-// Angriffe genutzt
 void Player_Base_Class::Update_Facing_Direction()
 {
     bool up = IsKeyDown(game::Config::key_Up);
@@ -193,9 +181,6 @@ void Player_Base_Class::Update_Facing_Direction()
     else if (left) facing_Direction = Facing_Direction::LEFT;
     else if (right) facing_Direction = Facing_Direction::RIGHT;
 }
-
-// Getter für Player Hittbox und Collision Type
-
 
 Collision_Type Player_Base_Class::Get_Collision_Type() const
 {

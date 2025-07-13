@@ -11,15 +11,21 @@
 
 class Animations {
 private:
-    int current_Frame=0;
+    int current_Frame = 0;
     int frame_Count;
     int sprites_per_line;
-    Vector2 size;
+
     Rectangle target;
     Texture2D spritesheet;
+
+    float time_accumulator = 0.0f;
+    float time_per_frame;
+
 public:
-    Animations(Vector2,const char*,int,int);
-    void Next_Frame();
+
+    Animations(Vector2 sprite_size, const char* filename, int FC, int spl, float speed);
+    Vector2 size;
+    void Update_Frame(float delta_time);
     void First_Frame();
     void Draw_Current_Frame(Vector2);
 };

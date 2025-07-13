@@ -18,9 +18,10 @@ private:
     Vector2 size = game::Config::player_Hittbox;
     std::map<Facing_Direction, RepeatAnimation> walking_Animations;
     std::map<Facing_Direction, RepeatAnimation> idle_Animations;
-
+    std::map<Facing_Direction, Animations> ranged_Attack_Animations;
 public:
-    Animations test_animation{size,"assets/graphics/anim_sprite.png",9,3};
+    PlayerState previousState = IDLE;
+    Animations test_animation{size,"assets/graphics/anim_sprite.png",9,3,3};
     Player_Class_One(Vector2 start_Position);
     ~Player_Class_One();
     void Draw() override;
