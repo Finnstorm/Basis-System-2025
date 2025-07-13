@@ -3,6 +3,9 @@
 //
 
 #include "PlayerClassOne.h"
+
+#include <math.h>
+
 #include "../config.h.in"
 
 Player_Class_One::Player_Class_One(Vector2 start_Position)
@@ -113,14 +116,22 @@ void Player_Class_One::Draw()
             break;
     }
 
-    Vector2 draw_pos = {0, 0};
+    Vector2 draw_pos;
     if (current_loop_anim != nullptr) {
         draw_pos.x = this->hitbox.x - (current_loop_anim->size.x - this->hitbox.width) / 2.0f;
         draw_pos.y = this->hitbox.y - (current_loop_anim->size.y - this->hitbox.height) / 2.0f;
+
+        draw_pos.x = roundf(draw_pos.x);
+        draw_pos.y = roundf(draw_pos.y);
+
         current_loop_anim->Draw_Current_Frame(draw_pos);
     } else if (current_attack_anim != nullptr) {
         draw_pos.x = this->hitbox.x - (current_attack_anim->size.x - this->hitbox.width) / 2.0f;
         draw_pos.y = this->hitbox.y - (current_attack_anim->size.y - this->hitbox.height) / 2.0f;
+        
+        draw_pos.x = roundf(draw_pos.x);
+        draw_pos.y = roundf(draw_pos.y);
+
         current_attack_anim->Draw_Current_Frame(draw_pos);
     }
 

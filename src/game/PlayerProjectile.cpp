@@ -36,18 +36,19 @@ namespace game {
         hitbox.y += velocity.y * delta_time;
     }
 
-    void Player_Projectile::Draw() {
+    void Player_Projectile::Draw()
+    {
         if (!is_active) return;
 
-        // Zeichne das Sprite mit DrawTexturePro, um es rotieren zu können
         Rectangle sourceRec = { 0.0f, 0.0f, (float)this->sprite.width, (float)this->sprite.height };
         Rectangle destRec = { hitbox.x + hitbox.width/2, hitbox.y + hitbox.height/2, (float)this->sprite.width, (float)this->sprite.height };
         Vector2 origin = { (float)this->sprite.width / 2, (float)this->sprite.height / 2 };
 
-        DrawTexturePro(this->sprite, sourceRec, destRec, origin, this->rotation, WHITE);
+        // NEU: Runde die finale Zeichenposition
+        destRec.x = roundf(destRec.x);
+        destRec.y = roundf(destRec.y);
 
-        // Optional: Debug-Hitbox zeichnen
-        // DrawRectangleLinesEx(this->hitbox, 1, VIOLET);
+        DrawTexturePro(this->sprite, sourceRec, destRec, origin, this->rotation, WHITE);
     }
 
     Collision_Type Player_Projectile::Get_Collision_Type() const { return Collision_Type::PLAYER_PROJECTILE; }

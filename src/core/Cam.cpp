@@ -24,4 +24,6 @@ void Cam::Cam_Movement(double dtm, Vector2 mapDimensions) {
         this->cam.target.x = Clamp(this->cam.target.x, halfScreenWidthInWorld, mapDimensions.x - halfScreenWidthInWorld);
         this->cam.target.y = Clamp(this->cam.target.y, halfScreenHeightInWorld, mapDimensions.y - halfScreenHeightInWorld);
     }
+    this->cam.target.x = roundf(this->cam.target.x);
+    this->cam.target.y = roundf(this->cam.target.y);
 }
