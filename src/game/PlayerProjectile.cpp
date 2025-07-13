@@ -38,11 +38,17 @@ namespace game {
                 game::Config::projectile_Anim_Speed
             );
         }
+        printf("--- Projektil Erzeugt ---\n");
+        printf("Richtung: x=%.2f, y=%.2f\n", direction.x, direction.y);
+        printf("Geschwindigkeit: %.2f\n", projectile_speed);
+        printf("Finale Velocity: x=%.2f, y=%.2f\n", this->velocity.x, this->velocity.y);
+        printf("------------------------\n");
     }
 
     Player_Projectile::~Player_Projectile() {}
 
     void Player_Projectile::Tick(float delta_time) {
+        printf("Projektil Tick: dt=%.4f, hitbox.x vor Bewegung=%.2f\n", delta_time, hitbox.x);
         if (!is_active) return;
 
         hitbox.x += velocity.x * delta_time;

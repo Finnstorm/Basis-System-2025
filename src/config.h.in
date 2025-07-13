@@ -69,10 +69,18 @@ namespace game {
             inline static constexpr const char* kPlayerIdleLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Left.png";
             inline static constexpr const char* kPlayerIdleRightAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Right.png";
 
+            inline static constexpr const char* kPlayerRangeAttackUpAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Up.png";
+            inline static constexpr const char* kPlayerRangeAttackDownAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Down.png";
+            inline static constexpr const char* kPlayerRangeAttackLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Leftt.png";
+            inline static constexpr const char* kPlayerRangeAttackRightAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Right.png";
+            inline static constexpr const char* kPlayerRangeAttackUpLeftAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedLeftUp.png";
+            inline static constexpr const char* kPlayerRangeAttackUpRightAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedRightUp.png";
+            inline static constexpr const char* kPlayerRangeAttackDownLeftAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedLeftDown.png";
+            inline static constexpr const char* kPlayerRangeAttackDownRightAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedRightDown.png";
             // Player_Range_Attack
-            inline static constexpr float player_Class_One_Projectile_Speed = 100.0f;
-            inline static constexpr float player_Ranged_Attack_Duration = 0.5f;
-            inline static constexpr float player_Ranged_Attack_Cooldown = 1.0f;
+            inline static constexpr float player_Class_One_Projectile_Speed = 30.0f;
+            inline static constexpr float player_Ranged_Attack_Duration = 1.5f;
+            inline static constexpr float player_Ranged_Attack_Cooldown = 4.0f;
             inline static constexpr int projectile_Anim_Frame_Count = 1;
             inline static constexpr Vector2 projectile_Anim_Size = {8, 12};
             inline static constexpr Vector2 projectile_Hitbox_Size = {8, 12};

@@ -24,6 +24,9 @@ Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int d
         game::Config::player_Hittbox.x,
         game::Config::player_Hittbox.y
     };
+
+    // FÜGE DIESE ZEILE HINZU:
+    this->projectile_Speed = game::Config::player_Class_One_Projectile_Speed;
 }
 
 // Destruktor
