@@ -12,21 +12,20 @@ class Collision_Manager;
 class Consumables : public Collidable
 {
 protected:
-    Rectangle hitbox;
+
     Texture2D texture;
     std::string name;
-    Collision_Manager* manager_ptr;
 
 public:
-    Consumables(Vector2 position, std::string name, Collision_Manager* manager);
+    Consumables(Vector2 position, std::string name);
     ~Consumables();
 
-    Rectangle Get_Hitbox() const override;
+
     Collision_Type Get_Collision_Type() const override;
 
-    void Tick(float delta_time);
+    void Tick(float delta_time) override;
     void On_Collision(Collidable* other) override;
-    void Draw();
+    void Draw() override;
 };
 
 

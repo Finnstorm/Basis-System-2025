@@ -5,12 +5,17 @@
 #ifndef RAYLIBSTARTER_CAM_H
 #define RAYLIBSTARTER_CAM_H
 #include <raylib.h>
+#include "../game/PlayerBaseClass.h"
 
 struct Cam
 {
-    Camera2D cam={};
+    public:
+    Camera2D cam={0,0,game::Config::cam_start_pos_x,game::Config::cam_start_pos_y,0,game::Config::cam_zoom};
+    Player_Base_Class& pao;
 
-    void Cam_Movement();
+    Cam(Player_Base_Class&);
+
+    void Cam_Movement(double dtm, Vector2 mapDimensions);
 };
 
 
