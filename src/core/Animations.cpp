@@ -12,7 +12,6 @@ Animations::Animations(Vector2 sprite_size, const char* filename, int FC, int sp
     this->sprites_per_line = spl;
     this->target = {1, 1, this->size.x, this->size.y};
 
-    // NEU: Zeit pro Frame berechnen
     this->time_per_frame = speed / 10.0f;
 }
 

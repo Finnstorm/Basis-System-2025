@@ -25,7 +25,6 @@ Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int d
         game::Config::player_Hittbox.y
     };
 
-    // FÜGE DIESE ZEILE HINZU:
     this->projectile_Speed = game::Config::player_Class_One_Projectile_Speed;
 }
 
@@ -35,7 +34,7 @@ Player_Base_Class::~Player_Base_Class()
 
 }
 
-// Phase 1 :: Player input Prüfung
+
 void Player_Base_Class::Player_Input()
 {
     if (IsKeyPressed(game::Config::key_Melee_Attack) && melee_Cooldown <= 0)
