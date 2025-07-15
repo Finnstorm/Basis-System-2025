@@ -72,8 +72,6 @@ void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Positio
 {
     Collision_Type other_Type = other->Get_Collision_Type();
 
-    // Der Gegner reagiert physisch auf den Spieler, Wände und Spawner,
-    // aber die Entscheidung zum Angriff wird jetzt in Tick() getroffen.
     if (other_Type == Collision_Type::PLAYER ||
         other_Type == Collision_Type::WALL ||
         other_Type == Collision_Type::ENEMY_SPAWNER) {

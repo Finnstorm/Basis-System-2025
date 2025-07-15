@@ -16,7 +16,7 @@ namespace enemy {
     private:
         EnemyState currentState = E_WALKING;
         Facing_Direction facing_Direction = LEFT;
-
+        Facing_Direction attack_Direction = LEFT;
         std::map<Facing_Direction, RepeatAnimation> walk_animations;
         std::map<Facing_Direction, Animations> attack_animations;
 

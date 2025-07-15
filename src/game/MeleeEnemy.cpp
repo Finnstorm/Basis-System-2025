@@ -40,56 +40,65 @@ namespace enemy {
 
 void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_Position_Y)
 {
-    // 1. Timer und grundlegende Werte aktualisieren
-    Enemy_Base_Class::Tick(delta_time);
-    Vector2 self_center = {hitbox.x + hitbox.width / 2, hitbox.y + hitbox.height / 2};
-    float distance_to_target = Vector2Distance(self_center, {target_Position_X, target_Position_Y});
-    facing_Direction = (target_Position_X < self_center.x) ? LEFT : RIGHT;
+    // --- 1. SETUP ---
+    Enemy_Base_Class::Tick(delta_time); // Aktualisiert den Cooldown-Timer
 
-    // Definiere die Distanz, bei der der Gegner stehen bleibt und angreifen kann.
+    // Berechne die aktuelle Distanz und Blickrichtung zum Ziel
+    Vector2 self_center = { hitbox.x + hitbox.width / 2.0f, hitbox.y + hitbox.height / 2.0f };
+    facing_Direction = (target_Position_X < self_center.x) ? LEFT : RIGHT;
+    float distance_to_target = Vector2Distance(self_center, { target_Position_X, target_Position_Y });
     float stopping_distance = (this->hitbox.width / 2.0f) + (game::Config::player_Hittbox.x / 2.0f);
 
-    // 2. Zustands-Übergänge
-    // Priorität 1: Wenn ein Angriff läuft, prüfe, ob die Animation beendet ist.
+    // --- 2. ZUSTANDS-LOGIK ---
     if (currentState == E_ATTACKING) {
-        // Prüfen, ob die Animation existiert UND fertig ist.
-        if (attack_animations.count(facing_Direction) && attack_animations.at(facing_Direction).IsFinished()) {
-            currentState = E_IDLE; // Nach dem Angriff in den Leerlauf.
+        // Bedingung zum Verlassen des Angriffszustands: Die Animation ist beendet.
+        if (attack_animations.count(attack_Direction) && attack_animations.at(attack_Direction).IsFinished()) {
+            currentState = E_IDLE;
+        }
+    } else { // Wenn wir gerade nicht angreifen...
+        // Bedingung zum Starten eines Angriffs: In Reichweite und Cooldown bereit.
+        if (distance_to_target <= (stopping_distance + 2.0f) && attack_Cooldown_Timer <= 0) {
+            Melee_Attack(); // Diese Funktion kümmert sich um alles Weitere.
+        }
+        // Ansonsten: Entscheiden, ob wir laufen oder stehen.
+        else {
+            currentState = (distance_to_target > stopping_distance) ? E_WALKING : E_IDLE;
         }
     }
-    // Priorität 2: Wenn wir NICHT angreifen, prüfe auf neuen Angriff.
-    // Angriff startet, wenn Cooldown bereit und Distanz klein genug ist (direkter Kontakt).
-    else if (distance_to_target <= stopping_distance && attack_Cooldown_Timer <= 0) {
-        Melee_Attack(); // Startet einen neuen Angriff (setzt currentState auf E_ATTACKING)
+
+    // --- 3. AKTIONS- & ANIMATIONS-LOGIK (basiert auf dem finalen Zustand) ---
+    // Der Gegner bewegt sich immer, wenn er zu weit weg ist, auch während des Angriffs.
+    if (distance_to_target > stopping_distance) {
+        Pathfinding(target_Position_X, target_Position_Y, delta_time);
     }
 
-    // 3. Bewegungs- und Animationslogik basierend auf dem Zustand
+    // Aktualisiere die korrekte Animation für den aktuellen Zustand.
     if (currentState == E_ATTACKING) {
-        // Während des Angriffs weiterlaufen (wie gewünscht) und Animation updaten.
-        Pathfinding(target_Position_X, target_Position_Y, delta_time);
-        attack_animations.at(facing_Direction).Update_Frame(delta_time);
-
-    } else if (distance_to_target > stopping_distance) {
-        // Laufen, wenn zu weit weg
-        currentState = E_WALKING;
-        Pathfinding(target_Position_X, target_Position_Y, delta_time);
-        walk_animations.at(facing_Direction).Update_Frame(delta_time);
-
-    } else {
-        // Stehen bleiben (Idle), wenn nah genug, aber nicht angreifend.
-        currentState = E_IDLE;
-        // Hier keine Animation updaten oder Idle-Animation, falls vorhanden.
+        // BENUTZE 'attack_Direction' für die Angriffsanimation.
+        if (attack_animations.count(attack_Direction)) {
+            attack_animations.at(attack_Direction).Update_Frame(delta_time);
+        }
+    } else if (currentState == E_WALKING) {
+        // BENUTZE die Live-'facing_Direction' für die Laufanimation.
+        if (walk_animations.count(facing_Direction)) {
+            walk_animations.at(facing_Direction).Update_Frame(delta_time);
+        }
     }
 }
 
     void Melee_Enemy::Melee_Attack()
     {
-        // Setzt alle relevanten Zustände und Timer
+        std::cout << "ANGRIFF GESTARTET! Richtung: " << facing_Direction << std::endl; // <-- DEBUG-ZEILE
+        // 1. Logge die Richtung im Moment des Angriffs ein
+        this->attack_Direction = this->facing_Direction;
+
+        // 2. Setze den Zustand und den Cooldown
         currentState = E_ATTACKING;
         attack_Cooldown_Timer = game::Config::melee_enemy_1_attack_cooldown;
 
-        if (attack_animations.count(facing_Direction)) {
-            attack_animations.at(facing_Direction).First_Frame();
+        // 3. Setze die Animation für die eingeloggte Richtung auf den Anfang
+        if (attack_animations.count(this->attack_Direction)) {
+            attack_animations.at(this->attack_Direction).First_Frame();
         }
     }
 
@@ -98,10 +107,16 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
         Animations* attack_anim = nullptr;
         RepeatAnimation* walk_anim = nullptr;
 
-        if (currentState == E_ATTACKING && attack_animations.count(facing_Direction)) {
-            attack_anim = &attack_animations.at(facing_Direction);
-        } else if (walk_animations.count(facing_Direction)) {
-            walk_anim = &walk_animations.at(facing_Direction);
+        if (currentState == E_ATTACKING) {
+            std::cout << "ZEICHNE ANGRIFF! Zustand: " << currentState << std::endl; // <-- DEBUG-ZEILE
+            if (attack_animations.count(attack_Direction)) {
+                attack_anim = &attack_animations.at(attack_Direction);
+            }
+        } else if (currentState == E_WALKING) {
+            // BENUTZE die Live-'facing_Direction' für die Laufanimation
+            if (walk_animations.count(facing_Direction)) {
+                walk_anim = &walk_animations.at(facing_Direction);
+            }
         }
 
         if (attack_anim != nullptr) {

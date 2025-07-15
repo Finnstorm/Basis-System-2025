@@ -102,7 +102,7 @@ namespace game {
 
        // Melee_Enemy_Type1 Attack
        inline static constexpr int melee_enemy_1_damage = 10;
-       inline static constexpr float melee_enemy_1_attack_cooldown = 3.0f; // Abklingzeit bis zum nächsten Angriff
+       inline static constexpr float melee_enemy_1_attack_cooldown = 30.0f; // Abklingzeit bis zum nächsten Angriff
 
        // Melee_Enemy_Type1 Animations
        inline static constexpr float melee_enemy_1_walk_anim_speed = 1.0f;
