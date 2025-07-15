@@ -50,40 +50,56 @@ Player_Class_One::~Player_Class_One() {}
 
 void Player_Class_One::Tick(float delta_time)
 {
-    Player_Base_Class::Tick(delta_time); // Die Basis-Klasse kümmert sich um Timer und Bewegung.
-
-    // Prüfen, ob wir gerade in diesem Frame einen Angriff gestartet haben.
-    bool isNewAttack = (currentState == ATTACKING_RANGED && previousState != ATTACKING_RANGED);
-
-    // Prüfen, ob wir den Angriffszustand beenden sollen.
-    // WICHTIG: Beende den Angriff NICHT im selben Frame, in dem er gestartet wurde.
-    if (currentState == ATTACKING_RANGED && !isNewAttack) {
-        if (ranged_Attack_Animations.count(facing_Direction) && ranged_Attack_Animations.at(facing_Direction).IsFinished()) {
-            currentState = IDLE;
-        }
-    }
-
-    // Setze den Zustand auf Laufen oder Stehen, aber nur, wenn wir nicht angreifen.
-    if (currentState != ATTACKING_RANGED) {
-        if (is_Moving) {
-            currentState = WALKING;
-        } else {
-            currentState = IDLE;
-        }
-    }
-
-    // --- Animationen basierend auf dem finalen Zustand updaten ---
+    Player_Base_Class::Tick(delta_time);
 
     if (currentState == ATTACKING_RANGED) {
-        if (ranged_Attack_Animations.count(facing_Direction)) {
-            // Wenn der Angriff neu ist, setze die Animation auf den ersten Frame.
-            if (isNewAttack) {
-                ranged_Attack_Animations.at(facing_Direction).First_Frame();
-            }
-            ranged_Attack_Animations.at(facing_Direction).Update_Frame(delta_time);
+        // BENUTZE 'attack_Direction' für die Logik
+        if (ranged_Attack_Animations.count(attack_Direction) && ranged_Attack_Animations.at(attack_Direction).IsFinished()) {
+            currentState = IDLE;
         }
     } else {
-        // Logik für Lauf- und Idle-Animationen (bleibt unverändert)
+        currentState = is_Moving ? WALKING : IDLE;
+    }
+
+    if (currentState == ATTACKING_RANGED) {
+        // BENUTZE 'attack_Direction' zum Updaten
+        if (ranged_Attack_Animations.count(attack_Direction)) {
+            ranged_Attack_Animations.at(attack_Direction).Update_Frame(delta_time);
+        }
+    } else {
+        // Logik für Laufen/Stehen bleibt wie gehabt
+        Facing_Direction primaryDirection = facing_Direction;
+        switch (facing_Direction) {
+            case UP_LEFT: case DOWN_LEFT: primaryDirection = LEFT; break;
+            case UP_RIGHT: case DOWN_RIGHT: primaryDirection = RIGHT; break;
+            default: break;
+        }
+
+        if (currentState == WALKING) {
+            if (walking_Animations.count(primaryDirection)) {
+                walking_Animations.at(primaryDirection).Update_Frame(delta_time);
+            }
+        } else {
+            if (idle_Animations.count(primaryDirection)) {
+                idle_Animations.at(primaryDirection).Update_Frame(delta_time);
+            }
+        }
+    }
+    previousState = currentState;
+}
+
+void Player_Class_One::Draw()
+{
+    Animations* current_attack_anim = nullptr;
+    RepeatAnimation* current_loop_anim = nullptr;
+    Vector2 draw_pos;
+
+    if (currentState == ATTACKING_RANGED) {
+        // BENUTZE 'attack_Direction' zum Zeichnen
+        if (ranged_Attack_Animations.count(attack_Direction)) {
+            current_attack_anim = &ranged_Attack_Animations.at(attack_Direction);
+        }
+    } else {
         Facing_Direction primaryDirection = facing_Direction;
         switch (facing_Direction) {
             case UP_LEFT:    primaryDirection = LEFT;  break;
@@ -94,73 +110,33 @@ void Player_Class_One::Tick(float delta_time)
         }
 
         if (currentState == WALKING) {
-            if (walking_Animations.count(primaryDirection)) {
-                walking_Animations.at(primaryDirection).Update_Frame(delta_time);
-            }
+            current_loop_anim = &walking_Animations.at(primaryDirection);
         } else { // IDLE
-            if (idle_Animations.count(primaryDirection)) {
-                idle_Animations.at(primaryDirection).Update_Frame(delta_time);
-            }
+            current_loop_anim = &idle_Animations.at(primaryDirection);
         }
     }
 
-    // Speichere den aktuellen Zustand für den nächsten Frame.
-    previousState = currentState;
-}
-
-void Player_Class_One::Draw()
-{
-    Animations* current_attack_anim = nullptr;
-    RepeatAnimation* current_loop_anim = nullptr;
-
-    Facing_Direction primaryDirection = facing_Direction;
-    if (currentState == WALKING || currentState == IDLE) {
-        switch (facing_Direction) {
-            case UP_LEFT:    primaryDirection = LEFT;  break;
-            case UP_RIGHT:   primaryDirection = RIGHT; break;
-            case DOWN_LEFT:  primaryDirection = LEFT;  break;
-            case DOWN_RIGHT: primaryDirection = RIGHT; break;
-            default: break;
-        }
-    }
-
-    switch (currentState) {
-        case WALKING:
-            if (walking_Animations.count(primaryDirection)) {
-                current_loop_anim = &walking_Animations.at(primaryDirection);
-            }
-            break;
-        case ATTACKING_RANGED:
-            if (ranged_Attack_Animations.count(facing_Direction)) {
-                current_attack_anim = &ranged_Attack_Animations.at(facing_Direction);
-            }
-            break;
-        case IDLE:
-        default:
-            if (idle_Animations.count(primaryDirection)) {
-                current_loop_anim = &idle_Animations.at(primaryDirection);
-            }
-            break;
-    }
-
-    Vector2 draw_pos;
-    if (current_loop_anim != nullptr) {
-        draw_pos.x = this->hitbox.x - (current_loop_anim->size.x - this->hitbox.width) / 2.0f;
-        draw_pos.y = this->hitbox.y - (current_loop_anim->size.y - this->hitbox.height) / 2.0f;
-
-        draw_pos.x = roundf(draw_pos.x);
-        draw_pos.y = roundf(draw_pos.y);
-
-        current_loop_anim->Draw_Current_Frame(draw_pos);
-    } else if (current_attack_anim != nullptr) {
+    if (current_attack_anim != nullptr) {
         draw_pos.x = this->hitbox.x - (current_attack_anim->size.x - this->hitbox.width) / 2.0f;
         draw_pos.y = this->hitbox.y - (current_attack_anim->size.y - this->hitbox.height) / 2.0f;
-        
-        draw_pos.x = roundf(draw_pos.x);
-        draw_pos.y = roundf(draw_pos.y);
-
-        current_attack_anim->Draw_Current_Frame(draw_pos);
+        current_attack_anim->Draw_Current_Frame({roundf(draw_pos.x), roundf(draw_pos.y)});
+    } else if (current_loop_anim != nullptr) {
+        draw_pos.x = this->hitbox.x - (current_loop_anim->size.x - this->hitbox.width) / 2.0f;
+        draw_pos.y = this->hitbox.y - (current_loop_anim->size.y - this->hitbox.height) / 2.0f;
+        current_loop_anim->Draw_Current_Frame({roundf(draw_pos.x), roundf(draw_pos.y)});
     }
+}
 
-    // DrawRectangleLinesEx(this->hitbox, 2, GREEN);
+void Player_Class_One::Ranged_Attack()
+{
+    // 1. "Einloggen" der Richtung im Moment des Angriffs
+    this->attack_Direction = this->facing_Direction;
+
+    // 2. Rufe die Basis-Funktion auf (kümmert sich um Cooldown, Projektil etc.)
+    Player_Base_Class::Ranged_Attack();
+
+    // 3. Setze die Animation für die eingeloggte Richtung zurück
+    if (ranged_Attack_Animations.count(this->attack_Direction)) {
+        ranged_Attack_Animations.at(this->attack_Direction).First_Frame();
+    }
 }

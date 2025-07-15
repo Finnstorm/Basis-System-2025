@@ -19,6 +19,7 @@ private:
     std::map<Facing_Direction, RepeatAnimation> walking_Animations;
     std::map<Facing_Direction, RepeatAnimation> idle_Animations;
     std::map<Facing_Direction, Animations> ranged_Attack_Animations;
+    Facing_Direction attack_Direction = DOWN;
 public:
     PlayerState previousState = IDLE;
     Animations test_animation{size,"assets/graphics/anim_sprite.png",9,3,3};
@@ -26,7 +27,7 @@ public:
     ~Player_Class_One();
     void Draw() override;
     void Tick(float delta_time) override;
-
+    void Ranged_Attack() override;
 };
 
 
