@@ -5,7 +5,6 @@
 #ifndef RAYLIBSTARTER_ANIMATIONS_H
 #define RAYLIBSTARTER_ANIMATIONS_H
 
-
 #include <raylib.h>
 #include <memory>
 
@@ -21,14 +20,13 @@ private:
     float time_accumulator = 0.0f;
     float time_per_frame;
 
-public:
-
+public: // <-- WICHTIG!
     Animations(Vector2 sprite_size, const char* filename, int FC, int spl, float speed);
     Vector2 size;
     void Update_Frame(float delta_time);
     void First_Frame();
     void Draw_Current_Frame(Vector2);
+    bool IsFinished() const; // <-- Muss hier unter public stehen.
 };
-
 
 #endif //RAYLIBSTARTER_ANIMATIONS_H

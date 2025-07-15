@@ -63,14 +63,11 @@ void Player_Base_Class::Tick(float delta_time)
     if (melee_Cooldown > 0) melee_Cooldown -= delta_time;
     if (range_Attack_Cooldown > 0) range_Attack_Cooldown -= delta_time;
 
-    if (currentState == ATTACKING_RANGED) {
-        range_Attack_Duration -= delta_time;
-        if (range_Attack_Duration <= 0) {
-            currentState = IDLE;
-        }
-    }
+    // Die Logik für den Angriffs-Timeout wird entfernt.
+    // if (currentState == ATTACKING_RANGED) { ... } // LÖSCHEN
 
     is_Moving = false;
+    // Bewegung ist nur vom Input abhängig, nicht mehr vom State (außer allow_Move_While_Attacking ist false)
     if (currentState != ATTACKING_RANGED || game::Config::allow_Move_While_Attacking) {
         Vector2 move_Direction = {0.0f, 0.0f};
         if (IsKeyDown(game::Config::key_Up))    move_Direction.y = -1.0f;
@@ -85,15 +82,6 @@ void Player_Base_Class::Tick(float delta_time)
             hitbox.y += move_Direction.y * player_Movement_Speed * delta_time;
         }
     }
-
-    if (currentState != ATTACKING_RANGED) {
-        if (is_Moving) {
-            currentState = WALKING;
-        } else {
-            currentState = IDLE;
-        }
-    }
-
     player_Pos = {hitbox.x, hitbox.y};
     Update_Facing_Direction();
 }
@@ -123,7 +111,6 @@ void Player_Base_Class::Melee_Attack()
 void Player_Base_Class::Ranged_Attack()
 {
     this->range_Attack_Cooldown = game::Config::player_Ranged_Attack_Cooldown;
-    this->range_Attack_Duration = game::Config::player_Ranged_Attack_Duration;
 
     this->currentState = ATTACKING_RANGED;
 

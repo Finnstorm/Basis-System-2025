@@ -28,7 +28,6 @@ protected:
     Vector2 player_Pos;
 	Vector2 previous_Position;
 	Collision_Manager* manager_Ptr;
-	float range_Attack_Duration;
 	float range_Attack_Cooldown;
 	float melee_Cooldown;
 	bool inventory_Is_Full;

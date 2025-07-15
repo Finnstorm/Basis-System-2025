@@ -55,9 +55,7 @@ namespace game {
 
             // Player_Class_One Animations
 
-            // Beispielwert: 5.0f bedeutet 0.5 Sekunden pro Frame (2 Frames pro Sekunde)
-
-            inline static constexpr float player_Walk_Anim_Speed = 10.0f;
+            inline static constexpr float player_Walk_Anim_Speed = 1.0f;
             inline static constexpr int player_Walk_Frame_Count = 5;
             inline static constexpr Vector2 player_Walk_Anim_Size{16,16};
             inline static constexpr const char* kPlayerWalkUpAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Up.png";
@@ -65,7 +63,7 @@ namespace game {
             inline static constexpr const char* kPlayerWalkLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Left.png";
             inline static constexpr const char* kPlayerWalkRightAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Right.png";
 
-            inline static constexpr float player_Idle_Anim_Speed = 10.0f;
+            inline static constexpr float player_Idle_Anim_Speed = 1.0f;
             inline static constexpr int player_Idle_Frame_Count = 5;
             inline static constexpr Vector2 player_Idle_Anim_Size{16,16};
             inline static constexpr const char* kPlayerIdleUpAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Up.png";
@@ -73,7 +71,7 @@ namespace game {
             inline static constexpr const char* kPlayerIdleLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Left.png";
             inline static constexpr const char* kPlayerIdleRightAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Right.png";
 
-            inline static constexpr float player_Ranged_Attack_Anim_Speed = 10.0f;
+            inline static constexpr float player_Ranged_Attack_Anim_Speed = 3.0f;
             inline static constexpr int player_Ranged_Attack_Frame_Count = 5;
             inline static constexpr Vector2 player_Ranged_Attack_Anim_Size{32,32};
             inline static constexpr const char* kPlayerRangeAttackUpAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Up.png";
@@ -87,12 +85,11 @@ namespace game {
 
             // Player_Range_Attack
             inline static constexpr float player_Class_One_Projectile_Speed = 40.0f;
-            inline static constexpr float player_Ranged_Attack_Duration = 2.0f;
             inline static constexpr float player_Ranged_Attack_Cooldown = 5.0f; // 10 = 1 Sekunde
             inline static constexpr int projectile_Anim_Frame_Count = 9;
             inline static constexpr Vector2 projectile_Anim_Size = {8, 8};
             inline static constexpr Vector2 projectile_Hitbox_Size = {8, 8};
-            inline static constexpr float projectile_Anim_Speed = 4.0f;
+            inline static constexpr float projectile_Anim_Speed = 3.0f;
             inline static constexpr float player_Ranged_Damage_Factor = 0.8f;
 
             inline static constexpr const char* kProjectileSprite = "../../PieWare/assets/Spritesheets/Projectile_Right.png";
@@ -105,18 +102,16 @@ namespace game {
 
        // Melee_Enemy_Type1 Attack
        inline static constexpr int melee_enemy_1_damage = 10;
-       inline static constexpr float melee_enemy_1_attack_range = 20.0f; // Reichweite, in der der Angriff startet
-       inline static constexpr float melee_enemy_1_attack_duration = 0.6f; // Dauer der Angriffsanimation
-       inline static constexpr float melee_enemy_1_attack_cooldown = 1.5f; // Abklingzeit bis zum nächsten Angriff
+       inline static constexpr float melee_enemy_1_attack_cooldown = 3.0f; // Abklingzeit bis zum nächsten Angriff
 
        // Melee_Enemy_Type1 Animations
-       inline static constexpr float melee_enemy_1_walk_anim_speed = 8.0f;
+       inline static constexpr float melee_enemy_1_walk_anim_speed = 1.0f;
        inline static constexpr int melee_enemy_1_walk_frame_count = 12;
        inline static constexpr Vector2 melee_enemy_1_walk_anim_size = {32, 32};
        inline static constexpr const char* kMeleeEnemy1WalkLeftAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_WalkingLeft_Lv1.png";
-       inline static constexpr const char* kMeleeEnemy1WalkRightAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_WalkingLeft_Lv1.png";
+       inline static constexpr const char* kMeleeEnemy1WalkRightAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_WalkingRight_Lv1.png";
 
-       inline static constexpr float melee_enemy_1_attack_anim_speed = 5.0f;
+       inline static constexpr float melee_enemy_1_attack_anim_speed = 3.0f;
        inline static constexpr int melee_enemy_1_attack_frame_count = 10;
        inline static constexpr Vector2 melee_enemy_1_attack_anim_size = {64, 32};
        inline static constexpr const char* kMeleeEnemy1AttackLeftAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_AttackLeft_Lv1.png";

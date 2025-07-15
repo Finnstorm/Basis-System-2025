@@ -67,11 +67,6 @@ void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Positio
     if (attack_Cooldown_Timer > 0) {
         attack_Cooldown_Timer -= delta_time;
     }
-    // NEU: Zähle auch den Duration-Timer herunter
-    if (attack_duration_timer > 0) {
-        attack_duration_timer -= delta_time;
-    }
-    // is_Moving wird jetzt vom abgeleiteten Gegner gesteuert
 }
     void Enemy_Base_Class::On_Collision(Collidable* other)
 {

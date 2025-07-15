@@ -50,15 +50,40 @@ Player_Class_One::~Player_Class_One() {}
 
 void Player_Class_One::Tick(float delta_time)
 {
-    Player_Base_Class::Tick(delta_time);
+    Player_Base_Class::Tick(delta_time); // Die Basis-Klasse kümmert sich um Timer und Bewegung.
+
+    // Prüfen, ob wir gerade in diesem Frame einen Angriff gestartet haben.
+    bool isNewAttack = (currentState == ATTACKING_RANGED && previousState != ATTACKING_RANGED);
+
+    // Prüfen, ob wir den Angriffszustand beenden sollen.
+    // WICHTIG: Beende den Angriff NICHT im selben Frame, in dem er gestartet wurde.
+    if (currentState == ATTACKING_RANGED && !isNewAttack) {
+        if (ranged_Attack_Animations.count(facing_Direction) && ranged_Attack_Animations.at(facing_Direction).IsFinished()) {
+            currentState = IDLE;
+        }
+    }
+
+    // Setze den Zustand auf Laufen oder Stehen, aber nur, wenn wir nicht angreifen.
+    if (currentState != ATTACKING_RANGED) {
+        if (is_Moving) {
+            currentState = WALKING;
+        } else {
+            currentState = IDLE;
+        }
+    }
+
+    // --- Animationen basierend auf dem finalen Zustand updaten ---
+
     if (currentState == ATTACKING_RANGED) {
         if (ranged_Attack_Animations.count(facing_Direction)) {
-            if (previousState != ATTACKING_RANGED) {
+            // Wenn der Angriff neu ist, setze die Animation auf den ersten Frame.
+            if (isNewAttack) {
                 ranged_Attack_Animations.at(facing_Direction).First_Frame();
             }
             ranged_Attack_Animations.at(facing_Direction).Update_Frame(delta_time);
         }
     } else {
+        // Logik für Lauf- und Idle-Animationen (bleibt unverändert)
         Facing_Direction primaryDirection = facing_Direction;
         switch (facing_Direction) {
             case UP_LEFT:    primaryDirection = LEFT;  break;
@@ -72,12 +97,14 @@ void Player_Class_One::Tick(float delta_time)
             if (walking_Animations.count(primaryDirection)) {
                 walking_Animations.at(primaryDirection).Update_Frame(delta_time);
             }
-        } else {
+        } else { // IDLE
             if (idle_Animations.count(primaryDirection)) {
                 idle_Animations.at(primaryDirection).Update_Frame(delta_time);
             }
         }
     }
+
+    // Speichere den aktuellen Zustand für den nächsten Frame.
     previousState = currentState;
 }
 

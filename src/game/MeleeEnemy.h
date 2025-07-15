@@ -14,7 +14,6 @@ enum EnemyState { E_IDLE, E_WALKING, E_ATTACKING };
 namespace enemy {
     class Melee_Enemy : public Enemy_Base_Class {
     private:
-        float attack_range;
         EnemyState currentState = E_WALKING;
         Facing_Direction facing_Direction = LEFT;
 
