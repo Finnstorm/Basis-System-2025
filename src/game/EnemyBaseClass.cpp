@@ -62,79 +62,28 @@ void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Positio
 }
 
 //Core Methoden
-void Enemy_Base_Class::Tick(float delta_time)
+    void Enemy_Base_Class::Tick(float delta_time)
 {
-    if (attack_Cooldown_Timer > 0)
-    {
+    if (attack_Cooldown_Timer > 0) {
         attack_Cooldown_Timer -= delta_time;
     }
-    // Wenn der Pathfinding die Position veränder dann this->is_Moving = true;
+    // NEU: Zähle auch den Duration-Timer herunter
+    if (attack_duration_timer > 0) {
+        attack_duration_timer -= delta_time;
+    }
+    // is_Moving wird jetzt vom abgeleiteten Gegner gesteuert
 }
-void Enemy_Base_Class::On_Collision(Collidable* other)
+    void Enemy_Base_Class::On_Collision(Collidable* other)
 {
     Collision_Type other_Type = other->Get_Collision_Type();
 
-    switch(other_Type)
-    {
-        case Collision_Type::WALL:
-        case Collision_Type::ENEMY_SPAWNER:
-        case Collision_Type::PLAYER:
-        {
-            if (this->is_Moving)
-            {
-                CollisionResponse::Resolve_Overlap(this, other);
-            }
-
-            if (other_Type == Collision_Type::PLAYER)
-            {
-                // 2. Prüfen, ob der Angriff bereit ist.
-                if (attack_Cooldown_Timer <= 0)
-                {
-                    if (auto* player = dynamic_cast<Player_Base_Class*>(other))
-                    {
-                        // 3. Schaden austeilen und Cooldown zurücksetzen.
-                        player->Take_Damage(this->enemy_Damage);
-                        this->attack_Cooldown_Timer = this->attack_Cooldown_Duration;
-                    }
-                }
-            }
-            break;
+    // Der Gegner reagiert physisch auf den Spieler, Wände und Spawner,
+    // aber die Entscheidung zum Angriff wird jetzt in Tick() getroffen.
+    if (other_Type == Collision_Type::PLAYER ||
+        other_Type == Collision_Type::WALL ||
+        other_Type == Collision_Type::ENEMY_SPAWNER) {
+        CollisionResponse::Resolve_Overlap(this, other);
         }
-        case Collision_Type::PLAYER_PROJECTILE:
-        {
-            /*if(auto* projectile = dynamic_cast<Player_Projectile*>(other))
-            {
-                this->Take_Damage(projectile->Get_Damage());
-            }
-            CollisionResponse::Mark_For_Destruction(other);*/
-            break;
-        }
-
-        case Collision_Type::CONSUMABLE:
-        {
-            /* // Wir brauchen eine Basis-Klasse "Consumable", von der alle Items erben.
-            if(auto* item = dynamic_cast<Consumables*>(other)) // Annahme: Es gibt eine Klasse Consumable
-            {
-                if(item->Is_Inventory_Item()) // Methode in Consumable, die den bool zurückgibt
-                {
-                    // Logik, um das Item dem Inventar hinzuzufügen
-                    // inventory.Add(item);
-                }
-                else
-                {
-                    // Item wird sofort verwendet (z.B. Heilung)
-                    item->Apply_Effect(this); // Jedes Item weiß selbst, was es tut
-                }
-
-                // In jedem Fall wird das Item aus der Welt entfernt
-                CollisionResponse::Mark_For_Destruction(other);
-            } */
-            break;
-        }
-
-        default:
-            break;
-    }
 }
 
 void Enemy_Base_Class::Draw()

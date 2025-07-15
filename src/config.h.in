@@ -45,7 +45,7 @@ namespace game {
         inline static constexpr bool enable_Health_Drain = true; // HP-Drain durch Zeit an/aus
         inline static constexpr float player_Health_Drain_Rate = 1.0f; // HP-Verlust pro Sekunde
 
-        // Player_Class_One
+        //____________________Spieler Klasse 1 Block____________________________
         inline static constexpr bool allow_Move_While_Attacking = true;
         inline static constexpr int player_Class_One_Max_Health = 120;
         inline static constexpr float player_Class_One_Movement_Speed = 20.0f;
@@ -97,15 +97,30 @@ namespace game {
 
             inline static constexpr const char* kProjectileSprite = "../../PieWare/assets/Spritesheets/Projectile_Right.png";
 
-        // Enemy_Class_One
-        inline static constexpr int enemy_Class_1_Health = 50;
-        inline static constexpr float enemy_Class_1_Movement_Speed = 100.0f;
-        inline static constexpr int enemy_Class_1_Damage = 5;
-        inline static constexpr int enemy_Class_1_Value = 10; // Punkte für den Kill
-        inline static constexpr const char* enemy_Class_1_Sprite_Path = "assets/graphics/enemy_Class_1.png";
-        inline static constexpr int enemy_Class_1_Hitbox_Width = 32;
-        inline static constexpr int enemy_Class_1_Hitbox_Height = 32;
-        inline static constexpr const char* enemy_Class_1_Projectile_Sprite_Path = "assets/graphics/ball.png"; //PLACEHOLDER Pfad für Gegner-Projectile
+        //____________________Gegner 1 Block____________________________
+       // Melee_Enemy_Type1 Settings
+       inline static constexpr int melee_enemy_1_health = 80;
+       inline static constexpr float melee_enemy_1_movement_speed = 8.0f;
+       inline static constexpr Vector2 melee_enemy_1_hitbox = {16, 24};
+
+       // Melee_Enemy_Type1 Attack
+       inline static constexpr int melee_enemy_1_damage = 10;
+       inline static constexpr float melee_enemy_1_attack_range = 20.0f; // Reichweite, in der der Angriff startet
+       inline static constexpr float melee_enemy_1_attack_duration = 0.6f; // Dauer der Angriffsanimation
+       inline static constexpr float melee_enemy_1_attack_cooldown = 1.5f; // Abklingzeit bis zum nächsten Angriff
+
+       // Melee_Enemy_Type1 Animations
+       inline static constexpr float melee_enemy_1_walk_anim_speed = 8.0f;
+       inline static constexpr int melee_enemy_1_walk_frame_count = 12;
+       inline static constexpr Vector2 melee_enemy_1_walk_anim_size = {32, 32};
+       inline static constexpr const char* kMeleeEnemy1WalkLeftAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_WalkingLeft_Lv1.png";
+       inline static constexpr const char* kMeleeEnemy1WalkRightAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_WalkingLeft_Lv1.png";
+
+       inline static constexpr float melee_enemy_1_attack_anim_speed = 5.0f;
+       inline static constexpr int melee_enemy_1_attack_frame_count = 10;
+       inline static constexpr Vector2 melee_enemy_1_attack_anim_size = {64, 32};
+       inline static constexpr const char* kMeleeEnemy1AttackLeftAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_AttackLeft_Lv1.png";
+       inline static constexpr const char* kMeleeEnemy1AttackRightAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_AttackRightt_Lv1.png"; // Achtung: "Rightt"?
 
         // Control Settings
         inline static constexpr const int key_Up = KEY_W;

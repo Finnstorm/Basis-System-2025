@@ -11,6 +11,7 @@
 #include <raymath.h>
 #include "../game/PlayerClassOne.h"
 #include "../core/CollisionManager.h"
+#include "../game/MeleeEnemy.h"
 
 using namespace std::string_literals;
 
@@ -25,7 +26,8 @@ game::scenes::GameScene::GameScene()
     p_cm = std::make_unique<Collision_Manager>(wb, objectManager.managed_objects);
     cam = std::make_shared<Cam>(this->mp);
     screen.Load_Game_Objects(objectManager);
-
+    auto* test_enemy = new enemy::Melee_Enemy({400, 400});
+    objectManager.AddObject(test_enemy);
 }
 
 game::scenes::GameScene::~GameScene()
@@ -36,13 +38,22 @@ game::scenes::GameScene::~GameScene()
 void game::scenes::GameScene::Update()
 {
     mp.Player_Input();
-    for (int i = 0; i < objectManager.managed_objects.size(); ++i) {
-        objectManager.managed_objects[i]->Tick(dtm.Get_Dt());
+
+    Vector2 player_center = mp.Get_Player_Center();
+
+    for (auto* object : objectManager.managed_objects) {
+        if (auto* enemy = dynamic_cast<enemy::Enemy_Base_Class*>(object)) {
+            if (auto* melee_enemy = dynamic_cast<enemy::Melee_Enemy*>(enemy)) {
+                melee_enemy->Tick(dtm.Get_Dt(), player_center.x, player_center.y);
+            }
+
+        } else {
+            object->Tick(dtm.Get_Dt());
+        }
     }
 
-    this->p_cm->Check_Collisions();
-    this->cam->Cam_Movement(dtm.Get_Dt(), screen.Get_Map_Dimensions());
-
+    p_cm->Check_Collisions();
+    cam->Cam_Movement(dtm.Get_Dt(), screen.Get_Map_Dimensions());
     objectManager.Cleanup_Objects();
     dtm.Update();
 }

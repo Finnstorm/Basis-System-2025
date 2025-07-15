@@ -22,6 +22,7 @@ namespace enemy
         int enemy_Damage;
         const float attack_Cooldown_Duration;
         float attack_Cooldown_Timer;
+        float attack_duration_timer;
         int enemy_Value;
         bool is_Moving;
         Texture2D sprite;
