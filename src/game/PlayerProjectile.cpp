@@ -3,21 +3,17 @@
 #include "CollisionResponse.h"
 #include "raymath.h"
 
-namespace game {
+namespace game
+{
     Player_Projectile::Player_Projectile(Vector2 start_position, Vector2 direction, float projectile_speed, int final_damage)
         : is_active(true), damage(final_damage)
     {
-        // Lade das EINE Sprite
         this->sprite = LoadTexture(game::Config::kProjectileSprite);
 
-        // Berechne die Velocity EINMAL
         this->velocity = Vector2Scale(direction, projectile_speed);
 
-        // Berechne den Rotationswinkel aus dem Richtungsvektor EINMAL und speichere ihn
-        // atan2 gibt den Winkel in Radiant zurück, wir wandeln ihn in Grad um.
         this->rotation = atan2(direction.y, direction.x) * RAD2DEG;
 
-        // Setze die Hitbox (nicht-rotiert!)
         this->hitbox = {
             start_position.x - game::Config::projectile_Hitbox_Size.x / 2.0f,
             start_position.y - game::Config::projectile_Hitbox_Size.y / 2.0f,
