@@ -19,7 +19,7 @@ namespace game {
         inline static constexpr int kTargetFps = 60;
 
         // Start game in window or fullscreen mode
-        inline static constexpr const bool kFullScreen = false;
+        inline static constexpr const bool kFullScreen = true;
 
         // Define if the game uses a mouse/mouse pointer
         // The mouse position is then accessible in game::core::Store in the mouse_position attribute
@@ -47,10 +47,10 @@ namespace game {
 
         //____________________Spieler Klasse 1 Block____________________________
         inline static constexpr bool allow_Move_While_Attacking = true;
-        inline static constexpr int player_Class_One_Max_Health = 120;
+        inline static constexpr int player_Class_One_Max_Health = 100;
         inline static constexpr float player_Class_One_Movement_Speed = 20.0f;
         inline static constexpr int player_Class_One_Damage = 10;
-        inline static constexpr Vector2 player_Spawn_Position{200,200};
+        inline static constexpr Vector2 player_Spawn_Position{760,192};
         inline static constexpr Vector2 player_Hittbox{16,16};
 
             // Player_Class_One Animations
@@ -85,7 +85,7 @@ namespace game {
 
             // Player_Range_Attack
             inline static constexpr float player_Class_One_Projectile_Speed = 40.0f;
-            inline static constexpr float player_Ranged_Attack_Cooldown = 5.0f; // 10 = 1 Sekunde
+            inline static constexpr float player_Ranged_Attack_Cooldown = 2.5f; // 10 = 1 Sekunde
             inline static constexpr int projectile_Anim_Frame_Count = 9;
             inline static constexpr Vector2 projectile_Anim_Size = {8, 8};
             inline static constexpr Vector2 projectile_Hitbox_Size = {8, 8};
@@ -133,8 +133,8 @@ namespace game {
         inline static constexpr const float cam_zoom = 5;
 
         // Wellen Spawner
-        inline static constexpr const int  kEnemySpawn = 5;
-        inline static constexpr const int  kEnemySpawnTime = 250; //100 = 10 Sekunden
+        inline static constexpr const int  kEnemySpawn = 2;
+        inline static constexpr const int  kEnemySpawnTime = 300; //100 = 10 Sekunden
          // Levelmap-file paths
                 // Lvl_Nbr gets changed on level transition, thus also altering the path where Screen.Draw_Level() loads the
                 // levelmap from
