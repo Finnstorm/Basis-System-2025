@@ -19,6 +19,7 @@ namespace enemy {
         Facing_Direction attack_Direction = LEFT;
         std::map<Facing_Direction, RepeatAnimation> walk_animations;
         std::map<Facing_Direction, Animations> attack_animations;
+        bool damage_applied_this_attack = false;
 
     public:
         Melee_Enemy(Vector2 start_position);

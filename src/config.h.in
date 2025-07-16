@@ -134,7 +134,7 @@ namespace game {
 
         // Wellen Spawner
         inline static constexpr const int  kEnemySpawn = 5;
-        inline static constexpr const int kEnemySpawnTime = 250; //100 = 10 Sekunden
+        inline static constexpr const int  kEnemySpawnTime = 250; //100 = 10 Sekunden
          // Levelmap-file paths
                 // Lvl_Nbr gets changed on level transition, thus also altering the path where Screen.Draw_Level() loads the
                 // levelmap from

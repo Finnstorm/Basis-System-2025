@@ -9,6 +9,8 @@
 #include "Renderer.h"
 #include "SpriteAnimated.h"
 #include <raymath.h>
+
+#include "MenuScene.h"
 #include "../game/PlayerClassOne.h"
 #include "../core/CollisionManager.h"
 #include "../game/MeleeEnemy.h"
@@ -47,32 +49,28 @@ game::scenes::GameScene::~GameScene()
 
 void game::scenes::GameScene::Update()
 {
+    // 1. Auf Spielertod prüfen.
     if (mp.Is_Dead())
     {
-        this->is_finished = true;
-        this->next_scene_name = "MenuScene";
+        // Erstelle eine Instanz der neuen Szene, zu der gewechselt werden soll.
+        auto newMenuScene = std::make_shared<game::scenes::MenuScene>();
+
+        // Sage der Stage, dass sie zu dieser neuen Szene wechseln soll.
+        game::core::Store::stage->SwitchToNewScene("MenuScene", newMenuScene);
+
+        // Beende die Update-Funktion hier, um zu verhindern, dass die tote Szene weiterläuft.
         return;
     }
 
+    // 2. Deine restliche Update-Logik (Wellen, Input, Kollisionen, etc.)
     waveTimer -= dtm.Get_Dt();
 
     if (waveTimer <= 0.0f)
     {
-        // ... (Wellen-Logik)
-    }
-    waveTimer -= dtm.Get_Dt(); // Zähle den Timer runter
-
-    // Prüfen, ob es Zeit für eine neue Welle ist
-    if (waveTimer <= 0.0f)
-    {
         Vector2 mapDims = screen.Get_Map_Dimensions();
-
-        // Spawne die nächste Welle
         enemySpawner->SpawnEnemies(this->enemiesPerWave, mapDims);
-
-        // Bereite die übernächste Welle vor
-        this->enemiesPerWave += 5; // Erhöhe die Gegnerzahl
-        this->waveTimer = this->waveInterval; // Setze den Timer zurück
+        this->enemiesPerWave += 5;
+        this->waveTimer = this->waveInterval;
     }
 
     mp.Player_Input();

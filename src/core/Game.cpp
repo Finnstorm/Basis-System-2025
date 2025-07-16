@@ -53,34 +53,25 @@ game::core::Game::~Game()
 
 void game::core::Game::Run(const std::string &scene_Name, std::unique_ptr<game::core::Scene> scene) const
 {
-    // Create game::Stage instance and assign new scene
     game::core::Store::stage = std::make_unique<game::core::Stage>(scene_Name, std::move(scene));
 
-    // Main game loop
-    while (!WindowShouldClose()) // Detect window close button if defined
+    // Einfacher Haupt-Game-Loop
+    while (!WindowShouldClose())
     {
         if(this->mouse_)
             this->UpdateMousePosition();
 
-        // Process input and update current active scene
+        // Stage kümmert sich um alles: Update der aktuellen Szene UND den Wechsel zur nächsten.
         game::core::Store::stage->Update();
 
-        // Draw
         BeginDrawing();
-
-        ClearBackground(BLACK); // Letterbox color
-
-        // Draw everything in the render texture, note this will not be rendered on screen, yet
+        ClearBackground(BLACK);
         BeginTextureMode(this->render_Target_);
-        // Draw the current active scene to render texture
         game::core::Store::stage->Draw();
         EndTextureMode();
-
-        // Draw render texture to window, properly scaled
         this->DrawRenderTexture();
         EndDrawing();
-
-    } // Main game loop end
+    }
 }
 
 Vector2 game::core::Game::ClampValue(Vector2 value, Vector2 MIN, Vector2 MAX)

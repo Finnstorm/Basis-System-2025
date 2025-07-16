@@ -53,12 +53,9 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
     float delta_y = std::abs(target_center.y - self_center.y);
     float stopping_distance;
 
-    // Prüfen, ob die Annäherung eher horizontal oder vertikal ist
     if (delta_x > delta_y) {
-        // Horizontale Annäherung: Distanz basiert auf der Breite.
         stopping_distance = (this->hitbox.width / 2.0f) + (game::Config::player_Hittbox.x / 2.0f);
     } else {
-        // Vertikale Annäherung: Distanz basiert auf der Höhe.
         stopping_distance = (this->hitbox.height / 2.0f) + (game::Config::player_Hittbox.y / 2.0f);
     }
 
@@ -71,32 +68,27 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
 
     // --- 4. ZUSTANDS-LOGIK ---
     if (currentState == E_ATTACKING) {
+        // Wenn die Angriffs-Animation beendet ist, gehe in den Leerlauf.
         if (attack_animations.count(attack_Direction) && attack_animations.at(attack_Direction).IsFinished()) {
             currentState = E_IDLE;
         }
     } else {
-        float trigger_buffer = 2.0f;
-        Rectangle attack_trigger_box = {
-            this->hitbox.x - trigger_buffer, this->hitbox.y - trigger_buffer,
-            this->hitbox.width + (trigger_buffer * 2), this->hitbox.height + (trigger_buffer * 2)
-        };
-        Rectangle player_hitbox = {
-            target_center.x - game::Config::player_Hittbox.x / 2.0f, target_center.y - game::Config::player_Hittbox.y / 2.0f,
-            game::Config::player_Hittbox.x, game::Config::player_Hittbox.y
-        };
-
-        if (CheckCollisionRecs(attack_trigger_box, player_hitbox) && attack_Cooldown_Timer <= 0) {
+        // Wenn wir nah genug dran sind und der Cooldown bereit ist, greife an.
+        if (distance_to_target <= stopping_distance + 5.0f && attack_Cooldown_Timer <= 0) {
             Melee_Attack();
         } else {
+            // Sonst: Laufen oder im Leerlauf warten.
             currentState = (distance_to_target > stopping_distance) ? E_WALKING : E_IDLE;
         }
     }
 
     // --- 5. AKTION & ANIMATION ---
-    if (distance_to_target > stopping_distance) {
+    // Bewegung ausführen, wenn wir nicht angreifen und zu weit weg sind.
+    if (currentState != E_ATTACKING && distance_to_target > stopping_distance) {
         Pathfinding(target_Position_X, target_Position_Y, delta_time, stopping_distance);
     }
 
+    // Passende Animation abspielen.
     if (currentState == E_ATTACKING) {
         if (attack_animations.count(attack_Direction)) {
             attack_animations.at(attack_Direction).Update_Frame(delta_time);
@@ -110,7 +102,6 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
 
     void Melee_Enemy::Melee_Attack()
     {
-        std::cout << "ANGRIFF GESTARTET! Richtung: " << facing_Direction << std::endl; // <-- DEBUG-ZEILE
         // 1. Logge die Richtung im Moment des Angriffs ein
         this->attack_Direction = this->facing_Direction;
 
@@ -122,6 +113,9 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
         if (attack_animations.count(this->attack_Direction)) {
             attack_animations.at(this->attack_Direction).First_Frame();
         }
+
+        // 4. Setze den Schadens-Flag zurück, damit beim nächsten Treffer Schaden möglich ist
+        this->damage_applied_this_attack = false;
     }
 
     void Melee_Enemy::Draw() {
@@ -159,19 +153,18 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
         // Prüfen, ob das andere Objekt der Spieler ist
         if (other->Get_Collision_Type() == Collision_Type::PLAYER)
         {
-            // Prüfen, ob der Angriffscooldown bereit ist
-            if (attack_Cooldown_Timer <= 0.0f)
+            // Prüfen, ob wir im Angriffszustand sind UND in diesem Angriff noch keinen Schaden verursacht haben
+            if (currentState == E_ATTACKING && !damage_applied_this_attack)
             {
                 // Füge dem Spieler Schaden zu
                 CollisionResponse::Apply_Damage(other, this->enemy_Damage);
 
-                // Setze den Cooldown zurück
-                attack_Cooldown_Timer = attack_Cooldown_Duration;
+                // Setze den Flag, damit dieser Angriff keinen weiteren Schaden macht
+                damage_applied_this_attack = true;
             }
         }
 
-        // Rufe die Basis-Implementierung auf, damit die normale Kollisionsabwicklung
-        // (wegschieben etc.) weiterhin funktioniert. SEHR WICHTIG!
+        // Rufe immer die Basis-Implementierung auf, damit das Wegschieben von Wänden etc. funktioniert.
         Enemy_Base_Class::On_Collision(other);
     }
 

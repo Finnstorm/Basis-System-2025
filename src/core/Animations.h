@@ -20,13 +20,14 @@ private:
     float time_accumulator = 0.0f;
     float time_per_frame;
 
-public: // <-- WICHTIG!
+public:
     Animations(Vector2 sprite_size, const char* filename, int FC, int spl, float speed);
     Vector2 size;
     void Update_Frame(float delta_time);
     void First_Frame();
     void Draw_Current_Frame(Vector2);
-    bool IsFinished() const; // <-- Muss hier unter public stehen.
+    bool IsFinished() const;
+    int GetCurrentFrame() const { return current_Frame; }
 };
 
 #endif //RAYLIBSTARTER_ANIMATIONS_H
