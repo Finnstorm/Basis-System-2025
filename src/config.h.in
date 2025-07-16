@@ -42,14 +42,14 @@ namespace game {
         inline static constexpr const bool kAudio = true;
 
         // Player Settings
-        inline static constexpr bool enable_Health_Drain = true; // HP-Drain durch Zeit an/aus
+        inline static constexpr bool enable_Health_Drain = false; // HP-Drain durch Zeit an/aus
         inline static constexpr float player_Health_Drain_Rate = 1.0f; // HP-Verlust pro Sekunde
 
         //____________________Spieler Klasse 1 Block____________________________
         inline static constexpr bool allow_Move_While_Attacking = true;
         inline static constexpr int player_Class_One_Max_Health = 120;
         inline static constexpr float player_Class_One_Movement_Speed = 20.0f;
-        inline static constexpr int player_Class_One_Damage = 12;
+        inline static constexpr int player_Class_One_Damage = 10;
         inline static constexpr Vector2 player_Spawn_Position{200,200};
         inline static constexpr Vector2 player_Hittbox{16,16};
 
@@ -96,7 +96,7 @@ namespace game {
 
         //____________________Gegner 1 Block____________________________
        // Melee_Enemy_Type1 Settings
-       inline static constexpr int melee_enemy_1_health = 80;
+       inline static constexpr int melee_enemy_1_health = 20;
        inline static constexpr float melee_enemy_1_movement_speed = 8.0f;
        inline static constexpr Vector2 melee_enemy_1_hitbox = {16, 24};
 
@@ -132,6 +132,9 @@ namespace game {
         inline static constexpr const int cam_start_pos_y = 0;
         inline static constexpr const float cam_zoom = 5;
 
+        // Wellen Spawner
+        inline static constexpr const int  kEnemySpawn = 5;
+        inline static constexpr const int kEnemySpawnTime = 250; //100 = 10 Sekunden
          // Levelmap-file paths
                 // Lvl_Nbr gets changed on level transition, thus also altering the path where Screen.Draw_Level() loads the
                 // levelmap from

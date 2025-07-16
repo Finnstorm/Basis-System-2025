@@ -24,9 +24,15 @@ Enemy_Base_Class::~Enemy_Base_Class()
     UnloadTexture(sprite);
 }
 
-void Enemy_Base_Class::Take_Damage(int damage_amount)
+    void Enemy_Base_Class::Take_Damage(int damage_amount)
 {
-    enemy_Health -= damage_amount;
+    this->enemy_Health -= damage_amount;
+
+
+    if (this->enemy_Health <= 0)
+    {
+        this->Mark_For_Destruction();
+    }
 }
 
     void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time, float stopping_distance)
@@ -77,7 +83,8 @@ void Enemy_Base_Class::Take_Damage(int damage_amount)
 
     if (other_Type == Collision_Type::PLAYER ||
         other_Type == Collision_Type::WALL ||
-        other_Type == Collision_Type::ENEMY_SPAWNER) {
+        other_Type == Collision_Type::ENEMY_SPAWNER ||
+        other_Type == Collision_Type::ENEMY) {
         CollisionResponse::Resolve_Overlap(this, other);
         }
 }
@@ -96,4 +103,9 @@ void enemy::Enemy_Base_Class::Range_Attack()
 {
 
 }
+}
+void enemy::Enemy_Base_Class::Set_Position(Vector2 position)
+{
+    this->hitbox.x = position.x;
+    this->hitbox.y = position.y;
 }

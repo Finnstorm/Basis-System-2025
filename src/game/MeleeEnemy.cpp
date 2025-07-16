@@ -7,6 +7,7 @@
 #include <iostream>
 #include <raylib.h>
 
+#include "CollisionResponse.h"
 #include "raymath.h"
 #include "../Config.h.in"
 namespace enemy {
@@ -151,6 +152,27 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
             draw_pos.y = this->hitbox.y - (walk_anim->size.y - this->hitbox.height) / 2.0f;
             walk_anim->Draw_Current_Frame(draw_pos);
         }
-        DrawRectangleLinesEx(this->hitbox, 2.0f, RED);
+        //DrawRectangleLinesEx(this->hitbox, 2.0f, RED);
     }
+    void Melee_Enemy::On_Collision(Collidable* other)
+    {
+        // Prüfen, ob das andere Objekt der Spieler ist
+        if (other->Get_Collision_Type() == Collision_Type::PLAYER)
+        {
+            // Prüfen, ob der Angriffscooldown bereit ist
+            if (attack_Cooldown_Timer <= 0.0f)
+            {
+                // Füge dem Spieler Schaden zu
+                CollisionResponse::Apply_Damage(other, this->enemy_Damage);
+
+                // Setze den Cooldown zurück
+                attack_Cooldown_Timer = attack_Cooldown_Duration;
+            }
+        }
+
+        // Rufe die Basis-Implementierung auf, damit die normale Kollisionsabwicklung
+        // (wegschieben etc.) weiterhin funktioniert. SEHR WICHTIG!
+        Enemy_Base_Class::On_Collision(other);
+    }
+
 }

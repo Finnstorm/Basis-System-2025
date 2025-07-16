@@ -26,6 +26,7 @@ namespace enemy {
 
         void Tick(float delta_time, float target_Position_X, float target_Position_Y);
         void Draw() override;
+        void On_Collision(Collidable* other) override;
         void Melee_Attack() override;
     };
 }

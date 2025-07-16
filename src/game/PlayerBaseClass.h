@@ -43,7 +43,7 @@ protected:
 public:
 	// Konstruktor
 	Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position);
-
+	bool Is_Dead() const;
 	// Destruktor
 	~Player_Base_Class() override;
 	void Player_Input();
@@ -57,7 +57,7 @@ public:
 	void Melee_Attack();
 	virtual void Ranged_Attack();
 	void Use_Item();
-
+	float Get_Health() const;
     Collision_Type Get_Collision_Type() const override;
     Vector2 Get_Player_Pos();
     Vector2 Get_Player_Center();

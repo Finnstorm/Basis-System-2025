@@ -33,7 +33,7 @@ namespace enemy
             float cooldown_duration);
 
         virtual ~Enemy_Base_Class();
-
+        void Set_Position(Vector2 position) override;
         void Take_Damage(int damage_amount);
         virtual void Range_Attack();
         virtual void Melee_Attack();

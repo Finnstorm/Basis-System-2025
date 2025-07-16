@@ -37,6 +37,8 @@ add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.
         ../game/RangedEnemyOmni.h
         ../game/CollisionResponse.cpp
         ../game/CollisionResponse.h
+        ../game/EnemySpawner.cpp
+        ../game/EnemySpawner.h
         RepeatAnimation.cpp
         RepeatAnimation.h)
 

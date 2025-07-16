@@ -1,65 +1,71 @@
 #include "EnemySpawner.h"
-#include "raylib.h"
-#include "CollisionManager.h"
+#include "MeleeEnemy.h"
+#include "../config.h.in"
+#include "raymath.h" // Wichtig für die Clamp-Funktion
 
-Enemy_Spawner::Enemy_Spawner(Rectangle spawner_Area, const std::vector<Rectangle>& obstacle_List,
-                 std::vector<enemy::Enemy_Base_Class*>& enemy_List, float spawn_Rate, int max_Enemies)
-    : spawner_Area(spawner_Area), obstacle_List(obstacle_List), enemy_List(enemy_List),  spawn_Rate_(spawn_Rate),
-      max_Enemies_(max_Enemies), time_Since_Last_Spawn_(0.0f) {}
+EnemySpawner::EnemySpawner(Object_Manager& objectManager, std::shared_ptr<Cam> camera)
+    : objectManagerRef(objectManager), camRef(camera) {}
 
-void Enemy_Spawner::Tick(float delta_Time)
-{
-    time_Since_Last_Spawn_ += delta_Time;
+bool EnemySpawner::IsPositionValid(Vector2 position) {
+    Rectangle potentialHitbox = {
+        position.x, position.y,
+        game::Config::melee_enemy_1_hitbox.x,
+        game::Config::melee_enemy_1_hitbox.y
+    };
 
-    if (time_Since_Last_Spawn_ >= (1.0f / spawn_Rate_) &&
-        (int)enemy_List.size() < max_Enemies_) {
-
-        Vector2 spawnPos = {
-            static_cast<float>(GetRandomValue((int)spawner_Area.x, (int)(spawner_Area.x + spawner_Area.width - 32))),
-            static_cast<float>(GetRandomValue((int)spawner_Area.y, (int)(spawner_Area.y + spawner_Area.height - 32)))
-        };
-
-        Try_Spawn(spawnPos);
-        time_Since_Last_Spawn_ = 0.0f;
-    }
-}
-
-void Enemy_Spawner::Try_Spawn(Vector2 spawn_Position)
-{
-
-    if (!CheckCollisionPointRec(spawn_Position, spawner_Area))
-        return;
-
-    Rectangle new_Hitbox = { spawn_Position.x, spawn_Position.y, 32.0f, 32.0f };
-
-    if (!Is_Space_Free(new_Hitbox))
-        return;
-
-    enemy::Enemy_Base_Class* new_Enemy = createEnemy(spawn_Position);
-
-    if (new_Enemy) {
-        enemy_List.push_back(new_Enemy);
-    }
-}
-
-bool Enemy_Spawner::Is_Space_Free(const Rectangle& newHitbox) const
-{
-    for (const auto& obstacle : obstacle_List) {
-        if (CheckCollisionRecs(newHitbox, obstacle)) {
-            return false;
+    for (Collidable* obj : objectManagerRef.managed_objects) {
+        if (obj->Get_Collision_Type() == Collision_Type::WALL) {
+            if (CheckCollisionRecs(potentialHitbox, obj->Get_Hitbox())) {
+                return false;
+            }
         }
     }
 
-    for (const auto& e : enemy_List) {
-        if (CheckCollisionRecs(newHitbox, e->Get_Hitbox())) {}
-        {
-            return false;
-        }
-    }
+
     return true;
 }
 
-void Enemy_Spawner::Draw_Spawner_Area() const
-{
-    DrawRectangleLinesEx(spawner_Area, 2, GREEN);
+
+void EnemySpawner::SpawnEnemies(int count, Vector2 mapDimensions) {
+    if (!camRef || mapDimensions.x <= 0 || mapDimensions.y <= 0) return;
+
+    Camera2D& currentCam = camRef->cam;
+    float worldViewWidth = (float)GetScreenWidth() / currentCam.zoom;
+    float worldViewHeight = (float)GetScreenHeight() / currentCam.zoom;
+
+    Rectangle camView = {
+        currentCam.target.x - (worldViewWidth / 2.0f),
+        currentCam.target.y - (worldViewHeight / 2.0f),
+        worldViewWidth,
+        worldViewHeight
+    };
+
+    // Dieser Puffer bestimmt, wie weit außerhalb der Kamera gespawnt wird.
+    // Ein größerer Wert bedeutet weiter weg.
+    float spawnBuffer = 100.0f;
+    Rectangle spawnArea = {
+        camView.x - spawnBuffer, camView.y - spawnBuffer,
+        camView.width + (spawnBuffer * 2), camView.height + (spawnBuffer * 2)
+    };
+
+    int enemiesSpawned = 0;
+    int maxAttempts = 100;
+
+    while (enemiesSpawned < count && maxAttempts > 0) {
+        float randX = (float)GetRandomValue(spawnArea.x, spawnArea.x + spawnArea.width);
+        float randY = (float)GetRandomValue(spawnArea.y, spawnArea.y + spawnArea.height);
+
+        // --- NEUER SCHRITT: Position auf Kartengrenzen beschränken ---
+        // Stellt sicher, dass die Koordinaten niemals außerhalb von (0,0) und (mapWidth, mapHeight) liegen.
+        randX = Clamp(randX, 0.0f, mapDimensions.x - game::Config::melee_enemy_1_hitbox.x);
+        randY = Clamp(randY, 0.0f, mapDimensions.y - game::Config::melee_enemy_1_hitbox.y);
+
+        Vector2 spawnPos = {randX, randY};
+
+        if (!CheckCollisionPointRec(spawnPos, camView) && IsPositionValid(spawnPos)) {
+            objectManagerRef.AddObject(new enemy::Melee_Enemy(spawnPos));
+            enemiesSpawned++;
+        }
+        maxAttempts--;
+    }
 }

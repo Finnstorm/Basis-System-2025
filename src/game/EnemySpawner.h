@@ -1,120 +1,25 @@
 #ifndef SPAWNER_H
 #define SPAWNER_H
 
-#include <vector>
-#include "EnemyBaseClass.h"
-#include "raylib.h"
+#include <memory>
+#include "../core/Object_Manager.h"
+#include "Cam.h"
+#include "raylib.h" // Nötig für Vector2
 
-
-// Basisklasse für Spawner (abstrakt)
-class Collision_Manager;
-class Enemy_Spawner : Collidable
-{
+class EnemySpawner {
 public:
-    Enemy_Spawner(Rectangle spawner_Area,
-            const std::vector<Rectangle>& obstacle_List,
-            std::vector<enemy::Enemy_Base_Class*>& enemy_List,
-            float spawn_Rate,
-            int max_Enemies);
+    EnemySpawner(Object_Manager& objectManager, std::shared_ptr<Cam> camera);
 
+    // WIR FÜGEN HIER mapDimensions HINZU
+    void SpawnEnemies(int count, Vector2 mapDimensions);
 
-    virtual ~Enemy_Spawner() = default;
+private:
+    Object_Manager& objectManagerRef;
+    std::shared_ptr<Cam> camRef;
 
-    // Wird jede Frame aufgerufen, steuert automatisches Spawnen
-    void Tick(float delta_Time) override;
-
-    // Versucht einen Gegner an spawn_Position zu spawnen
-    void Try_Spawn(Vector2 spawn_Position);
-
-    // Zeichnet optional den Spawnerbereich
-    void Draw_Spawner_Area() const;
-
-protected:
-    Rectangle spawner_Area;                     // Spawnbereich
-    const std::vector<Rectangle>& obstacle_List; // Hindernisse (Wände)
-    std::vector<enemy::Enemy_Base_Class*>& enemy_List;           // Referenz auf externe Gegnerliste
-
-    float spawn_Rate_;           // Spawnrate (Gegner pro Sekunde)
-    int max_Enemies_;            // Maximal erlaubte Gegneranzahl
-
-    float time_Since_Last_Spawn_; // Zeit seit letztem Spawn
-
-    // Prüft, ob der Platz frei ist (keine Kollision)
-    bool Is_Space_Free(const Rectangle& newHitbox) const;
-
-    // erzeugt konkreten Gegner
-    virtual enemy::Enemy_Base_Class* createEnemy(Vector2 position) = 0;
+    // Wir erweitern diese Funktion später für schwieriges Gelände
+    bool IsPositionValid(Vector2 position);
 };
-
-//////BEISPIEL GOBLIN SPAWNER//////
-/*
-//////Goblin Spawner Header//////
-#ifndef GOBLINSPAWNER_H
-#define GOBLINSPAWNER_H
-
-#include "EnemySpawner.h"
-
-// Spawner für Goblins
-class goblinSpawner : public spawner {
-public:
-    goblinSpawner(Rectangle spawner_Area,
-                  const std::vector<Rectangle>& obstacle_List,
-                  std::vector<enemy*>& enemy_List,
-                  float spawn_Rate,
-                  int max_Enemies)
-        : spawner(spawner_Area, obstacle_List, enemy_List, spawn_Rate, max_Enemies) {}
-
-protected:
-    enemy* createEnemy(Vector2 position) override;
-};
-
-
-//////Goblin Spawner CPP//////
-#include "goblinSpawner.h"
-#include "goblin.h"
-
-enemy* goblinSpawner::createEnemy(Vector2 position) {
-    return new goblin(position);
-}
-
-//// in Main ////
-
-// Liste aller Gegner, die vom Spawner erzeugt werden
-std::vector<enemy*> enemy_List;
-
-// Beispielhafte Liste von Hindernissen
-std::vector<Rectangle> wall_List = {
-    {400, 300, 150, 100},
-    {700, 500, 100, 180}
-};
-
-// Spawnbereich des Spawners (x, y, Breite, Höhe)
-Rectangle spawner_Area = {200, 200, 500, 300};
-
-
-goblinSpawner myGoblinSpawner(spawner_Area, wall_List, enemy_List, 1.0f, 10);
-
-while (!WindowShouldClose()) {
-    float dt = GetFrameTime();
-
-    myGoblinSpawner.update(dt);
-
-    BeginDrawing();
-    ClearBackground(RAYWHITE);
-
-    // Spawnerbereich anzeigen (grüner Rahmen)
-    myGoblinSpawner.drawSpawnerArea();
-
-    // Alle Gegner aus der gemeinsamen Liste zeichnen
-    for (auto* e : enemy_List) {
-        e->draw();
-    }
-
-    EndDrawing();
-}
-
-*/
-
 #endif
 
 

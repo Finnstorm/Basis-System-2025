@@ -190,3 +190,11 @@ void Player_Base_Class::Set_Position(Vector2 position)
     this->hitbox.y = position.y;
     this->player_Pos = position;
 }
+float Player_Base_Class::Get_Health() const
+{
+    return this->player_Health;
+}
+bool Player_Base_Class::Is_Dead() const
+{
+    return this->player_Health <= 0;
+}
