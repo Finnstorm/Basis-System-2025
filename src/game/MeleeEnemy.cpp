@@ -41,59 +41,57 @@ namespace enemy {
 void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_Position_Y)
 {
     // --- 1. SETUP ---
-    Enemy_Base_Class::Tick(delta_time); // Aktualisiert den Cooldown-Timer
+    Enemy_Base_Class::Tick(delta_time);
 
-    // Berechne die aktuelle Blickrichtung (nur für die visuelle Darstellung)
-    float delta_x = target_Position_X - (this->hitbox.x + this->hitbox.width / 2.0f);
-    if (delta_x > 2.0f) {
+    Vector2 self_center = { this->hitbox.x + this->hitbox.width / 2.0f, this->hitbox.y + this->hitbox.height / 2.0f };
+    Vector2 target_center = { target_Position_X, target_Position_Y };
+    float distance_to_target = Vector2Distance(self_center, target_center);
+
+    // --- 2. DYNAMISCHE STOPP-DISTANZ BERECHNEN ---
+    float delta_x = std::abs(target_center.x - self_center.x);
+    float delta_y = std::abs(target_center.y - self_center.y);
+    float stopping_distance;
+
+    // Prüfen, ob die Annäherung eher horizontal oder vertikal ist
+    if (delta_x > delta_y) {
+        // Horizontale Annäherung: Distanz basiert auf der Breite.
+        stopping_distance = (this->hitbox.width / 2.0f) + (game::Config::player_Hittbox.x / 2.0f);
+    } else {
+        // Vertikale Annäherung: Distanz basiert auf der Höhe.
+        stopping_distance = (this->hitbox.height / 2.0f) + (game::Config::player_Hittbox.y / 2.0f);
+    }
+
+    // --- 3. BLICKRICHTUNG ---
+    if (target_center.x > self_center.x + 2.0f) {
         facing_Direction = RIGHT;
-    } else if (delta_x < -2.0f) {
+    } else if (target_center.x < self_center.x - 2.0f) {
         facing_Direction = LEFT;
     }
-    // (Blickrichtung wird bei vertikaler Position nicht mehr geändert)
 
-    // --- 2. ZUSTANDS-LOGIK MIT NEUER TRIGGER-PRÜFUNG ---
+    // --- 4. ZUSTANDS-LOGIK ---
     if (currentState == E_ATTACKING) {
-        // Bedingung zum Verlassen des Angriffszustands: Die Animation ist beendet.
         if (attack_animations.count(attack_Direction) && attack_animations.at(attack_Direction).IsFinished()) {
             currentState = E_IDLE;
         }
-    } else { // Wenn wir gerade nicht angreifen...
-
-        // --- NEUE, ROBUSTE ANGRIFFS-PRÜFUNG ---
-        // Erstelle die Hitbox des Spielers für die Kollisionsprüfung.
-        Rectangle player_hitbox = {
-            target_Position_X - game::Config::player_Hittbox.x / 2.0f,
-            target_Position_Y - game::Config::player_Hittbox.y / 2.0f,
-            game::Config::player_Hittbox.x,
-            game::Config::player_Hittbox.y
-        };
-
-        // Erstelle eine leicht vergrößerte "Trigger-Box" um den Gegner.
+    } else {
         float trigger_buffer = 2.0f;
         Rectangle attack_trigger_box = {
-            this->hitbox.x - trigger_buffer,
-            this->hitbox.y - trigger_buffer,
-            this->hitbox.width + (trigger_buffer * 2),
-            this->hitbox.height + (trigger_buffer * 2)
+            this->hitbox.x - trigger_buffer, this->hitbox.y - trigger_buffer,
+            this->hitbox.width + (trigger_buffer * 2), this->hitbox.height + (trigger_buffer * 2)
+        };
+        Rectangle player_hitbox = {
+            target_center.x - game::Config::player_Hittbox.x / 2.0f, target_center.y - game::Config::player_Hittbox.y / 2.0f,
+            game::Config::player_Hittbox.x, game::Config::player_Hittbox.y
         };
 
-        // Bedingung zum Starten eines Angriffs: Die Trigger-Box kollidiert mit dem Spieler UND Cooldown ist bereit.
         if (CheckCollisionRecs(attack_trigger_box, player_hitbox) && attack_Cooldown_Timer <= 0) {
             Melee_Attack();
-        }
-        else {
-            // Wenn nicht angegriffen wird, bestimme, ob gelaufen oder gestanden wird.
-            float distance_to_target = Vector2Distance({this->hitbox.x, this->hitbox.y}, {target_Position_X, target_Position_Y});
-            float stopping_distance = (this->hitbox.width / 2.0f) + (game::Config::player_Hittbox.x / 2.0f);
+        } else {
             currentState = (distance_to_target > stopping_distance) ? E_WALKING : E_IDLE;
         }
     }
 
-    // --- 3. AKTIONS- & ANIMATIONS-LOGIK (unverändert) ---
-    // (Bewegung und Animations-Updates bleiben wie im letzten Schritt)
-    float distance_to_target = Vector2Distance({this->hitbox.x, this->hitbox.y}, {target_Position_X, target_Position_Y});
-    float stopping_distance = (this->hitbox.width / 2.0f) + (game::Config::player_Hittbox.x / 2.0f);
+    // --- 5. AKTION & ANIMATION ---
     if (distance_to_target > stopping_distance) {
         Pathfinding(target_Position_X, target_Position_Y, delta_time, stopping_distance);
     }
