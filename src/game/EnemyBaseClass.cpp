@@ -29,36 +29,39 @@ void Enemy_Base_Class::Take_Damage(int damage_amount)
     enemy_Health -= damage_amount;
 }
 
-void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time)
+    void Enemy_Base_Class::Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time, float stopping_distance)
 {
-    // Berechnet den Richtungs-Vektor vom Gegner zum Ziel.
-    float delta_Vector_X = target_Position_X - this->hitbox.x;
-    float delta_Vector_Y = target_Position_Y - this->hitbox.y;
+    float self_Center_X = this->hitbox.x + this->hitbox.width / 2.0f;
+    float self_Center_Y = this->hitbox.y + this->hitbox.height / 2.0f;
 
-    // Berechnet die exakte Distanz zum Ziel.
+    float delta_Vector_X = target_Position_X - self_Center_X;
+    float delta_Vector_Y = target_Position_Y - self_Center_Y;
+
     float distance_To_Target = std::sqrt(delta_Vector_X * delta_Vector_X + delta_Vector_Y * delta_Vector_Y);
 
-    // Sicherheitscheck, um eine Division durch Null (Fehler den ich bei meinem Test oft hatte) zu verhindern.
-    // Die Bewegung wird nur ausgeführt, wenn der Gegner sein Ziel noch nicht erreicht hat.
-    if (distance_To_Target > 0.01f)
+    // Berechne die Distanz, die wir uns noch bewegen müssen, um am Ziel anzukommen.
+    float travel_distance = distance_To_Target - stopping_distance;
+
+    // Bewege dich nur, wenn du noch nicht am Ziel bist.
+    if (travel_distance > 0)
     {
-        // Normalisiert den Vektor: Macht den Pfeil zur reinen Richtung, indem seine Länge auf 1 gekürzt wird.
-        // Dies ist der entscheidende Schritt für eine konstante Geschwindigkeit.
         float normalized_Direction_X = delta_Vector_X / distance_To_Target;
         float normalized_Direction_Y = delta_Vector_Y / distance_To_Target;
 
-        // Holt die individuelle Geschwindigkeit dieses Gegners.
-        float current_Movement_Speed = this->Get_Movement_Speed();
+        float movement_Step_Size = this->Get_Movement_Speed() * delta_Time;
 
-        // Berechnet die "Schrittgröße" für diesen einzelnen Frame.
-        float movement_Step_Size = current_Movement_Speed * delta_Time;
+        // --- DER ENTSCHEIDENDE FIX: OVERSHOOT-SCHUTZ ---
+        // Wenn unser nächster Schritt größer ist als die verbleibende Distanz,
+        // setzen wir die Schrittgröße exakt auf diese Distanz.
+        if (movement_Step_Size > travel_distance) {
+            movement_Step_Size = travel_distance;
+        }
 
-        // Bewegt die Hitbox des Gegners um den kleinen Schritt in die korrekte Richtung.
+        // Wende den (möglicherweise gekürzten) Bewegungsschritt an.
         this->hitbox.x += normalized_Direction_X * movement_Step_Size;
         this->hitbox.y += normalized_Direction_Y * movement_Step_Size;
-
     }
-    is_Moving= true;
+    is_Moving = true;
 }
 
 //Core Methoden

@@ -37,7 +37,7 @@ namespace enemy
         void Take_Damage(int damage_amount);
         virtual void Range_Attack();
         virtual void Melee_Attack();
-        virtual void Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time);
+        virtual void Pathfinding(float target_Position_X, float target_Position_Y, float delta_Time, float stopping_distance);
 
         int Get_Health() const { return enemy_Health; }
         int Get_Damage() const { return enemy_Damage; }

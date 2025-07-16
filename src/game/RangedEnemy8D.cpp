@@ -38,7 +38,7 @@ namespace enemy {
               time_since_last_attack(0.0f) {}
 
     void Ranged_Enemy_8_Directional::Tick(float delta_time, float target_Position_X, float target_Position_Y) {
-        this->Pathfinding(target_Position_X, target_Position_Y, delta_time);
+        //this->Pathfinding(target_Position_X, target_Position_Y, delta_time);
         time_since_last_attack += delta_time;
 
         // Check attack conditions

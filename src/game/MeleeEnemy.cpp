@@ -95,7 +95,7 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
     float distance_to_target = Vector2Distance({this->hitbox.x, this->hitbox.y}, {target_Position_X, target_Position_Y});
     float stopping_distance = (this->hitbox.width / 2.0f) + (game::Config::player_Hittbox.x / 2.0f);
     if (distance_to_target > stopping_distance) {
-        Pathfinding(target_Position_X, target_Position_Y, delta_time);
+        Pathfinding(target_Position_X, target_Position_Y, delta_time, stopping_distance);
     }
 
     if (currentState == E_ATTACKING) {
@@ -153,5 +153,6 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
             draw_pos.y = this->hitbox.y - (walk_anim->size.y - this->hitbox.height) / 2.0f;
             walk_anim->Draw_Current_Frame(draw_pos);
         }
+        DrawRectangleLinesEx(this->hitbox, 2.0f, RED);
     }
 }
