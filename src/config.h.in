@@ -55,7 +55,7 @@ namespace game {
 
             // Player_Class_One Animations
 
-            inline static constexpr float player_Walk_Anim_Speed = 1.0f;
+            inline static constexpr float player_Walk_Anim_Speed = 1.9f;
             inline static constexpr int player_Walk_Frame_Count = 14;
             inline static constexpr Vector2 player_Walk_Anim_Size{16,16};
             inline static constexpr const char* kPlayerWalkUpAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Up.png";

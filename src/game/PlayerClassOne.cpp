@@ -125,7 +125,7 @@ void Player_Class_One::Draw()
         draw_pos.y = this->hitbox.y - (current_loop_anim->size.y - this->hitbox.height) / 2.0f;
         current_loop_anim->Draw_Current_Frame({roundf(draw_pos.x), roundf(draw_pos.y)});
     }
-    //DrawRectangleLinesEx(this->hitbox, 2.0f, BLUE);
+    DrawRectangleLinesEx(this->hitbox, 2.0f, BLUE);
 }
 
 void Player_Class_One::Ranged_Attack()
