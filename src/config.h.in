@@ -46,16 +46,16 @@ namespace game {
         inline static constexpr float player_Health_Drain_Rate = 1.0f; // HP-Verlust pro Sekunde
 
         //____________________Spieler Klasse 1 Block____________________________
-        inline static constexpr bool allow_Move_While_Attacking = true;
+        inline static constexpr bool allow_Move_While_Attacking = false;
         inline static constexpr int player_Class_One_Max_Health = 100;
-        inline static constexpr float player_Class_One_Movement_Speed = 15.0f;
+        inline static constexpr float player_Class_One_Movement_Speed = 10.0f;
         inline static constexpr int player_Class_One_Damage = 10;
         inline static constexpr Vector2 player_Spawn_Position{760,192};
         inline static constexpr Vector2 player_Hittbox{16,16};
 
             // Player_Class_One Animations
 
-            inline static constexpr float player_Walk_Anim_Speed = 1.9f;
+            inline static constexpr float player_Walk_Anim_Speed = 2.5f;
             inline static constexpr int player_Walk_Frame_Count = 14;
             inline static constexpr Vector2 player_Walk_Anim_Size{16,16};
             inline static constexpr const char* kPlayerWalkUpAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Up.png";
@@ -97,7 +97,7 @@ namespace game {
         //____________________Gegner 1 Block____________________________
        // Melee_Enemy_Type1 Settings
        inline static constexpr int melee_enemy_1_health = 20;
-       inline static constexpr float melee_enemy_1_movement_speed = 8.0f;
+       inline static constexpr float melee_enemy_1_movement_speed = 7.0f;
        inline static constexpr Vector2 melee_enemy_1_hitbox = {16, 24};
 
        // Melee_Enemy_Type1 Attack
