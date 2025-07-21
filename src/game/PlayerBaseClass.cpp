@@ -10,7 +10,6 @@
 #include "raymath.h"
 #include "../Config.h.in"
 
-// Konstruktor
 Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position)
     : player_Max_Health(max_Health), player_Health((float)max_Health), player_Movement_Speed(movement_Speed),
       player_Damage(damage),
@@ -28,7 +27,6 @@ Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int d
     this->projectile_Speed = game::Config::player_Class_One_Projectile_Speed;
 }
 
-// Destruktor
 Player_Base_Class::~Player_Base_Class()
 {
 
@@ -62,11 +60,7 @@ void Player_Base_Class::Tick(float delta_time)
     if (melee_Cooldown > 0) melee_Cooldown -= delta_time;
     if (range_Attack_Cooldown > 0) range_Attack_Cooldown -= delta_time;
 
-    // Die Logik für den Angriffs-Timeout wird entfernt.
-    // if (currentState == ATTACKING_RANGED) { ... } // LÖSCHEN
-
     is_Moving = false;
-    // Bewegung ist nur vom Input abhängig, nicht mehr vom State (außer allow_Move_While_Attacking ist false)
     if (currentState != ATTACKING_RANGED || game::Config::allow_Move_While_Attacking) {
         Vector2 move_Direction = {0.0f, 0.0f};
         if (IsKeyDown(game::Config::key_Up))    move_Direction.y = -1.0f;

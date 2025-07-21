@@ -20,8 +20,6 @@ bool EnemySpawner::IsPositionValid(Vector2 position) {
             }
         }
     }
-
-
     return true;
 }
 
@@ -40,10 +38,9 @@ void EnemySpawner::SpawnEnemies(int count, Vector2 mapDimensions) {
         worldViewHeight
     };
 
-    // Dieser Puffer bestimmt, wie weit außerhalb der Kamera gespawnt wird.
-    // Ein größerer Wert bedeutet weiter weg.
     float spawnBuffer = 100.0f;
-    Rectangle spawnArea = {
+    Rectangle spawnArea =
+    {
         camView.x - spawnBuffer, camView.y - spawnBuffer,
         camView.width + (spawnBuffer * 2), camView.height + (spawnBuffer * 2)
     };
@@ -54,14 +51,9 @@ void EnemySpawner::SpawnEnemies(int count, Vector2 mapDimensions) {
     while (enemiesSpawned < count && maxAttempts > 0) {
         float randX = (float)GetRandomValue(spawnArea.x, spawnArea.x + spawnArea.width);
         float randY = (float)GetRandomValue(spawnArea.y, spawnArea.y + spawnArea.height);
-
-        // --- NEUER SCHRITT: Position auf Kartengrenzen beschränken ---
-        // Stellt sicher, dass die Koordinaten niemals außerhalb von (0,0) und (mapWidth, mapHeight) liegen.
         randX = Clamp(randX, 0.0f, mapDimensions.x - game::Config::melee_enemy_1_hitbox.x);
         randY = Clamp(randY, 0.0f, mapDimensions.y - game::Config::melee_enemy_1_hitbox.y);
-
         Vector2 spawnPos = {randX, randY};
-
         if (!CheckCollisionPointRec(spawnPos, camView) && IsPositionValid(spawnPos)) {
             objectManagerRef.AddObject(new enemy::Melee_Enemy(spawnPos));
             enemiesSpawned++;

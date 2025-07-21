@@ -21,7 +21,6 @@ Collision_Type Walls::Get_Collision_Type() const
     return Collision_Type::WALL;
 }
 
-//Core Methoden
 void Walls::Tick(float delta_time) {
 
 }

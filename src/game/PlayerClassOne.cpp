@@ -130,13 +130,8 @@ void Player_Class_One::Draw()
 
 void Player_Class_One::Ranged_Attack()
 {
-    // 1. "Einloggen" der Richtung im Moment des Angriffs
     this->attack_Direction = this->facing_Direction;
-
-    // 2. Rufe die Basis-Funktion auf (kümmert sich um Cooldown, Projektil etc.)
     Player_Base_Class::Ranged_Attack();
-
-    // 3. Setze die Animation für die eingeloggte Richtung zurück
     if (ranged_Attack_Animations.count(this->attack_Direction)) {
         ranged_Attack_Animations.at(this->attack_Direction).First_Frame();
     }

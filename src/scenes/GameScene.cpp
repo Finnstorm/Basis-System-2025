@@ -31,15 +31,12 @@ game::scenes::GameScene::GameScene()
 
     enemySpawner = std::make_unique<EnemySpawner>(objectManager, cam);
 
-    // Hole die Kartendimensionen von deiner Screen-Klasse
     Vector2 mapDims = screen.Get_Map_Dimensions();
 
-    // Übergib die Dimensionen als zweites Argument
     int initialEnemies = 3;
     enemySpawner->SpawnEnemies(initialEnemies, mapDims);
 
-    // --- VARIABLEN FÜR DIE NÄCHSTE WELLE VORBEREITEN ---
-    this->enemiesPerWave = game::Config::kEnemySpawn; // Die nächste Welle hat 8 Gegner
+    this->enemiesPerWave = game::Config::kEnemySpawn;
     this->waveTimer = this->waveInterval;
 }
 
@@ -49,20 +46,12 @@ game::scenes::GameScene::~GameScene()
 
 void game::scenes::GameScene::Update()
 {
-    // 1. Auf Spielertod prüfen.
     if (mp.Is_Dead())
     {
-        // Erstelle eine Instanz der neuen Szene, zu der gewechselt werden soll.
         auto newMenuScene = std::make_shared<game::scenes::MenuScene>();
-
-        // Sage der Stage, dass sie zu dieser neuen Szene wechseln soll.
         game::core::Store::stage->SwitchToNewScene("MenuScene", newMenuScene);
-
-        // Beende die Update-Funktion hier, um zu verhindern, dass die tote Szene weiterläuft.
         return;
     }
-
-    // 2. Deine restliche Update-Logik (Wellen, Input, Kollisionen, etc.)
     waveTimer -= dtm.Get_Dt();
 
     if (waveTimer <= 0.0f)
@@ -95,7 +84,6 @@ void game::scenes::GameScene::Update()
 
 void game::scenes::GameScene::Draw()
 {
-    // --- DEIN BISHERIGER ZEICHEN-CODE ---
     BeginMode2D(this->cam->cam);
     screen.Draw_Level(this->cam, false);
     std::sort(objectManager.managed_objects.begin(), objectManager.managed_objects.end(),
@@ -108,16 +96,7 @@ void game::scenes::GameScene::Draw()
     }
     screen.Draw_Level(this->cam, true);
     EndMode2D();
-    // --- ENDE DEINES BISHERIGEN CODES ---
-
-
-    // --- NEUE LEBENSANZEIGE HINZUFÜGEN ---
-    // Hole die aktuellen Lebenspunkte (als ganze Zahl für eine schönere Anzeige)
     int playerHealth = static_cast<int>(mp.Get_Health());
-
-    // Erstelle den Text, der angezeigt werden soll
     std::string healthText = "Leben: " + std::to_string(playerHealth);
-
-    // Zeichne den Text oben links auf den Bildschirm
-    DrawText(healthText.c_str(), 20, 20, 30, WHITE); // Position (20,20), Schriftgröße 30, Farbe LIME
+    DrawText(healthText.c_str(), 20, 20, 30, WHITE);
 }

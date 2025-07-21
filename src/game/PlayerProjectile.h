@@ -16,8 +16,8 @@ namespace game {
         bool is_active;
         int damage;
 
-        Texture2D sprite; // Zurück zu einer einfachen Textur
-        float rotation;   // Wir speichern den Rotationswinkel
+        Texture2D sprite;
+        float rotation;
 
         Player_Projectile(Vector2 start_position, Vector2 direction, float projectile_speed, int final_damage);
         ~Player_Projectile() override;

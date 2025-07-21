@@ -13,7 +13,6 @@ namespace game::scenes
     class GameScene final : public game::core::Scene
     {
     public:
-        // 1. Deklariere objectManager ZUERST, damit es immer existiert.
         Object_Manager objectManager;
 
     private:
@@ -21,14 +20,12 @@ namespace game::scenes
         Rectangle wb{0,0,game::Config::kStageWidth,game::Config::kStageHeight};
         Player_Class_One mp{sp};
         DT::timemachine dtm;
-
-        // 2. Deklariere die Manager hier nur, ohne sie zu initialisieren.
         std::unique_ptr<Collision_Manager> p_cm;
         std::unique_ptr<EnemySpawner> enemySpawner;
 
-        const float waveInterval = Config::kEnemySpawnTime; // 10 Sekunden zwischen den Wellen
-        float waveTimer;                  // Countdown-Timer für die nächste Welle
-        int enemiesPerWave;               // Anzahl der Gegner für die nächste Welle
+        const float waveInterval = Config::kEnemySpawnTime;
+        float waveTimer;
+        int enemiesPerWave;
 
     public:
         GameScene();

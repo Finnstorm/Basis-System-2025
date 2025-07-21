@@ -7,7 +7,6 @@
 
 #include <iostream>
 
-// Implementierung des Konstruktors.
 Object_Manager::Object_Manager()
 {
 
