@@ -12,20 +12,33 @@
 #include "../Config.h.in"
 namespace enemy
 {
+    Texture2D Melee_Enemy::walk_texture_left;
+    Texture2D Melee_Enemy::walk_texture_right;
+    Texture2D Melee_Enemy::attack_texture_left;
+    Texture2D Melee_Enemy::attack_texture_right;
+
+    void Melee_Enemy::Load_Assets()
+    {
+        walk_texture_left = LoadTexture(game::Config::kMeleeEnemy1WalkLeftAnim);
+        walk_texture_right = LoadTexture(game::Config::kMeleeEnemy1WalkRightAnim);
+        attack_texture_left = LoadTexture(game::Config::kMeleeEnemy1AttackLeftAnim);
+        attack_texture_right = LoadTexture(game::Config::kMeleeEnemy1AttackRightAnim);
+    }
+
     Melee_Enemy::Melee_Enemy(Vector2 start_position)
         : Enemy_Base_Class("Bauer", game::Config::melee_enemy_1_health, game::Config::melee_enemy_1_movement_speed,
         game::Config::melee_enemy_1_damage, 10, nullptr, nullptr, start_position,
         game::Config::melee_enemy_1_hitbox.x, game::Config::melee_enemy_1_hitbox.y,
         game::Config::melee_enemy_1_attack_cooldown)
     {
-        walk_animations.try_emplace(LEFT, game::Config::melee_enemy_1_walk_anim_size, game::Config::kMeleeEnemy1WalkLeftAnim,
+        walk_animations.try_emplace(LEFT, game::Config::melee_enemy_1_walk_anim_size, walk_texture_left,
         game::Config::melee_enemy_1_walk_frame_count, game::Config::melee_enemy_1_walk_frame_count, game::Config::melee_enemy_1_walk_anim_speed);
-        walk_animations.try_emplace(RIGHT, game::Config::melee_enemy_1_walk_anim_size, game::Config::kMeleeEnemy1WalkRightAnim,
+        walk_animations.try_emplace(RIGHT, game::Config::melee_enemy_1_walk_anim_size, walk_texture_right,
         game::Config::melee_enemy_1_walk_frame_count, game::Config::melee_enemy_1_walk_frame_count, game::Config::melee_enemy_1_walk_anim_speed);
 
-        attack_animations.try_emplace(LEFT, game::Config::melee_enemy_1_attack_anim_size, game::Config::kMeleeEnemy1AttackLeftAnim,
+        attack_animations.try_emplace(LEFT, game::Config::melee_enemy_1_attack_anim_size, attack_texture_left,
         game::Config::melee_enemy_1_attack_frame_count, game::Config::melee_enemy_1_attack_frame_count, game::Config::melee_enemy_1_attack_anim_speed);
-        attack_animations.try_emplace(RIGHT, game::Config::melee_enemy_1_attack_anim_size, game::Config::kMeleeEnemy1AttackRightAnim,
+        attack_animations.try_emplace(RIGHT, game::Config::melee_enemy_1_attack_anim_size, attack_texture_right,
         game::Config::melee_enemy_1_attack_frame_count, game::Config::melee_enemy_1_attack_frame_count, game::Config::melee_enemy_1_attack_anim_speed);
     }
 

@@ -23,6 +23,21 @@ Animations::Animations(Vector2 sprite_size, const char* filename, int FC, int sp
     }
 }
 
+Animations::Animations(Vector2 sprite_size, Texture2D spritesheet, int FC, int spl, float speed)
+{
+    this->spritesheet = spritesheet; // Direkt die geladene Textur zuweisen
+    this->size = sprite_size;
+    this->frame_Count = FC;
+    this->sprites_per_line = spl > 0 ? spl : 1;
+    this->target = {0, 0, this->size.x, this->size.y};
+
+    if (speed > 0.0f) {
+        this->time_per_frame = 1.0f / speed;
+    } else {
+        this->time_per_frame = 0.0f;
+    }
+}
+
 void Animations::First_Frame()
 {
     target.x = 0;

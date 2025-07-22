@@ -22,6 +22,7 @@ private:
 
 public:
     Animations(Vector2 sprite_size, const char* filename, int FC, int spl, float speed);
+    Animations(Vector2 sprite_size, Texture2D spritesheet, int FC, int spl, float speed);
     Vector2 size;
     void Update_Frame(float delta_time);
     void First_Frame();

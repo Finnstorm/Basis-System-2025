@@ -18,6 +18,22 @@ RepeatAnimation::RepeatAnimation(Vector2 sprite_size, const char* filename, int 
     this->target = { 0, 0, this->size.x, this->size.y };
 }
 
+RepeatAnimation::RepeatAnimation(Vector2 sprite_size, Texture2D spritesheet, int FC, int spl, float speed)
+{
+    if (speed > 0.0f) {
+        this->time_per_frame = 1.0f / speed;
+    } else {
+        this->time_per_frame = 0.0f;
+    }
+
+    this->spritesheet = spritesheet;
+
+    this->size = sprite_size;
+    this->frame_Count = FC;
+    this->sprites_per_line = spl > 0 ? spl : 1;
+    this->target = { 0, 0, this->size.x, this->size.y };
+}
+
 void RepeatAnimation::First_Frame()
 {
     this->current_Frame = 0;

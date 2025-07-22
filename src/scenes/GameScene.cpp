@@ -20,6 +20,7 @@ using namespace std::string_literals;
 
 game::scenes::GameScene::GameScene()
 {
+    enemy::Melee_Enemy::Load_Assets();
     dtm.Start();
     objectManager.AddObject(&mp);
     cam = std::make_shared<Cam>(this->mp);

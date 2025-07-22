@@ -20,11 +20,15 @@ namespace enemy {
         std::map<Facing_Direction, RepeatAnimation> walk_animations;
         std::map<Facing_Direction, Animations> attack_animations;
         bool damage_applied_this_attack = false;
+        static Texture2D walk_texture_left;
+        static Texture2D walk_texture_right;
+        static Texture2D attack_texture_left;
+        static Texture2D attack_texture_right;
 
     public:
         Melee_Enemy(Vector2 start_position);
         ~Melee_Enemy() override = default;
-
+        static void Load_Assets();
         void Tick(float delta_time, float target_Position_X, float target_Position_Y);
         void Draw() override;
         void On_Collision(Collidable* other) override;
