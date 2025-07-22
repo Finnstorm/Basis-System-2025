@@ -47,8 +47,8 @@ namespace game {
 
         //____________________Spieler Klasse 1 Block____________________________
         inline static constexpr bool allow_Move_While_Attacking = false;
-        inline static constexpr int player_Class_One_Max_Health = 1000;
-        inline static constexpr float player_Class_One_Movement_Speed = 20.0f;
+        inline static constexpr int player_Class_One_Max_Health = 100;
+        inline static constexpr float player_Class_One_Movement_Speed = 10.0f;
         inline static constexpr int player_Class_One_Damage = 10;
         inline static constexpr Vector2 player_Spawn_Position{760,192};
         inline static constexpr Vector2 player_Hittbox{16,16};
