@@ -86,11 +86,7 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
         {
             Vector2 seek_force = Calculate_Seek_Force(target_center, distance_to_target, stopping_distance);
             Vector2 separation_force = Calculate_Separation_Force(all_enemies);
-            Vector2 player_separation_force = {0.0f, 0.0f};
-            if (Vector2LengthSqr(seek_force) > 0.0f)
-            {
-                player_separation_force = Calculate_Player_Separation_Force(target_center);
-            }
+            Vector2 player_separation_force = Calculate_Player_Separation_Force(target_center);
             float seek_weight = 2.0f;
             float separation_weight = 1.2f;
             float player_separation_weight = 3.0f;
