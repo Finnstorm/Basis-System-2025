@@ -67,12 +67,25 @@ void game::scenes::GameScene::Update()
 
     Vector2 player_center = mp.Get_Player_Center();
 
+    // NEU: Erstellen Sie eine Liste, die nur die Gegner enthält.
+    std::vector<enemy::Enemy_Base_Class*> all_enemies;
+    for (auto* object : objectManager.managed_objects) {
+        if (auto* enemy = dynamic_cast<enemy::Enemy_Base_Class*>(object)) {
+            all_enemies.push_back(enemy);
+        }
+    }
+
+    // Jetzt iterieren und die Tick-Funktionen aufrufen
     for (auto* object : objectManager.managed_objects) {
         if (auto* enemy = dynamic_cast<enemy::Enemy_Base_Class*>(object)) {
             if (auto* melee_enemy = dynamic_cast<enemy::Melee_Enemy*>(enemy)) {
-                melee_enemy->Tick(dtm.Get_Dt(), player_center.x, player_center.y);
+                // Übergeben Sie die neue Liste als viertes Argument
+                melee_enemy->Tick(dtm.Get_Dt(), player_center.x, player_center.y, all_enemies);
             }
+            // HINWEIS: Falls Sie andere Gegnertypen haben, die eine andere Tick-Funktion benötigen,
+            // müssten Sie hier weitere `else if` Blöcke einfügen.
         } else {
+            // Dies ruft Tick für Objekte auf, die keine Gegner sind (z.B. Spieler)
             object->Tick(dtm.Get_Dt());
         }
     }

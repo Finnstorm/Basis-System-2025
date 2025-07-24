@@ -84,8 +84,7 @@ void Player_Base_Class::On_Collision(Collidable* other)
 	Collision_Type otherType = other->Get_Collision_Type();
 
     if (otherType == Collision_Type::WALL ||
-        otherType == Collision_Type::ENEMY_SPAWNER ||
-        otherType == Collision_Type::ENEMY)
+        otherType == Collision_Type::ENEMY_SPAWNER)
     {
         CollisionResponse::Resolve_Overlap(this, other);
 	}
