@@ -23,9 +23,6 @@ private:
 
 public:
     Collision_Manager(Rectangle world_Bounds,std::vector<Collidable*>& collidables);
-
-    /*void Regist_Object(Collidable* object);
-    void Unregist_Object(Collidable* object);*/
     void Check_Collisions();
 };
 

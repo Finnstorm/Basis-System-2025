@@ -33,14 +33,14 @@ void Object_Manager::ClearAllObjects()
 void Object_Manager::Cleanup_Objects()
 {
     auto new_end = std::remove_if(managed_objects.begin(), managed_objects.end(),
-                                  [](Collidable* obj)
-                                  {
-                                      if (obj->Is_Marked_For_Destruction())
-                                      {
-                                          delete obj;
-                                          return true;
-                                      }
-                                      return false;
-                                  });
+    [](Collidable* obj)
+    {
+        if (obj->Is_Marked_For_Destruction())
+        {
+            delete obj;
+            return true;
+        }
+    return false;
+    });
     managed_objects.erase(new_end, managed_objects.end());
 }

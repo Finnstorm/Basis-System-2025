@@ -86,44 +86,33 @@ void Melee_Enemy::Tick(float delta_time, float target_Position_X, float target_P
         {
             Vector2 seek_force = Calculate_Seek_Force(target_center, distance_to_target, stopping_distance);
             Vector2 separation_force = Calculate_Separation_Force(all_enemies);
-            Vector2 player_separation_force = Calculate_Player_Separation_Force(target_center);
+            Vector2 player_separation_force = {0.0f, 0.0f};
+            if (Vector2LengthSqr(seek_force) > 0.0f)
+            {
+                player_separation_force = Calculate_Player_Separation_Force(target_center);
+            }
             float seek_weight = 2.0f;
             float separation_weight = 1.2f;
             float player_separation_weight = 3.0f;
             Vector2 total_force = {0.0f, 0.0f};
             total_force = Vector2Add(total_force, Vector2Scale(seek_force, seek_weight));
             total_force = Vector2Add(total_force, Vector2Scale(separation_force, separation_weight));
-            total_force = Vector2Add(total_force, Vector2Scale(player_separation_force, player_separation_weight)); // NEU
-            // ---- NEUE PHYSIK-BASIERTE BEWEGUNG ----
-
-            // 1. Beschleunigung aus der Kraft ableiten (wir nehmen Masse = 1 an)
+            total_force = Vector2Add(total_force, Vector2Scale(player_separation_force, player_separation_weight));
             Vector2 acceleration = total_force;
-
-            // 2. Geschwindigkeit durch Beschleunigung aktualisieren
             this->velocity = Vector2Add(this->velocity, Vector2Scale(acceleration, Get_Movement_Speed() * delta_time));
-
-            // 3. Geschwindigkeit auf ein Maximum begrenzen
             float max_speed = Get_Movement_Speed();
             if (Vector2Length(this->velocity) > max_speed)
             {
                 this->velocity = Vector2Scale(Vector2Normalize(this->velocity), max_speed);
             }
-
-            // 4. Position durch Geschwindigkeit aktualisieren
             this->hitbox.x += this->velocity.x * delta_time;
             this->hitbox.y += this->velocity.y * delta_time;
-
-            // 5. Einen leichten "Drag" einbauen, damit die Gegner anhalten, wenn keine Kraft wirkt
-            this->velocity = Vector2Scale(this->velocity, 0.97f);
+            this->velocity = Vector2Scale(this->velocity, 0.93f);
         }
         else
         {
-            // Wenn der Gegner angreift, sollte er stehen bleiben.
             this->velocity = {0.0f, 0.0f};
         }
-
-
-    // Animationslogik (bleibt gleich)
     if (currentState == E_ATTACKING) {
         if (attack_animations.count(attack_Direction)) {
             attack_animations.at(attack_Direction).Update_Frame(delta_time);
@@ -199,10 +188,8 @@ Vector2 Melee_Enemy::Calculate_Seek_Force(Vector2 target_pos, float& distance_to
     Vector2 self_center = { this->hitbox.x + this->hitbox.width / 2.0f, this->hitbox.y + this->hitbox.height / 2.0f };
     Vector2 direction = Vector2Subtract(target_pos, self_center);
     distance_to_target = Vector2Length(direction);
-
-    // Nur bewegen, wenn wir außerhalb der Stoppdistanz sind
     if (distance_to_target <= stopping_distance || distance_to_target == 0.0f) {
-        return {0.0f, 0.0f}; // Keine Kraft
+        return {0.0f, 0.0f};
     }
 
     return Vector2Normalize(direction);
@@ -211,11 +198,10 @@ Vector2 Melee_Enemy::Calculate_Seek_Force(Vector2 target_pos, float& distance_to
 
     Vector2 Melee_Enemy::Calculate_Separation_Force(const std::vector<Enemy_Base_Class*>& all_enemies)
     {
-        float desired_separation = 28.0f; // Kann nach Bedarf angepasst werden
+        float desired_separation = 24.0f;
         Vector2 steer = {0.0f, 0.0f};
         int count = 0;
         Vector2 self_center = { this->hitbox.x + this->hitbox.width / 2.0f, this->hitbox.y + this->hitbox.height / 2.0f };
-
         for (const auto& other : all_enemies)
         {
             if (other == this) continue;
@@ -223,16 +209,14 @@ Vector2 Melee_Enemy::Calculate_Seek_Force(Vector2 target_pos, float& distance_to
             Vector2 other_center = { other->Get_Hitbox().x + other->Get_Hitbox().width / 2.0f, other->Get_Hitbox().y + other->Get_Hitbox().height / 2.0f };
             float d = Vector2Distance(self_center, other_center);
 
-            // Nur wenn sie wirklich zu nah sind
             if ((d > 0) && (d < desired_separation))
             {
                 Vector2 diff = Vector2Subtract(self_center, other_center);
                 Vector2Normalize(diff);
 
-                // NEU: Skaliere die Kraft basierend darauf, wie nah sie sind.
-                // Die Kraft ist am Rand der Zone (d == desired_separation) 0 und wird
-                // stärker, je näher sie kommen (d -> 0).
                 float strength = 1.0f - (d / desired_separation);
+                strength *= strength;
+
                 diff = Vector2Scale(diff, strength);
 
                 steer = Vector2Add(steer, diff);
@@ -255,21 +239,17 @@ Vector2 Melee_Enemy::Calculate_Seek_Force(Vector2 target_pos, float& distance_to
     Vector2 Melee_Enemy::Calculate_Player_Separation_Force(Vector2 player_center) const
     {
         Vector2 self_center = { this->hitbox.x + this->hitbox.width / 2.0f, this->hitbox.y + this->hitbox.height / 2.0f };
-
-        // Ein kleiner Radius um den Spieler, in den Gegner nicht eindringen sollen.
-        // Sollte etwa der halben Breite der Spieler-Hitbox entsprechen.
         float repulsion_radius = game::Config::player_Hittbox.x / 2.0f;
 
         float d = Vector2Distance(self_center, player_center);
 
         if (d < repulsion_radius)
         {
-            // Berechne eine sanfte Abstoßungskraft weg vom Spieler
             Vector2 diff = Vector2Subtract(self_center, player_center);
             Vector2Normalize(diff);
             return diff;
         }
 
-        return {0.0f, 0.0f}; // Keine Kraft, wenn außerhalb des Radius
+        return {0.0f, 0.0f};
     }
 }

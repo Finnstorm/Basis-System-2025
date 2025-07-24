@@ -27,7 +27,6 @@ Collision_Type Consumables::Get_Collision_Type() const
 }
 
 
-//Core Methoden
 void Consumables::Tick(float delta_time)
 {
 
