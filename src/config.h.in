@@ -2,9 +2,11 @@
 
 #include <raylib.h>
 
-namespace game {
-    class Config final {
-    public:
+namespace game
+{
+    class Config final
+    {
+        public:
         inline static constexpr const char* kProjectName = "Gnome Reaper";
         inline static constexpr const char* kProjectVersion = "@PROJECT_VERSION@";
         inline static constexpr const char* kProjectVersionMajor = "@PROJECT_VERSION_MAJOR@";
@@ -15,6 +17,11 @@ namespace game {
         inline static constexpr int kStageWidth = 1920;
         inline static constexpr int kStageHeight = 1080;
 
+        //____________________Cam stuff____________________________
+        inline static constexpr const int cam_start_pos_x = 0;
+        inline static constexpr const int cam_start_pos_y = 0;
+        inline static constexpr const float cam_zoom = 5;
+
         // Target FPS, default is 60 fps
         inline static constexpr int kTargetFps = 60;
 
@@ -23,7 +30,6 @@ namespace game {
 
         // Define if the game uses a mouse/mouse pointer
         // The mouse position is then accessible in game::core::Store in the mouse_position attribute
-        // Please do not use the Raylib function GetMousePosition()
         inline static constexpr const bool kUseMouse = false;
 
         // Raylib window config flags, e.g. for resizable window and vertical synchronisation
@@ -53,71 +59,129 @@ namespace game {
         inline static constexpr Vector2 player_Spawn_Position{760,192};
         inline static constexpr Vector2 player_Hittbox{16,16};
 
-            // Player_Class_One Animations
+        // ------Player_Class_One Animations------
 
-            inline static constexpr float player_Walk_Anim_Speed = 2.6f;
-            inline static constexpr int player_Walk_Frame_Count = 14;
-            inline static constexpr Vector2 player_Walk_Anim_Size{16,16};
-            inline static constexpr const char* kPlayerWalkUpAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Up.png";
-            inline static constexpr const char* kPlayerWalkDownAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Down.png";
-            inline static constexpr const char* kPlayerWalkLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Left.png";
-            inline static constexpr const char* kPlayerWalkRightAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Right.png";
+        inline static constexpr float player_Walk_Anim_Speed = 2.6f;
+        inline static constexpr int player_Walk_Frame_Count = 14;
+        inline static constexpr Vector2 player_Walk_Anim_Size{16,16};
+        inline static constexpr const char* kPlayerWalkUpAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Up.png";
+        inline static constexpr const char* kPlayerWalkDownAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Down.png";
+        inline static constexpr const char* kPlayerWalkLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Left.png";
+        inline static constexpr const char* kPlayerWalkRightAnim = "../../PieWare/assets/Spritesheets/Gnome_Walking_Right.png";
 
-            inline static constexpr float player_Idle_Anim_Speed = 1.0f;
-            inline static constexpr int player_Idle_Frame_Count = 9;
-            inline static constexpr Vector2 player_Idle_Anim_Size{16,16};
-            inline static constexpr const char* kPlayerIdleUpAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Up.png";
-            inline static constexpr const char* kPlayerIdleDownAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Down.png";
-            inline static constexpr const char* kPlayerIdleLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Left.png";
-            inline static constexpr const char* kPlayerIdleRightAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Right.png";
+        inline static constexpr float player_Idle_Anim_Speed = 1.0f;
+        inline static constexpr int player_Idle_Frame_Count = 9;
+        inline static constexpr Vector2 player_Idle_Anim_Size{16,16};
+        inline static constexpr const char* kPlayerIdleUpAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Up.png";
+        inline static constexpr const char* kPlayerIdleDownAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Down.png";
+        inline static constexpr const char* kPlayerIdleLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Left.png";
+        inline static constexpr const char* kPlayerIdleRightAnim = "../../PieWare/assets/Spritesheets/Gnome_IdleAnimation_Right.png";
 
-            inline static constexpr float player_Ranged_Attack_Anim_Speed = 3.0f;
-            inline static constexpr int player_Ranged_Attack_Frame_Count = 9;
-            inline static constexpr Vector2 player_Ranged_Attack_Anim_Size{32,32};
-            inline static constexpr const char* kPlayerRangeAttackUpAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Up.png";
-            inline static constexpr const char* kPlayerRangeAttackDownAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Down.png";
-            inline static constexpr const char* kPlayerRangeAttackLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Leftt.png";
-            inline static constexpr const char* kPlayerRangeAttackRightAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Right.png";
-            inline static constexpr const char* kPlayerRangeAttackUpLeftAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedLeftUp.png";
-            inline static constexpr const char* kPlayerRangeAttackUpRightAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedRightUp.png";
-            inline static constexpr const char* kPlayerRangeAttackDownLeftAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedLeftDown.png";
-            inline static constexpr const char* kPlayerRangeAttackDownRightAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedRightDown.png";
+        inline static constexpr float player_Ranged_Attack_Anim_Speed = 3.0f;
+        inline static constexpr int player_Ranged_Attack_Frame_Count = 9;
+        inline static constexpr Vector2 player_Ranged_Attack_Anim_Size{32,32};
+        inline static constexpr const char* kPlayerRangeAttackUpAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Up.png";
+        inline static constexpr const char* kPlayerRangeAttackDownAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Down.png";
+        inline static constexpr const char* kPlayerRangeAttackLeftAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Leftt.png";
+        inline static constexpr const char* kPlayerRangeAttackRightAnim = "../../PieWare/assets/Spritesheets/Gnome_ArrowAttack_Right.png";
+        inline static constexpr const char* kPlayerRangeAttackUpLeftAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedLeftUp.png";
+        inline static constexpr const char* kPlayerRangeAttackUpRightAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedRightUp.png";
+        inline static constexpr const char* kPlayerRangeAttackDownLeftAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedLeftDown.png";
+        inline static constexpr const char* kPlayerRangeAttackDownRightAnim = "../../PieWare/assets/Spritesheets/gnoooomeRangedRightDown.png";
 
-            // Player_Range_Attack
-            inline static constexpr float player_Class_One_Projectile_Speed = 40.0f;
-            inline static constexpr float player_Ranged_Attack_Cooldown = 2.5f; // 10 = 1 Sekunde
-            inline static constexpr int projectile_Anim_Frame_Count = 9;
-            inline static constexpr Vector2 projectile_Anim_Size = {8, 8};
-            inline static constexpr Vector2 projectile_Hitbox_Size = {8, 8};
-            inline static constexpr float projectile_Anim_Speed = 3.0f;
-            inline static constexpr float player_Ranged_Damage_Factor = 0.8f;
+        // ------Player_Range_Attack------
+        inline static constexpr float player_Class_One_Projectile_Speed = 40.0f;
+        inline static constexpr float player_Ranged_Attack_Cooldown = 2.5f; // 10 = 1 Sekunde
+        inline static constexpr int projectile_Anim_Frame_Count = 9;
+        inline static constexpr Vector2 projectile_Anim_Size = {8, 8};
+        inline static constexpr Vector2 projectile_Hitbox_Size = {8, 8};
+        inline static constexpr float projectile_Anim_Speed = 3.0f;
+        inline static constexpr float player_Ranged_Damage_Factor = 0.8f;
 
-            inline static constexpr const char* kProjectileSprite = "../../PieWare/assets/Spritesheets/Projectile_Right.png";
+        inline static constexpr const char* kProjectileSprite = "../../PieWare/assets/Spritesheets/Projectile_Right.png";
 
-        //____________________Gegner 1 Block____________________________
-       // Melee_Enemy_Type1 Settings
-       inline static constexpr int melee_enemy_1_health = 20;
-       inline static constexpr float melee_enemy_1_movement_speed = 8.0f;
-       inline static constexpr Vector2 melee_enemy_1_hitbox = {16, 24};
 
-       // Melee_Enemy_Type1 Attack
-       inline static constexpr int melee_enemy_1_damage = 10;
-       inline static constexpr float melee_enemy_1_attack_cooldown = 30.0f; // Abklingzeit bis zum nächsten Angriff
 
-       // Melee_Enemy_Type1 Animations
-       inline static constexpr float melee_enemy_1_walk_anim_speed = 1.0f;
-       inline static constexpr int melee_enemy_1_walk_frame_count = 12;
-       inline static constexpr Vector2 melee_enemy_1_walk_anim_size = {32, 32};
-       inline static constexpr const char* kMeleeEnemy1WalkLeftAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_WalkingLeft_Lv1.png";
-       inline static constexpr const char* kMeleeEnemy1WalkRightAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_WalkingRight_Lv1.png";
 
-       inline static constexpr float melee_enemy_1_attack_anim_speed = 3.0f;
-       inline static constexpr int melee_enemy_1_attack_frame_count = 10;
-       inline static constexpr Vector2 melee_enemy_1_attack_anim_size = {64, 32};
-       inline static constexpr const char* kMeleeEnemy1AttackLeftAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_AttackLeft_Lv1.png";
-       inline static constexpr const char* kMeleeEnemy1AttackRightAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_AttackRightt_Lv1.png"; // Achtung: "Rightt"?
 
-        // Control Settings
+        //____________________Gegner Bauer____________________________
+        // ------Melee_Enemy_Type1 Settings------
+        inline static constexpr int melee_enemy_1_health = 20;
+        inline static constexpr float melee_enemy_1_movement_speed = 8.0f;
+        inline static constexpr Vector2 melee_enemy_1_hitbox = {16, 24};
+
+        // ------Melee_Enemy_Type1 Attack------
+        inline static constexpr int melee_enemy_1_damage = 10;
+        inline static constexpr float melee_enemy_1_attack_cooldown = 30.0f; // Abklingzeit bis zum nächsten Angriff
+
+        // ------Melee_Enemy_Type1 Animations------
+        inline static constexpr float melee_enemy_1_walk_anim_speed = 1.0f;
+        inline static constexpr int melee_enemy_1_walk_frame_count = 12;
+        inline static constexpr Vector2 melee_enemy_1_walk_anim_size = {32, 32};
+        inline static constexpr const char* kMeleeEnemy1WalkLeftAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_WalkingLeft_Lv1.png";
+        inline static constexpr const char* kMeleeEnemy1WalkRightAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_WalkingRight_Lv1.png";
+
+        inline static constexpr float melee_enemy_1_attack_anim_speed = 3.0f;
+        inline static constexpr int melee_enemy_1_attack_frame_count = 10;
+        inline static constexpr Vector2 melee_enemy_1_attack_anim_size = {64, 32};
+        inline static constexpr const char* kMeleeEnemy1AttackLeftAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_AttackLeft_Lv1.png";
+        inline static constexpr const char* kMeleeEnemy1AttackRightAnim = "../../PieWare/assets/Spritesheets/EnemyBauer_AttackRightt_Lv1.png"; // Achtung: "Rightt"?
+
+
+        //____________________Gegner Ritter____________________________
+
+
+
+
+
+        //____________________Wellen Spawner Global____________________________
+        inline static constexpr float kWaveInterval = 20.0f;          // Zeit in Sekunden zwischen dem Start von zwei Wellen.
+        inline static constexpr float kWaveSpawnDuration = 4.0f;      // Zeit in Sekunden, über die die Gegner einer Welle gespawnt werden.
+
+
+
+        //____________________Wellen Spawner Level 1____________________________
+
+        //------ Gegner: Bauer ------
+        inline static constexpr int kMeleeBauer_L1_StartWave = 1;               // Erscheint ab Welle 1.
+        inline static constexpr int kMeleeBauer_L1_SpawnEveryXWaves = 1;        // Erscheint in jeder Welle.
+        inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 3;       // Startet mit 3 Gegnern.
+        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 2;    // Pro Erscheinungswelle kommen 2 dazu.
+        inline static constexpr bool kMeleeBauer_L1_EnableDecrease = true;      // Abschwächung ist aktiviert.
+        inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 10;      // Beginnt mit Welle 10.
+        inline static constexpr int kMeleeBauer_L1_DecreaseAmount = 1;          // Pro Erscheinungswelle wird es 1 weniger.
+
+        //------ Gegner: Ritter ------
+
+
+
+        //____________________Wellen Spawner Level 2____________________________
+
+        //------ Gegner: Bauer ------
+        inline static constexpr int kMeleeBauer_L2_StartWave = 3;                   // Erscheint in Level 2 erst ab Welle 3.
+        inline static constexpr int kMeleeBauer_L2_SpawnEveryXWaves = 2;            // Erscheint nur jede zweite Welle (3, 5, 7...).
+        inline static constexpr int kMeleeBauer_L2_InitialSpawnCount = 10;          // Startet hier direkt mit 10.
+        inline static constexpr int kMeleeBauer_L2_IncreasePerSpawnWave = 5;        // Erhöht sich schneller.
+        inline static constexpr bool kMeleeBauer_L2_EnableDecrease = false;         // Keine Abschwächung in diesem Level.
+        inline static constexpr int kMeleeBauer_L2_DecreaseStartWave = 999;         // Irrelevanter Wert.
+        inline static constexpr int kMeleeBauer_L2_DecreaseAmount = 0;              // Irrelevanter Wert.
+
+
+
+        //____________________Gegner Schwarm Muster____________________________
+        //------ Standard ------
+        inline static constexpr float kMeleeBauer_SeekWeight = 2.0f;
+        inline static constexpr float kMeleeBauer_SeparationWeight = 1.2f;
+        inline static constexpr float kMeleeBauer_PlayerSeparationWeight = 3.0f;
+        inline static constexpr float kMeleeBauer_DesiredSeparation = 24.0f;
+        inline static constexpr float kMeleeBauer_Drag = 0.93f;
+
+        //------ Fernkämpfer ------
+
+
+
+
+        //____________________Control Settings____________________________
         inline static constexpr const int key_Up = KEY_W;
         inline static constexpr const int key_Down = KEY_S;
         inline static constexpr const int key_Left = KEY_A;
@@ -127,29 +191,23 @@ namespace game {
         inline static constexpr const int key_Ranged_Attack = KEY_K;
         inline static constexpr const int key_Use_Item = KEY_L;
 
-        //Cam stuff
-        inline static constexpr const int cam_start_pos_x = 0;
-        inline static constexpr const int cam_start_pos_y = 0;
-        inline static constexpr const float cam_zoom = 5;
 
-        // Wellen Spawner
-        inline static constexpr const int  kEnemySpawn = 2;
-        inline static constexpr const int  kEnemySpawnTime = 300; //100 = 10 Sekunden
-         // Levelmap-file paths
-                // Lvl_Nbr gets changed on level transition, thus also altering the path where Screen.Draw_Level() loads the
-                // levelmap from
-                inline static std::string GetLevelMapPath(int Lvl_Nbr) {
-                    switch (Lvl_Nbr) {
-                        case 1:
-                            return "../../assets/Tiled/Levelmaps/Level_1.json";
-                        case 2:
-                            return "../../assets/Tiled/Levelmaps/lvl2.json";
-                        case 3:
-                            return "assets/maps/level3.json";
-                        default:
-                            return "assets/maps/default.json";
-                    }
-                }
-
-    };
-}
+        // Levelmap-file paths
+        // Lvl_Nbr gets changed on level transition, thus also altering the path where Screen.Draw_Level() loads the
+        // levelmap from
+        inline static std::string GetLevelMapPath(int Lvl_Nbr)
+        {
+            switch (Lvl_Nbr)
+            {
+                case 1:
+                return "../../assets/Tiled/Levelmaps/Level_1.json";
+                case 2:
+                return "../../assets/Tiled/Levelmaps/lvl2.json";
+                case 3:
+                return "assets/maps/level3.json";
+                default:
+                return "assets/maps/default.json";
+            }
+        }
+    }
+};
