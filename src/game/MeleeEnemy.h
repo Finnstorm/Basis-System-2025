@@ -1,7 +1,3 @@
-//
-// Created by Manza on 6/22/2025.
-//
-
 #pragma once
 #include "EnemyBaseClass.h"
 #include "../core/Animations.h"
@@ -11,10 +7,11 @@
 
 enum EnemyState { E_IDLE, E_WALKING, E_ATTACKING };
 
-namespace enemy {
-    class Melee_Enemy : public Enemy_Base_Class {
+namespace enemy
+{
+    class Melee_Enemy : public Enemy_Base_Class
+    {
     private:
-        Vector2 velocity = {0.0f, 0.0f};
         EnemyState currentState = E_WALKING;
         Facing_Direction facing_Direction = LEFT;
         Facing_Direction attack_Direction = LEFT;
@@ -25,16 +22,14 @@ namespace enemy {
         static Texture2D walk_texture_right;
         static Texture2D attack_texture_left;
         static Texture2D attack_texture_right;
-        Vector2 Calculate_Player_Separation_Force(Vector2 player_center) const;
-        Vector2 Calculate_Seek_Force(Vector2 target_pos, float& distance_to_target, float stopping_distance) const;
-        Vector2 Calculate_Separation_Force(const std::vector<Enemy_Base_Class*>& all_enemies);
 
     public:
         Melee_Enemy(Vector2 start_position);
         ~Melee_Enemy() override = default;
+
         static void Load_Assets();
-        void Tick(float delta_time, float target_Position_X, float target_Position_Y,
-            const std::vector<Enemy_Base_Class*>& all_enemies);
+        void Tick_Melee(float delta_time, Vector2 player_center);
+
         void Draw() override;
         void On_Collision(Collidable* other) override;
         void Melee_Attack() override;

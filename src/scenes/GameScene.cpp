@@ -23,7 +23,7 @@ game::scenes::GameScene::GameScene()
     enemy::Melee_Enemy::Load_Assets();
     dtm.Start();
     objectManager.AddObject(&mp);
-    cam = std::make_shared<Cam>(this->mp);
+    cam = std::make_shared<Cam>(mp);
 
     screen.Load_Game_Objects(objectManager);
 
@@ -31,16 +31,14 @@ game::scenes::GameScene::GameScene()
     p_cm = std::make_unique<Collision_Manager>(wb, objectManager.managed_objects);
 
     enemySpawner = std::make_unique<EnemySpawner>(objectManager, cam);
+    enemySpawner->Register_Enemy_Type("Bauer", [](Vector2 pos) -> enemy::Enemy_Base_Class* {
+        return new enemy::Melee_Enemy(pos);
+    });
 
-    Vector2 mapDims = screen.Get_Map_Dimensions();
-
-    int initialEnemies = 3;
-    enemySpawner->SpawnEnemies(initialEnemies, mapDims);
-
-    this->enemiesPerWave = game::Config::kEnemySpawn;
-    this->waveTimer = this->waveInterval;
+    this->current_level = 1;
+    this->current_wave = 0;
+    this->wave_timer = 3.0f;
 }
-
 game::scenes::GameScene::~GameScene()
 {
 }
@@ -53,20 +51,16 @@ void game::scenes::GameScene::Update()
         game::core::Store::stage->SwitchToNewScene("MenuScene", newMenuScene);
         return;
     }
-    waveTimer -= dtm.Get_Dt();
-
-    if (waveTimer <= 0.0f)
+    wave_timer -= dtm.Get_Dt();
+    if (wave_timer <= 0.0f)
     {
-        Vector2 mapDims = screen.Get_Map_Dimensions();
-        enemySpawner->SpawnEnemies(this->enemiesPerWave, mapDims);
-        this->enemiesPerWave += 5;
-        this->waveTimer = this->waveInterval;
+        current_wave++;
+        enemySpawner->Start_New_Wave(current_wave, current_level);
+        wave_timer = game::Config::kWaveInterval;
     }
 
+    enemySpawner->Update(dtm.Get_Dt());
     mp.Player_Input();
-
-    Vector2 player_center = mp.Get_Player_Center();
-
     std::vector<enemy::Enemy_Base_Class*> all_enemies;
     for (auto* object : objectManager.managed_objects) {
         if (auto* enemy = dynamic_cast<enemy::Enemy_Base_Class*>(object)) {
@@ -74,19 +68,17 @@ void game::scenes::GameScene::Update()
         }
     }
 
+    Vector2 player_center = mp.Get_Player_Center();
+    for (auto* object : objectManager.managed_objects) {
+        object->Tick(dtm.Get_Dt());
 
-    for (auto* object : objectManager.managed_objects)
-    {
         if (auto* enemy = dynamic_cast<enemy::Enemy_Base_Class*>(object))
         {
-            if (auto* melee_enemy = dynamic_cast<enemy::Melee_Enemy*>(enemy))
-            {
-                melee_enemy->Tick(dtm.Get_Dt(), player_center.x, player_center.y, all_enemies);
+            enemy->Tick_AI(dtm.Get_Dt(), player_center, all_enemies);
+
+            if (auto* melee_enemy = dynamic_cast<enemy::Melee_Enemy*>(enemy)) {
+                melee_enemy->Tick_Melee(dtm.Get_Dt(), player_center);
             }
-        }
-        else
-        {
-            object->Tick(dtm.Get_Dt());
         }
     }
 
@@ -110,6 +102,7 @@ void game::scenes::GameScene::Draw()
     }
     screen.Draw_Level(this->cam, true);
     EndMode2D();
+
     int playerHealth = static_cast<int>(mp.Get_Health());
     std::string healthText = "Leben: " + std::to_string(playerHealth);
     DrawText(healthText.c_str(), 20, 20, 30, WHITE);

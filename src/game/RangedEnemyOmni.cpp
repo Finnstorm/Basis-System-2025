@@ -2,7 +2,7 @@
 // Created by Manza on 6/22/2025.
 //
 
-#include "RangedEnemyOmni.h"
+/*#include "RangedEnemyOmni.h"
 #include <cmath>
 #include <raylib.h>
 
@@ -56,4 +56,4 @@ namespace enemy {
             time_since_last_attack = 0.0f;
         }
     }
-}
+}*/

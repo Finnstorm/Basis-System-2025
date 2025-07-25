@@ -135,21 +135,22 @@ namespace game
 
 
         //____________________Wellen Spawner Global____________________________
-        inline static constexpr float kWaveInterval = 20.0f;          // Zeit in Sekunden zwischen dem Start von zwei Wellen.
-        inline static constexpr float kWaveSpawnDuration = 4.0f;      // Zeit in Sekunden, über die die Gegner einer Welle gespawnt werden.
+        inline static constexpr float kWaveInterval = 200.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
+        inline static constexpr float kWaveSpawnDuration = 0.0f;      // Zeit x 10 in Sekunden, über die die Gegner einer Welle gespawnt werden.
 
 
 
         //____________________Wellen Spawner Level 1____________________________
 
         //------ Gegner: Bauer ------
-        inline static constexpr int kMeleeBauer_L1_StartWave = 1;               // Erscheint ab Welle 1.
-        inline static constexpr int kMeleeBauer_L1_SpawnEveryXWaves = 1;        // Erscheint in jeder Welle.
-        inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 3;       // Startet mit 3 Gegnern.
-        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 2;    // Pro Erscheinungswelle kommen 2 dazu.
-        inline static constexpr bool kMeleeBauer_L1_EnableDecrease = true;      // Abschwächung ist aktiviert.
-        inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 10;      // Beginnt mit Welle 10.
-        inline static constexpr int kMeleeBauer_L1_DecreaseAmount = 1;          // Pro Erscheinungswelle wird es 1 weniger.
+        inline static constexpr int kMeleeBauer_L1_StartWave = 1;               // Erscheint ab Welle ....
+        inline static constexpr int kMeleeBauer_L1_SpawnEveryXWaves = 1;        // Erscheint in jeder ... Welle.
+        inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 5;       // Startet mit ... Gegnern.
+        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 1;    // Pro Erscheinungswelle kommen ... dazu.
+        inline static constexpr bool kMeleeBauer_L1_EnableDecrease = true;      // Gegner werden weniger
+        inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 3;      // gegner werden ab ... Welle weniger
+        inline static constexpr int kMeleeBauer_L1_DecreaseAmount = 3;          // Pro Erscheinungswelle werden es ... weniger.
+                                                                                // bei 0 werden es nicht weniger aber bei true kommen nicht mehr pro Welle
 
         //------ Gegner: Ritter ------
 
@@ -168,13 +169,14 @@ namespace game
 
 
 
-        //____________________Gegner Schwarm Muster____________________________
-        //------ Standard ------
-        inline static constexpr float kMeleeBauer_SeekWeight = 2.0f;
-        inline static constexpr float kMeleeBauer_SeparationWeight = 1.2f;
-        inline static constexpr float kMeleeBauer_PlayerSeparationWeight = 3.0f;
-        inline static constexpr float kMeleeBauer_DesiredSeparation = 24.0f;
-        inline static constexpr float kMeleeBauer_Drag = 0.93f;
+        //____________________Gegner Schwarm KI____________________________
+        //------ Standard-Verhalten ------
+        // Diese Werte gelten für alle Gegner, es sei denn, eine abgeleitete Klasse entscheidet sich, andere zu verwenden.
+        inline static constexpr float kAIBase_SeekWeight = 2.0f;              // Wie stark der Gegner dem Spieler folgt. Höher = aggressiver.
+        inline static constexpr float kAIBase_SeparationWeight = 1.2f;        // Wie stark Gegner sich gegenseitig abstoßen.
+        inline static constexpr float kAIBase_PlayerSeparationWeight = 3.0f;  // Wie stark der Spieler den Gegner wegdrückt. Verhindert Überlappung.
+        inline static constexpr float kAIBase_DesiredSeparation = 24.0f;      // Der gewünschte Mindestabstand zwischen den Mittelpunkten von zwei Gegnern.
+        inline static constexpr float kAIBase_Drag = 0.93f;                   // Die "Reibung" oder Trägheit. Höher = rutscht mehr, niedriger = bremst schneller.
 
         //------ Fernkämpfer ------
 
@@ -209,5 +211,5 @@ namespace game
                 return "assets/maps/default.json";
             }
         }
-    }
-};
+    };
+}

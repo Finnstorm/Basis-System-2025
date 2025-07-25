@@ -22,10 +22,9 @@ namespace game::scenes
         DT::timemachine dtm;
         std::unique_ptr<Collision_Manager> p_cm;
         std::unique_ptr<EnemySpawner> enemySpawner;
-
-        const float waveInterval = Config::kEnemySpawnTime;
-        float waveTimer;
-        int enemiesPerWave;
+        int current_wave = 0;
+        int current_level = 1;
+        float wave_timer = 0.0f;
 
     public:
         GameScene();
