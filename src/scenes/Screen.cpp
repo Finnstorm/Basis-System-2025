@@ -35,18 +35,33 @@ void Screen::Load_Levelmap() {
     map_Dimensions.y = map->getSize().y * map->getTileSize().y;
 
     // Load texture
-    for (auto &tileset: map->getTilesets()) {
-        std::string image_Path_Raw = tileset.getImagePath().string();
+    for (auto &tileset : map->getTilesets())
+    {
 
-        if (image_Path_Raw.substr(0, 3) == "../") {
-            image_Path_Raw = image_Path_Raw.substr(3);
+        // 1. Wir definieren das Basisverzeichnis, von dem aus der relative Pfad des Bildes gilt.
+        std::string tileset_json_base_dir = "assets/Tiled/Tilesets/";
+
+        // 2. Wir holen den reinen Bildpfad aus den Daten (z.B. "../Tileset-pngs/Level_1_Tileset.png")
+        std::string image_path_relative = tileset.getImagePath().string();
+
+        // 3. Wir kombinieren die Pfade. fs::path kümmert sich um die "/" und "\"
+        fs::path final_path = fs::path(tileset_json_base_dir) / fs::path(image_path_relative);
+
+        // 4. Wir laden die Textur mit dem normalisierten Pfad.
+        // .canonical() löst ".." auf und macht den Pfad absolut.
+        // .string() wandelt den Pfad in einen std::string um.
+        // .c_str() gibt den für Raylib benötigten const char* zurück.
+        tileatlas_Texture = LoadTexture(fs::canonical(final_path).string().c_str());
+
+        if (tileatlas_Texture.id == 0)
+        {
+            // Wichtige Debug-Ausgabe, falls es immer noch fehlschlägt
+            std::cerr << "FEHLER: Tileset-Textur konnte nicht geladen werden unter: " << final_path.string() << std::endl;
+            std::cerr << "Versuchter kanonischer Pfad: " << fs::absolute(final_path).string() << std::endl;
         }
-
-        std::string image_Path = "../../assets/Tiled/" + image_Path_Raw;
-        tileatlas_Texture = LoadTexture(image_Path.c_str());
-
-        if (tileatlas_Texture.id == 0) {
-            std::cerr << "Failed to load tile atlas texture: " << image_Path << std::endl;
+        else
+        {
+            std::cout << "Erfolg: Tileset-Textur geladen von: " << fs::canonical(final_path).string() << std::endl;
         }
         break;
     }
