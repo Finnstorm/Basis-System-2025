@@ -60,13 +60,23 @@ void Player_Base_Class::Tick(float delta_time)
     if (melee_Cooldown > 0) melee_Cooldown -= delta_time;
     if (range_Attack_Cooldown > 0) range_Attack_Cooldown -= delta_time;
 
+    Update_Input_Stacks();
+
     is_Moving = false;
     if (currentState != ATTACKING_RANGED || game::Config::allow_Move_While_Attacking) {
         Vector2 move_Direction = {0.0f, 0.0f};
-        if (IsKeyDown(game::Config::key_Up))    move_Direction.y = -1.0f;
-        if (IsKeyDown(game::Config::key_Down))  move_Direction.y = 1.0f;
-        if (IsKeyDown(game::Config::key_Left))  move_Direction.x = -1.0f;
-        if (IsKeyDown(game::Config::key_Right)) move_Direction.x = 1.0f;
+
+        if (!horizontal_inputs.empty()) {
+            Input_Direction current_h = horizontal_inputs.front();
+            if (current_h == Input_Direction::LEFT) move_Direction.x = -1.0f;
+            else if (current_h == Input_Direction::RIGHT) move_Direction.x = 1.0f;
+        }
+
+        if (!vertical_inputs.empty()) {
+            Input_Direction current_v = vertical_inputs.front();
+            if (current_v == Input_Direction::UP) move_Direction.y = -1.0f;
+            else if (current_v == Input_Direction::DOWN) move_Direction.y = 1.0f;
+        }
 
         is_Moving = (move_Direction.x != 0.0f || move_Direction.y != 0.0f);
         if(is_Moving) {
@@ -76,6 +86,7 @@ void Player_Base_Class::Tick(float delta_time)
         }
     }
     player_Pos = {hitbox.x, hitbox.y};
+
     Update_Facing_Direction();
 }
 
@@ -144,21 +155,30 @@ void Player_Base_Class::Update_Previous_Position()
 
 void Player_Base_Class::Update_Facing_Direction()
 {
-    bool up = IsKeyDown(game::Config::key_Up);
-    bool down = IsKeyDown(game::Config::key_Down);
-    bool left = IsKeyDown(game::Config::key_Left);
-    bool right = IsKeyDown(game::Config::key_Right);
+    float move_X = hitbox.x - previous_Position.x;
+    float move_Y = hitbox.y - previous_Position.y;
 
-    if ((up && down) || (left && right)) return;
 
-    if (up && right) facing_Direction = Facing_Direction::UP_RIGHT;
-    else if (up && left) facing_Direction = Facing_Direction::UP_LEFT;
-    else if (down && right) facing_Direction = Facing_Direction::DOWN_RIGHT;
-    else if (down && left) facing_Direction = Facing_Direction::DOWN_LEFT;
-    else if (up) facing_Direction = Facing_Direction::UP;
-    else if (down) facing_Direction = Facing_Direction::DOWN;
-    else if (left) facing_Direction = Facing_Direction::LEFT;
-    else if (right) facing_Direction = Facing_Direction::RIGHT;
+    if (move_X == 0.0f && move_Y == 0.0f) {
+        return;
+    }
+
+    if (move_X > 0.0f)
+    {
+        if (move_Y > 0.0f) facing_Direction = Facing_Direction::DOWN_RIGHT;
+        else if (move_Y < 0.0f) facing_Direction = Facing_Direction::UP_RIGHT;
+        else facing_Direction = Facing_Direction::RIGHT;
+    }
+    else if (move_X < 0.0f)
+    {
+        if (move_Y > 0.0f) facing_Direction = Facing_Direction::DOWN_LEFT;
+        else if (move_Y < 0.0f) facing_Direction = Facing_Direction::UP_LEFT;
+        else facing_Direction = Facing_Direction::LEFT;
+    }
+    else { // Nur vertikale Bewegung
+        if (move_Y > 0.0f) facing_Direction = Facing_Direction::DOWN;
+        else if (move_Y < 0.0f) facing_Direction = Facing_Direction::UP;
+    }
 }
 
 Collision_Type Player_Base_Class::Get_Collision_Type() const
@@ -189,4 +209,19 @@ float Player_Base_Class::Get_Health() const
 bool Player_Base_Class::Is_Dead() const
 {
     return this->player_Health <= 0;
+}
+void Player_Base_Class::Update_Input_Stacks()
+{
+    if (IsKeyPressed(game::Config::key_Left))  horizontal_inputs.push_front(Input_Direction::LEFT);
+    if (IsKeyPressed(game::Config::key_Right)) horizontal_inputs.push_front(Input_Direction::RIGHT);
+
+    if (IsKeyReleased(game::Config::key_Left))  horizontal_inputs.remove(Input_Direction::LEFT);
+    if (IsKeyReleased(game::Config::key_Right)) horizontal_inputs.remove(Input_Direction::RIGHT);
+
+
+    if (IsKeyPressed(game::Config::key_Up))    vertical_inputs.push_front(Input_Direction::UP);
+    if (IsKeyPressed(game::Config::key_Down))  vertical_inputs.push_front(Input_Direction::DOWN);
+
+    if (IsKeyReleased(game::Config::key_Up))    vertical_inputs.remove(Input_Direction::UP);
+    if (IsKeyReleased(game::Config::key_Down))  vertical_inputs.remove(Input_Direction::DOWN);
 }

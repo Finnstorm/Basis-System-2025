@@ -4,6 +4,8 @@
 #pragma once
 
 
+#include <list>
+
 #include "raylib.h"
 #include "Collidable.h"
 #include "CollisionManager.h"
@@ -14,6 +16,7 @@ class Collision_Manager;
 
 enum Facing_Direction {UP, DOWN, LEFT, RIGHT, UP_RIGHT, UP_LEFT, DOWN_RIGHT, DOWN_LEFT, NONE};
 enum PlayerState {IDLE, WALKING, ATTACKING_RANGED, ATTACKING_MELEE};
+enum class Input_Direction { UP, DOWN, LEFT, RIGHT };
 
 class Player_Base_Class : public Collidable
 {
@@ -33,7 +36,8 @@ protected:
 	bool inventory_Is_Full;
 	Facing_Direction facing_Direction = DOWN;
 	bool is_Moving;
-
+	std::list<Input_Direction> horizontal_inputs;
+	std::list<Input_Direction> vertical_inputs;
 
     Texture2D maintex= LoadTexture("assets/graphics/ball.png");
 
@@ -53,6 +57,7 @@ public:
 
 	void Update_Previous_Position();
 	void Update_Facing_Direction();
+	void Update_Input_Stacks();
 
 	void Melee_Attack();
 	virtual void Ranged_Attack();
