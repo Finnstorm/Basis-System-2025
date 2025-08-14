@@ -56,8 +56,8 @@ namespace game
         inline static constexpr int player_Class_One_Max_Health = 100;
         inline static constexpr float player_Class_One_Movement_Speed = 13.0f;
         inline static constexpr float player_Class_One_Damage_Multiplier = 1.0f;
-        inline static constexpr int player_Ranged_Damage_Value = 8;
-        inline static constexpr int player_Melee_Damage_Value = 12;
+        inline static constexpr int player_Ranged_Damage_Value = 10;
+        inline static constexpr int player_Melee_Damage_Value = 30;
         inline static constexpr Vector2 player_Spawn_Position{760,192};
         inline static constexpr Vector2 player_Hittbox{16,16};
 
