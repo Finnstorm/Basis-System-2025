@@ -110,7 +110,7 @@ namespace game
         inline static constexpr Vector2 projectile_Anim_Size = {8, 8};
         inline static constexpr Vector2 projectile_Hitbox_Size = {8, 8};
         inline static constexpr float projectile_Anim_Speed = 3.0f;
-        inline static constexpr float player_Ranged_Damage_Factor = 0.8f;
+        inline static constexpr float player_Ranged_Damage_Factor = 1.0f;
 
         inline static constexpr const char* kProjectileSprite = "PieWare/assets/Spritesheets/Projectile_Right.png";
 
@@ -123,7 +123,7 @@ namespace game
 
         //____________________Gegner Bauer____________________________
         // ------Melee_Enemy_Type1 Settings------
-        inline static constexpr int melee_enemy_1_health = 20;
+        inline static constexpr int melee_enemy_1_health = 30;
         inline static constexpr float melee_enemy_1_movement_speed = 8.0f;
         inline static constexpr Vector2 melee_enemy_1_hitbox = {16, 24};
 
@@ -152,8 +152,8 @@ namespace game
 
 
         //____________________Wellen Spawner Global____________________________
-        inline static constexpr float kWaveInterval = 200.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
-        inline static constexpr float kWaveSpawnDuration = 0.0f;      // Zeit x 10 in Sekunden, über die die Gegner einer Welle gespawnt werden.
+        inline static constexpr float kWaveInterval = 400.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
+        inline static constexpr float kWaveSpawnDuration = 100.0f;      // Zeit x 10 in Sekunden, über die die Gegner einer Welle gespawnt werden.
 
 
 
@@ -162,9 +162,9 @@ namespace game
         //------ Gegner: Bauer ------
         inline static constexpr int kMeleeBauer_L1_StartWave = 1;               // Erscheint ab Welle ....
         inline static constexpr int kMeleeBauer_L1_SpawnEveryXWaves = 1;        // Erscheint in jeder ... Welle.
-        inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 5;       // Startet mit ... Gegnern.
-        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 1;    // Pro Erscheinungswelle kommen ... dazu.
-        inline static constexpr bool kMeleeBauer_L1_EnableDecrease = true;      // Gegner werden weniger
+        inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 4;       // Startet mit ... Gegnern.
+        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 2;    // Pro Erscheinungswelle kommen ... dazu.
+        inline static constexpr bool kMeleeBauer_L1_EnableDecrease = false;      // Gegner werden weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 3;      // gegner werden ab ... Welle weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseAmount = 3;          // Pro Erscheinungswelle werden es ... weniger.
                                                                                 // bei 0 werden es nicht weniger aber bei true kommen nicht mehr pro Welle
