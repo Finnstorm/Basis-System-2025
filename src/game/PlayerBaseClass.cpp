@@ -7,12 +7,13 @@
 #include "PlayerProjectile.h"
 #include "CollisionResponse.h"
 #include "Object_Manager.h"
+#include "PlayerMeleeHitbox.h"
 #include "raymath.h"
 #include "../Config.h.in"
 
-Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, int damage, Vector2 start_Position)
+Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, float damage_multiplier, Vector2 start_Position)
     : player_Max_Health(max_Health), player_Health((float)max_Health), player_Movement_Speed(movement_Speed),
-      player_Damage(damage),
+      player_Damage_Multiplier(damage_multiplier),
       previous_Position(start_Position), melee_Cooldown(0.0f), range_Attack_Cooldown(0.0f),
       inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false)
 {
@@ -106,11 +107,6 @@ void Player_Base_Class::Draw()
     DrawTexture(this->maintex, this->hitbox.x,hitbox.y,WHITE);
 }
 
-void Player_Base_Class::Melee_Attack()
-{
-	melee_Cooldown = 0.0f;
-}
-
 void Player_Base_Class::Ranged_Attack()
 {
     this->range_Attack_Cooldown = game::Config::player_Ranged_Attack_Cooldown;
@@ -133,7 +129,7 @@ void Player_Base_Class::Ranged_Attack()
     float offset_distance = (hitbox.width / 2.0f) + 1;
     Vector2 spawn_position = Vector2Add(Get_Player_Center(), Vector2Scale(fire_direction, offset_distance));
 
-    int final_damage = static_cast<int>(this->player_Damage * game::Config::player_Ranged_Damage_Factor);
+    int final_damage = static_cast<int>(game::Config::player_Ranged_Damage_Value * this->player_Damage_Multiplier);
 
     auto* projectile = new game::Player_Projectile(
         spawn_position,
@@ -175,7 +171,7 @@ void Player_Base_Class::Update_Facing_Direction()
         else if (move_Y < 0.0f) facing_Direction = Facing_Direction::UP_LEFT;
         else facing_Direction = Facing_Direction::LEFT;
     }
-    else { // Nur vertikale Bewegung
+    else {
         if (move_Y > 0.0f) facing_Direction = Facing_Direction::DOWN;
         else if (move_Y < 0.0f) facing_Direction = Facing_Direction::UP;
     }
@@ -224,4 +220,57 @@ void Player_Base_Class::Update_Input_Stacks()
 
     if (IsKeyReleased(game::Config::key_Up))    vertical_inputs.remove(Input_Direction::UP);
     if (IsKeyReleased(game::Config::key_Down))  vertical_inputs.remove(Input_Direction::DOWN);
+}
+
+void Player_Base_Class::Melee_Attack()
+{
+    this->melee_Cooldown = game::Config::player_Melee_Attack_Cooldown;
+    this->currentState = ATTACKING_MELEE;
+
+    // Schadensberechnung (neue Logik)
+    int final_damage = static_cast<int>(game::Config::player_Melee_Damage_Value * this->player_Damage_Multiplier);
+
+    // Hitbox-Berechnung
+    Rectangle attack_hitbox = {0, 0, 0, 0};
+    Vector2 player_center = Get_Player_Center();
+    float reach = game::Config::player_Melee_Reach_Tiles * 16.0f;
+    float width = game::Config::player_Melee_Width_Tiles * 16.0f;
+
+    // Diese Logik platziert das Rechteck basierend auf der Blickrichtung
+    switch (facing_Direction)
+        {
+        case UP:
+            attack_hitbox = {player_center.x - width / 2, hitbox.y - reach, width, reach};
+        break;
+        case DOWN:
+            attack_hitbox = {player_center.x - width / 2, hitbox.y + hitbox.height, width, reach};
+        break;
+        case LEFT:
+            attack_hitbox = {hitbox.x - reach, player_center.y - width / 2, reach, width};
+        break;
+        case RIGHT:
+            attack_hitbox = {hitbox.x + hitbox.width, player_center.y - width / 2, reach, width};
+        break;
+
+        case UP_RIGHT:
+            attack_hitbox = {hitbox.x + hitbox.width, hitbox.y - reach, reach, reach};
+        break;
+        case UP_LEFT:
+            attack_hitbox = { hitbox.x - reach,hitbox.y - reach,reach, reach };
+        break;
+        case DOWN_RIGHT:
+            attack_hitbox = { hitbox.x + hitbox.width, hitbox.y + hitbox.height, reach, reach };
+        break;
+        case DOWN_LEFT:
+            attack_hitbox = { hitbox.x - reach, hitbox.y + hitbox.height, reach, reach };
+        break;
+
+
+    }
+
+    auto* melee_box = new game::Player_Melee_Hitbox(attack_hitbox, final_damage);
+
+    if (object_manager_ptr) {
+        object_manager_ptr->AddObject(melee_box);
+    }
 }

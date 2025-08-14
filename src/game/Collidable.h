@@ -17,7 +17,8 @@ enum class Collision_Type
     ENEMY_PROJECTILE,
     CONSUMABLE,
     PLAYER_MELEE_HITBOX,
-    ENEMY_SPAWNER
+    ENEMY_SPAWNER,
+    PLAYER_MELEE_ATTACK
 };
 
 class Collidable

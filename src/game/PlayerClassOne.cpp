@@ -3,14 +3,12 @@
 //
 
 #include "PlayerClassOne.h"
-
 #include <math.h>
-
 #include "../config.h.in"
 
 Player_Class_One::Player_Class_One(Vector2 start_Position)
     : Player_Base_Class(game::Config::player_Class_One_Max_Health, game::Config::player_Class_One_Movement_Speed,
-        game::Config::player_Class_One_Damage, start_Position)
+        game::Config::player_Class_One_Damage_Multiplier, start_Position)
 {
     int player_Walk_Anim_Speed = game::Config::player_Walk_Anim_Speed;
     Vector2 player_Walk_Anim_Size = game::Config::player_Walk_Anim_Size;
@@ -42,6 +40,19 @@ Player_Class_One::Player_Class_One(Vector2 start_Position)
     ranged_Attack_Animations.try_emplace(UP_RIGHT, player_Ranged_Attack_Anim_Size, game::Config::kPlayerRangeAttackUpRightAnim, player_Ranged_Attack_Frame_Count, sprites_Per_Line_Ranged_Attack,player_Ranged_Attack_Anim_Speed);
     ranged_Attack_Animations.try_emplace(DOWN_LEFT, player_Ranged_Attack_Anim_Size, game::Config::kPlayerRangeAttackDownLeftAnim, player_Ranged_Attack_Frame_Count, sprites_Per_Line_Ranged_Attack, player_Ranged_Attack_Anim_Speed);
     ranged_Attack_Animations.try_emplace(DOWN_RIGHT, player_Ranged_Attack_Anim_Size, game::Config::kPlayerRangeAttackDownRightAnim, player_Ranged_Attack_Frame_Count, sprites_Per_Line_Ranged_Attack,player_Ranged_Attack_Anim_Speed);
+
+    int player_Melee_Attack_Anim_Speed = game::Config::player_Melee_Attack_Anim_Speed;
+    Vector2 player_Melee_Attack_Anim_Size = game::Config::player_Melee_Attack_Anim_Size;
+    int player_Melee_Attack_Frame_Count = game::Config::player_Melee_Attack_Frame_Count;
+    int sprites_Per_Line_Melee_Attack = player_Idle_Frame_Count;
+    melee_Attack_Animations.try_emplace(UP, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackUpAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
+    melee_Attack_Animations.try_emplace(DOWN, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackDownAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
+    melee_Attack_Animations.try_emplace(LEFT, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackLeftAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
+    melee_Attack_Animations.try_emplace(RIGHT, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackRightAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
+    melee_Attack_Animations.try_emplace(UP_LEFT, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackUpLeftAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
+    melee_Attack_Animations.try_emplace(UP_RIGHT, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackUpRightAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
+    melee_Attack_Animations.try_emplace(DOWN_LEFT, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackDownLeftAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack, player_Melee_Attack_Anim_Speed);
+    melee_Attack_Animations.try_emplace(DOWN_RIGHT, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackDownRightAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
 }
 
 
@@ -53,21 +64,37 @@ void Player_Class_One::Tick(float delta_time)
     Player_Base_Class::Tick(delta_time);
 
     if (currentState == ATTACKING_RANGED) {
-        // BENUTZE 'attack_Direction' für die Logik
         if (ranged_Attack_Animations.count(attack_Direction) && ranged_Attack_Animations.at(attack_Direction).IsFinished()) {
             currentState = IDLE;
         }
-    } else {
+    }
+    else if (currentState == ATTACKING_MELEE)
+    {
+        if (melee_Attack_Animations.count(attack_Direction) && melee_Attack_Animations.at(attack_Direction).IsFinished()) {
+            currentState = IDLE;
+        }
+    }
+    else
+    {
         currentState = is_Moving ? WALKING : IDLE;
     }
 
-    if (currentState == ATTACKING_RANGED) {
-        // BENUTZE 'attack_Direction' zum Updaten
-        if (ranged_Attack_Animations.count(attack_Direction)) {
+    if (currentState == ATTACKING_RANGED)
+    {
+        if (ranged_Attack_Animations.count(attack_Direction))
+        {
             ranged_Attack_Animations.at(attack_Direction).Update_Frame(delta_time);
         }
-    } else {
-        // Logik für Laufen/Stehen bleibt wie gehabt
+    }
+    else if (currentState == ATTACKING_MELEE)
+    {
+        if (melee_Attack_Animations.count(attack_Direction))
+        {
+            melee_Attack_Animations.at(attack_Direction).Update_Frame(delta_time);
+        }
+    }
+    else
+    {
         Facing_Direction primaryDirection = facing_Direction;
         switch (facing_Direction) {
             case UP_LEFT: case DOWN_LEFT: primaryDirection = LEFT; break;
@@ -94,12 +121,22 @@ void Player_Class_One::Draw()
     RepeatAnimation* current_loop_anim = nullptr;
     Vector2 draw_pos;
 
-    if (currentState == ATTACKING_RANGED) {
-        // BENUTZE 'attack_Direction' zum Zeichnen
-        if (ranged_Attack_Animations.count(attack_Direction)) {
+    if (currentState == ATTACKING_RANGED)
+    {
+        if (ranged_Attack_Animations.count(attack_Direction))
+        {
             current_attack_anim = &ranged_Attack_Animations.at(attack_Direction);
         }
-    } else {
+    }
+    else if (currentState == ATTACKING_MELEE)
+    {
+        if (melee_Attack_Animations.count(attack_Direction))
+        {
+            current_attack_anim = &melee_Attack_Animations.at(attack_Direction);
+        }
+    }
+    else
+    {
         Facing_Direction primaryDirection = facing_Direction;
         switch (facing_Direction) {
             case UP_LEFT:    primaryDirection = LEFT;  break;
@@ -125,7 +162,10 @@ void Player_Class_One::Draw()
         draw_pos.y = this->hitbox.y - (current_loop_anim->size.y - this->hitbox.height) / 2.0f;
         current_loop_anim->Draw_Current_Frame({roundf(draw_pos.x), roundf(draw_pos.y)});
     }
-    //DrawRectangleLinesEx(this->hitbox, 2.0f, BLUE);
+    if (game::Config::visualize_Player_Hitbox)
+    {
+        DrawRectangleLinesEx(this->hitbox, 1.0f, BLUE);
+    }
 }
 
 void Player_Class_One::Ranged_Attack()
@@ -134,5 +174,13 @@ void Player_Class_One::Ranged_Attack()
     Player_Base_Class::Ranged_Attack();
     if (ranged_Attack_Animations.count(this->attack_Direction)) {
         ranged_Attack_Animations.at(this->attack_Direction).First_Frame();
+    }
+}
+void Player_Class_One::Melee_Attack()
+{
+    this->attack_Direction = this->facing_Direction;
+    Player_Base_Class::Melee_Attack(); // Ruft die Logik der Basisklasse auf
+    if (melee_Attack_Animations.count(this->attack_Direction)) {
+        melee_Attack_Animations.at(this->attack_Direction).First_Frame();
     }
 }

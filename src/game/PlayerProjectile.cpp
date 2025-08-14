@@ -44,6 +44,10 @@ namespace game
         destRec.y = roundf(destRec.y);
 
         DrawTexturePro(this->sprite, sourceRec, destRec, origin, this->rotation, WHITE);
+        if (game::Config::visualize_Attack_Hitboxes)
+        {
+            DrawRectangleLinesEx(this->hitbox, 1.0f, RED);
+        }
     }
 
     Collision_Type Player_Projectile::Get_Collision_Type() const { return Collision_Type::PLAYER_PROJECTILE; }

@@ -40,7 +40,9 @@ add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.
         ../game/EnemySpawner.cpp
         ../game/EnemySpawner.h
         RepeatAnimation.cpp
-        RepeatAnimation.h)
+        RepeatAnimation.h
+        ../game/PlayerMeleeHitbox.cpp
+        ../game/PlayerMeleeHitbox.h)
 
 target_include_directories(core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 

@@ -55,7 +55,9 @@ namespace game
         inline static constexpr bool allow_Move_While_Attacking = true;
         inline static constexpr int player_Class_One_Max_Health = 100;
         inline static constexpr float player_Class_One_Movement_Speed = 13.0f;
-        inline static constexpr int player_Class_One_Damage = 10;
+        inline static constexpr float player_Class_One_Damage_Multiplier = 1.0f;
+        inline static constexpr int player_Ranged_Damage_Value = 8;
+        inline static constexpr int player_Melee_Damage_Value = 12;
         inline static constexpr Vector2 player_Spawn_Position{760,192};
         inline static constexpr Vector2 player_Hittbox{16,16};
 
@@ -89,6 +91,18 @@ namespace game
         inline static constexpr const char* kPlayerRangeAttackDownLeftAnim = "PieWare/assets/Spritesheets/gnoooomeRangedLeftDown.png";
         inline static constexpr const char* kPlayerRangeAttackDownRightAnim = "PieWare/assets/Spritesheets/gnoooomeRangedRightDown.png";
 
+        inline static constexpr float player_Melee_Attack_Anim_Speed = 3.0f;
+        inline static constexpr int player_Melee_Attack_Frame_Count = 9;
+        inline static constexpr Vector2 player_Melee_Attack_Anim_Size{16, 16};
+        inline static constexpr const char* kPlayerMeleeAttackUpAnim = "PieWare/assets/Spritesheets/Gnome_SwordAttack_Up.png";
+        inline static constexpr const char* kPlayerMeleeAttackDownAnim = "PieWare/assets/Spritesheets/Gnome_SwordAttack_Down.png";
+        inline static constexpr const char* kPlayerMeleeAttackLeftAnim = "PieWare/assets/Spritesheets/Gnome_SwordAttack_Left.png";
+        inline static constexpr const char* kPlayerMeleeAttackRightAnim = "PieWare/assets/Spritesheets/Gnome_Sword_Attack_Right.png";
+        inline static constexpr const char* kPlayerMeleeAttackUpLeftAnim = "PieWare/assets/Spritesheets/Gnome_SwordAttack_LeftUp.png";
+        inline static constexpr const char* kPlayerMeleeAttackUpRightAnim = "PieWare/assets/Spritesheets/Gnome_SwordAttack_RightUp.png";
+        inline static constexpr const char* kPlayerMeleeAttackDownLeftAnim = "PieWare/assets/Spritesheets/GnomeSwordAttack_LeftDown.png";
+        inline static constexpr const char* kPlayerMeleeAttackDownRightAnim = "PieWare/assets/Spritesheets/Gnome_SwordAttack_RightDown.png";
+
         // ------Player_Range_Attack------
         inline static constexpr float player_Class_One_Projectile_Speed = 40.0f;
         inline static constexpr float player_Ranged_Attack_Cooldown = 2.5f; // 10 = 1 Sekunde
@@ -100,8 +114,11 @@ namespace game
 
         inline static constexpr const char* kProjectileSprite = "PieWare/assets/Spritesheets/Projectile_Right.png";
 
-
-
+        // ------Player_Melee_Attack------
+        inline static constexpr float player_Melee_Attack_Cooldown = 0.5f;
+        inline static constexpr float player_Melee_Reach_Tiles = 1.5f;
+        inline static constexpr float player_Melee_Width_Tiles = 2.0f;
+        inline static constexpr float player_Melee_Hitbox_Lifetime = 0.2f;
 
 
         //____________________Gegner Bauer____________________________
@@ -193,6 +210,9 @@ namespace game
         inline static constexpr const int key_Ranged_Attack = KEY_K;
         inline static constexpr const int key_Use_Item = KEY_L;
 
+        // ------ DEBUGGING ------
+        inline static constexpr bool visualize_Player_Hitbox = true;
+        inline static constexpr bool visualize_Attack_Hitboxes = true;
 
         // Levelmap-file paths
         // Lvl_Nbr gets changed on level transition, thus also altering the path where Screen.Draw_Level() loads the
