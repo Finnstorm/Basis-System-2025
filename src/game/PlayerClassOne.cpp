@@ -31,7 +31,7 @@ Player_Class_One::Player_Class_One(Vector2 start_Position)
     int player_Ranged_Attack_Anim_Speed = game::Config::player_Ranged_Attack_Anim_Speed;
     Vector2 player_Ranged_Attack_Anim_Size = game::Config::player_Ranged_Attack_Anim_Size;
     int player_Ranged_Attack_Frame_Count = game::Config::player_Ranged_Attack_Frame_Count;
-    int sprites_Per_Line_Ranged_Attack = player_Idle_Frame_Count;
+    int sprites_Per_Line_Ranged_Attack =player_Ranged_Attack_Frame_Count;
     ranged_Attack_Animations.try_emplace(UP, player_Ranged_Attack_Anim_Size, game::Config::kPlayerRangeAttackUpAnim, player_Ranged_Attack_Frame_Count, sprites_Per_Line_Ranged_Attack,player_Ranged_Attack_Anim_Speed);
     ranged_Attack_Animations.try_emplace(DOWN, player_Ranged_Attack_Anim_Size, game::Config::kPlayerRangeAttackDownAnim, player_Ranged_Attack_Frame_Count, sprites_Per_Line_Ranged_Attack,player_Ranged_Attack_Anim_Speed);
     ranged_Attack_Animations.try_emplace(LEFT, player_Ranged_Attack_Anim_Size, game::Config::kPlayerRangeAttackLeftAnim, player_Ranged_Attack_Frame_Count, sprites_Per_Line_Ranged_Attack,player_Ranged_Attack_Anim_Speed);
@@ -44,7 +44,7 @@ Player_Class_One::Player_Class_One(Vector2 start_Position)
     int player_Melee_Attack_Anim_Speed = game::Config::player_Melee_Attack_Anim_Speed;
     Vector2 player_Melee_Attack_Anim_Size = game::Config::player_Melee_Attack_Anim_Size;
     int player_Melee_Attack_Frame_Count = game::Config::player_Melee_Attack_Frame_Count;
-    int sprites_Per_Line_Melee_Attack = player_Idle_Frame_Count;
+    int sprites_Per_Line_Melee_Attack = player_Melee_Attack_Frame_Count;
     melee_Attack_Animations.try_emplace(UP, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackUpAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
     melee_Attack_Animations.try_emplace(DOWN, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackDownAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
     melee_Attack_Animations.try_emplace(LEFT, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackLeftAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
