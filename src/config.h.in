@@ -119,7 +119,10 @@ namespace game
         inline static constexpr float player_Melee_Reach_Tiles = 1.5f;
         inline static constexpr float player_Melee_Width_Tiles = 2.0f;
         inline static constexpr float player_Melee_Hitbox_Lifetime = 0.2f;
-
+            // Diese zwei Werte sagen aus wie weit die Hitbox in den Spieler rein geschoben wird in pixel
+            inline static constexpr float player_Melee_Side_Offset = 4.0f;
+            inline static constexpr float player_Melee_Vertical_Offset = 4.0f;
+            inline static constexpr float player_Melee_Diagonal_Offset = 6.0f;
 
         //____________________Gegner Bauer____________________________
         // ------Melee_Enemy_Type1 Settings------

@@ -227,45 +227,48 @@ void Player_Base_Class::Melee_Attack()
     this->melee_Cooldown = game::Config::player_Melee_Attack_Cooldown;
     this->currentState = ATTACKING_MELEE;
 
-    // Schadensberechnung (neue Logik)
     int final_damage = static_cast<int>(game::Config::player_Melee_Damage_Value * this->player_Damage_Multiplier);
 
-    // Hitbox-Berechnung
     Rectangle attack_hitbox = {0, 0, 0, 0};
     Vector2 player_center = Get_Player_Center();
     float reach = game::Config::player_Melee_Reach_Tiles * 16.0f;
     float width = game::Config::player_Melee_Width_Tiles * 16.0f;
 
-    // Diese Logik platziert das Rechteck basierend auf der Blickrichtung
+    float side_offset = game::Config::player_Melee_Side_Offset;
+    float diag_offset = game::Config::player_Melee_Diagonal_Offset;
+    float vert_offset = game::Config::player_Melee_Vertical_Offset;
+
     switch (facing_Direction)
-        {
+    {
         case UP:
-            attack_hitbox = {player_center.x - width / 2, hitbox.y - reach, width, reach};
+                attack_hitbox = {player_center.x - width / 2, hitbox.y - reach + vert_offset, width, reach};
         break;
         case DOWN:
-            attack_hitbox = {player_center.x - width / 2, hitbox.y + hitbox.height, width, reach};
+                attack_hitbox = {player_center.x - width / 2, hitbox.y + hitbox.height - vert_offset, width, reach};
         break;
+
         case LEFT:
-            attack_hitbox = {hitbox.x - reach, player_center.y - width / 2, reach, width};
+            attack_hitbox = {hitbox.x - reach + side_offset, player_center.y - width / 2, reach, width};
         break;
         case RIGHT:
-            attack_hitbox = {hitbox.x + hitbox.width, player_center.y - width / 2, reach, width};
+            attack_hitbox = {hitbox.x + hitbox.width - side_offset, player_center.y - width / 2, reach, width};
         break;
 
         case UP_RIGHT:
-            attack_hitbox = {hitbox.x + hitbox.width, hitbox.y - reach, reach, reach};
+            attack_hitbox = {hitbox.x + hitbox.width - diag_offset, hitbox.y - reach + diag_offset, reach, reach};
         break;
         case UP_LEFT:
-            attack_hitbox = { hitbox.x - reach,hitbox.y - reach,reach, reach };
+            attack_hitbox = {hitbox.x - reach + diag_offset, hitbox.y - reach + diag_offset, reach, reach};
         break;
         case DOWN_RIGHT:
-            attack_hitbox = { hitbox.x + hitbox.width, hitbox.y + hitbox.height, reach, reach };
+            attack_hitbox = {hitbox.x + hitbox.width - diag_offset, hitbox.y + hitbox.height - diag_offset, reach, reach};
         break;
         case DOWN_LEFT:
-            attack_hitbox = { hitbox.x - reach, hitbox.y + hitbox.height, reach, reach };
+            attack_hitbox = {hitbox.x - reach + diag_offset, hitbox.y + hitbox.height - diag_offset, reach, reach};
         break;
 
-
+        case NONE:
+            return;
     }
 
     auto* melee_box = new game::Player_Melee_Hitbox(attack_hitbox, final_damage);
