@@ -56,7 +56,7 @@ namespace game
         inline static constexpr int player_Class_One_Max_Health = 100;
         inline static constexpr float player_Class_One_Movement_Speed = 13.0f;
         inline static constexpr float player_Class_One_Damage_Multiplier = 1.0f;
-        inline static constexpr int player_Ranged_Damage_Value = 10;
+        inline static constexpr int player_Ranged_Damage_Value = 15;
         inline static constexpr int player_Melee_Damage_Value = 30;
         inline static constexpr Vector2 player_Spawn_Position{760,192};
         inline static constexpr Vector2 player_Hittbox{16,16};
@@ -91,7 +91,7 @@ namespace game
         inline static constexpr const char* kPlayerRangeAttackDownLeftAnim = "PieWare/assets/Spritesheets/gnoooomeRangedLeftDown.png";
         inline static constexpr const char* kPlayerRangeAttackDownRightAnim = "PieWare/assets/Spritesheets/gnoooomeRangedRightDown.png";
 
-        inline static constexpr float player_Melee_Attack_Anim_Speed = 1.5f;
+        inline static constexpr float player_Melee_Attack_Anim_Speed = 1.85f;
         inline static constexpr int player_Melee_Attack_Frame_Count = 13;
         inline static constexpr Vector2 player_Melee_Attack_Anim_Size{48, 48};
         inline static constexpr const char* kPlayerMeleeAttackUpAnim = "PieWare/assets/Spritesheets/Gnome_SwordAttack_Up.png";
@@ -115,14 +115,14 @@ namespace game
         inline static constexpr const char* kProjectileSprite = "PieWare/assets/Spritesheets/Projectile_Right.png";
 
         // ------Player_Melee_Attack------
-        inline static constexpr float player_Melee_Attack_Cooldown = 0.5f;
-        inline static constexpr float player_Melee_Reach_Tiles = 1.5f;
+        inline static constexpr float player_Melee_Attack_Cooldown = 10.0f;
+        inline static constexpr float player_Melee_Reach_Tiles = 1.0f;
         inline static constexpr float player_Melee_Width_Tiles = 2.0f;
-        inline static constexpr float player_Melee_Hitbox_Lifetime = 0.2f;
+        inline static constexpr float player_Melee_Hitbox_Lifetime = 1.0f;
             // Diese zwei Werte sagen aus wie weit die Hitbox in den Spieler rein geschoben wird in pixel
             inline static constexpr float player_Melee_Side_Offset = 4.0f;
             inline static constexpr float player_Melee_Vertical_Offset = 4.0f;
-            inline static constexpr float player_Melee_Diagonal_Offset = 6.0f;
+            inline static constexpr float player_Melee_Diagonal_Offset = 8.0f;
 
         //____________________Gegner Bauer____________________________
         // ------Melee_Enemy_Type1 Settings------
@@ -165,7 +165,7 @@ namespace game
         //------ Gegner: Bauer ------
         inline static constexpr int kMeleeBauer_L1_StartWave = 1;               // Erscheint ab Welle ....
         inline static constexpr int kMeleeBauer_L1_SpawnEveryXWaves = 1;        // Erscheint in jeder ... Welle.
-        inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 4;       // Startet mit ... Gegnern.
+        inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 6;       // Startet mit ... Gegnern.
         inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 2;    // Pro Erscheinungswelle kommen ... dazu.
         inline static constexpr bool kMeleeBauer_L1_EnableDecrease = false;      // Gegner werden weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 3;      // gegner werden ab ... Welle weniger
@@ -214,8 +214,8 @@ namespace game
         inline static constexpr const int key_Use_Item = KEY_L;
 
         // ------ DEBUGGING ------
-        inline static constexpr bool visualize_Player_Hitbox = true;
-        inline static constexpr bool visualize_Attack_Hitboxes = true;
+        inline static constexpr bool visualize_Player_Hitbox = false;
+        inline static constexpr bool visualize_Attack_Hitboxes = false;
 
         // Levelmap-file paths
         // Lvl_Nbr gets changed on level transition, thus also altering the path where Screen.Draw_Level() loads the
