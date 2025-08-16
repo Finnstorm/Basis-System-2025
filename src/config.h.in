@@ -157,7 +157,7 @@ namespace game
         //____________________Wellen Spawner Global____________________________
         inline static constexpr float kWaveInterval = 400.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
         inline static constexpr float kWaveSpawnDuration = 100.0f;      // Zeit x 10 in Sekunden, über die die Gegner einer Welle gespawnt werden.
-
+        inline static constexpr float kFirstWave = 40.0f;
 
 
         //____________________Wellen Spawner Level 1____________________________

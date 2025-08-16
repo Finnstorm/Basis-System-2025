@@ -37,7 +37,7 @@ game::scenes::GameScene::GameScene()
 
     this->current_level = 1;
     this->current_wave = 0;
-    this->wave_timer = 3.0f;
+    this->wave_timer = game::Config::kFirstWave;
 }
 game::scenes::GameScene::~GameScene()
 {
