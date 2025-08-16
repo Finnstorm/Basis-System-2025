@@ -160,8 +160,8 @@ namespace game
         inline static constexpr float kWaveInterval = 400.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
         inline static constexpr float kWaveSpawnDuration = 100.0f;      // Zeit x 10 in Sekunden, über die die Gegner einer Welle gespawnt werden.
         inline static constexpr float kFirstWave = 40.0f;
-        inline static constexpr int kScore_Per_Wave = 500; // Punkte pro neuer Welle
-        inline static constexpr float kScore_Time_Interval = 0.5f; // Sekunden pro Punkt also 0.5 heißt 2 Punkte
+        inline static constexpr int kScore_Per_Wave = 250; // Punkte pro neuer Welle
+        inline static constexpr float kScore_Time_Interval = 5.0f; // Sekunden pro Punkt also 0.5 heißt 2 Punkte
                                                                    // pro Sekunde weil er alle 0.5 Sekunden einen Punkt addiert.
 
         //____________________Wellen Spawner Level 1____________________________
