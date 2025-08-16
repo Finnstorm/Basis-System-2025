@@ -27,7 +27,8 @@ namespace enemy
 
     Melee_Enemy::Melee_Enemy(Vector2 start_position)
         : Enemy_Base_Class( "Bauer", game::Config::melee_enemy_1_health, game::Config::melee_enemy_1_movement_speed,
-        game::Config::melee_enemy_1_damage, start_position, game::Config::melee_enemy_1_hitbox.x,
+        game::Config::melee_enemy_1_damage, game::Config::melee_enemy_1_score_value,
+        game::Config::melee_enemy_1_souls_value, start_position, game::Config::melee_enemy_1_hitbox.x,
         game::Config::melee_enemy_1_hitbox.y, game::Config::melee_enemy_1_attack_cooldown,
         game::Config::kAIBase_SeekWeight, game::Config::kAIBase_SeparationWeight,
         game::Config::kAIBase_PlayerSeparationWeight, game::Config::kAIBase_DesiredSeparation, game::Config::kAIBase_Drag)

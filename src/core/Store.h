@@ -25,5 +25,7 @@ namespace game::core
         /// The actors map can contain shared pointers to actor objects that are to be used across
         /// multiple scenes (e.g. the player actor).
         inline static std::map<std::string, std::shared_ptr<game::core::Actor>> actors = { };
+
+        inline static int last_score = 0;
     };
 }

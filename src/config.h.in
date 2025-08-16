@@ -129,6 +129,8 @@ namespace game
         inline static constexpr int melee_enemy_1_health = 30;
         inline static constexpr float melee_enemy_1_movement_speed = 8.0f;
         inline static constexpr Vector2 melee_enemy_1_hitbox = {16, 24};
+        inline static constexpr int melee_enemy_1_score_value = 100;
+        inline static constexpr int melee_enemy_1_souls_value = 1;
 
         // ------Melee_Enemy_Type1 Attack------
         inline static constexpr int melee_enemy_1_damage = 10;
@@ -158,7 +160,9 @@ namespace game
         inline static constexpr float kWaveInterval = 400.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
         inline static constexpr float kWaveSpawnDuration = 100.0f;      // Zeit x 10 in Sekunden, über die die Gegner einer Welle gespawnt werden.
         inline static constexpr float kFirstWave = 40.0f;
-
+        inline static constexpr int kScore_Per_Wave = 500; // Punkte pro neuer Welle
+        inline static constexpr float kScore_Time_Interval = 0.5f; // Sekunden pro Punkt also 0.5 heißt 2 Punkte
+                                                                   // pro Sekunde weil er alle 0.5 Sekunden einen Punkt addiert.
 
         //____________________Wellen Spawner Level 1____________________________
 
@@ -167,8 +171,8 @@ namespace game
         inline static constexpr int kMeleeBauer_L1_SpawnEveryXWaves = 1;        // Erscheint in jeder ... Welle.
         inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 6;       // Startet mit ... Gegnern.
         inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 2;    // Pro Erscheinungswelle kommen ... dazu.
-        inline static constexpr bool kMeleeBauer_L1_EnableDecrease = false;      // Gegner werden weniger
-        inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 3;      // gegner werden ab ... Welle weniger
+        inline static constexpr bool kMeleeBauer_L1_EnableDecrease = false;     // Gegner werden weniger
+        inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 3;       // gegner werden ab ... Welle weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseAmount = 3;          // Pro Erscheinungswelle werden es ... weniger.
                                                                                 // bei 0 werden es nicht weniger aber bei true kommen nicht mehr pro Welle
 
@@ -193,7 +197,7 @@ namespace game
         //------ Standard-Verhalten ------
         // Diese Werte gelten für alle Gegner, es sei denn, eine abgeleitete Klasse entscheidet sich, andere zu verwenden.
         inline static constexpr float kAIBase_SeekWeight = 2.0f;              // Wie stark der Gegner dem Spieler folgt. Höher = aggressiver.
-        inline static constexpr float kAIBase_SeparationWeight = 1.2f;        // Wie stark Gegner sich gegenseitig abstoßen.
+        inline static constexpr float kAIBase_SeparationWeight = 1.6f;        // Wie stark Gegner sich gegenseitig abstoßen.
         inline static constexpr float kAIBase_PlayerSeparationWeight = 3.0f;  // Wie stark der Spieler den Gegner wegdrückt. Verhindert Überlappung.
         inline static constexpr float kAIBase_DesiredSeparation = 24.0f;      // Der gewünschte Mindestabstand zwischen den Mittelpunkten von zwei Gegnern.
         inline static constexpr float kAIBase_Drag = 0.93f;                   // Die "Reibung" oder Trägheit. Höher = rutscht mehr, niedriger = bremst schneller.

@@ -32,14 +32,15 @@ namespace enemy
         const float attack_Cooldown_Duration;
         float attack_Cooldown_Timer;
 
-        // Helferfunktionen für die KI
+        int score_value;
+        int souls_value;
+
         Vector2 Calculate_Seek_Force(Vector2 target_pos, float& distance_to_target, float stopping_distance) const;
         Vector2 Calculate_Separation_Force(const std::vector<Enemy_Base_Class*>& all_enemies) const;
         Vector2 Calculate_Player_Separation_Force(Vector2 player_center) const;
 
     public:
-        // Der finale Konstruktor
-        Enemy_Base_Class(std::string name, int health, float movement_speed, int damage,
+        Enemy_Base_Class(std::string name, int health, float movement_speed, int damage, int score, int souls,
                          Vector2 start_position, float width, float height, float cooldown_duration,
                          float seek_w, float sep_w, float player_sep_w, float desired_sep, float drag_factor);
 
@@ -56,6 +57,8 @@ namespace enemy
         virtual void Draw() = 0;
         virtual void Melee_Attack();
 
+        int Get_Score_Value() const { return score_value; }
+        int Get_Souls_Value() const { return souls_value; }
         float Get_Movement_Speed() const { return enemy_Movement_Speed; };
         Vector2 Get_Velocity() const { return velocity; }
         Collision_Type Get_Collision_Type() const override { return Collision_Type::ENEMY; }

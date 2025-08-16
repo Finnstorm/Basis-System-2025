@@ -26,6 +26,10 @@ namespace game::scenes
         int current_level = 1;
         float wave_timer = 0.0f;
 
+        int score = 0;
+        int souls = 0;
+        float score_timer = 0.0f;
+
     public:
         GameScene();
         ~GameScene() override;

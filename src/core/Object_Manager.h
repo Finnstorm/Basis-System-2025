@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <algorithm>
-
+#include <functional>
 #include "../game/Collidable.h"
 #include "../game/Walls.h"
 #include "../game/EnemyBaseClass.h"
@@ -23,7 +23,7 @@ public:
     void AddObject(Collidable* object);
     void RemoveObject(Collidable* object);
     void ClearAllObjects();
-    void Cleanup_Objects();
+    void Cleanup_Objects(const std::function<void(Collidable*)>& on_object_cleaned);
 
 
 };

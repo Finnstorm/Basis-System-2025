@@ -16,12 +16,13 @@ namespace enemy
 #include "raymath.h"
 #include <cmath>
 
-Enemy_Base_Class::Enemy_Base_Class(std::string name, int health, float movement_speed, int damage, Vector2 start_position,
-    float width, float height, float cooldown_duration, float seek_w, float sep_w, float player_sep_w, float desired_sep,
-    float drag_factor)
+Enemy_Base_Class::Enemy_Base_Class(std::string name, int health, float movement_speed, int damage, int score, int souls,
+    Vector2 start_position, float width, float height, float cooldown_duration, float seek_w, float sep_w,
+    float player_sep_w, float desired_sep, float drag_factor)
     : enemy_Name(name), enemy_Health(health), enemy_Movement_Speed(movement_speed), enemy_Damage(damage),
-    attack_Cooldown_Duration(cooldown_duration), attack_Cooldown_Timer(0.0f), seek_weight(seek_w), separation_weight(sep_w),
-    player_separation_weight(player_sep_w), desired_separation(desired_sep), drag(drag_factor)
+    score_value(score), souls_value(souls),  attack_Cooldown_Duration(cooldown_duration), attack_Cooldown_Timer(0.0f),
+    seek_weight(seek_w), separation_weight(sep_w),  player_separation_weight(player_sep_w),
+    desired_separation(desired_sep), drag(drag_factor)
     {
         hitbox = {start_position.x, start_position.y, width, height};
     }

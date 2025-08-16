@@ -23,10 +23,8 @@ void EnemySpawner::Start_New_Wave(int wave_number, int level_number)
     wave_spawn_queue.clear();
     total_enemies_this_wave = 0;
 
-    // Beispiel für den "Bauer". Dies muss für jeden Gegnertyp erweitert werden.
     if (enemy_factories.count("Bauer"))
     {
-        // Lese die korrekten Config-Werte basierend auf dem Level
         const int start_wave              = (level_number == 1) ? game::Config::kMeleeBauer_L1_StartWave : game::Config::kMeleeBauer_L2_StartWave;
         const int spawn_every_x_waves     = (level_number == 1) ? game::Config::kMeleeBauer_L1_SpawnEveryXWaves : game::Config::kMeleeBauer_L2_SpawnEveryXWaves;
         const int initial_spawn_count     = (level_number == 1) ? game::Config::kMeleeBauer_L1_InitialSpawnCount : game::Config::kMeleeBauer_L2_InitialSpawnCount;
