@@ -42,7 +42,21 @@ add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.
         RepeatAnimation.cpp
         RepeatAnimation.h
         ../game/PlayerMeleeHitbox.cpp
-        ../game/PlayerMeleeHitbox.h)
+        ../game/PlayerMeleeHitbox.h
+        ../game/ItemBase.cpp
+        ../game/ItemBase.h
+        ../game/HealthPotion.cpp
+        ../game/HealthPotion.h
+        ../game/BombExplosionHitbox.cpp
+        ../game/BombExplosionHitbox.h
+        ../game/BombItem.cpp
+        ../game/BombItem.h
+        ../game/TestoNeedle.cpp
+        ../game/TestoNeedle.h
+        ../game/KeyItem.cpp
+        ../game/KeyItem.h
+        ../game/FairyItem.cpp
+        ../game/FairyItem.h)
 
 target_include_directories(core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 

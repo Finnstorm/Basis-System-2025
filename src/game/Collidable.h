@@ -36,7 +36,7 @@ public:
     virtual void On_Collision(Collidable* other) = 0;
     virtual void Set_Position(Vector2 position){}
 
-
+    virtual Vector2 Get_Position() const { return {hitbox.x, hitbox.y}; }
     virtual void Mark_For_Destruction() { this->is_Marked_For_Destruction = true; }
     bool Is_Marked_For_Destruction() const { return this->is_Marked_For_Destruction; }
     virtual float GetYSortPosition() const { return hitbox.y + hitbox.height; }

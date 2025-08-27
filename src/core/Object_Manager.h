@@ -16,6 +16,8 @@ class Object_Manager
 public:
     //öffentliche Vektor, der alle vom Manager verwalteten Collidable-Objekte speichert.
     std::vector<Collidable*> managed_objects;
+    void AddObjectDeferred(Collidable* object);
+    void ProcessAdditions();
 
 public:
 
@@ -24,6 +26,6 @@ public:
     void RemoveObject(Collidable* object);
     void ClearAllObjects();
     void Cleanup_Objects(const std::function<void(Collidable*)>& on_object_cleaned);
-
+    std::vector<Collidable*> objects_to_add;
 
 };

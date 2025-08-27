@@ -20,6 +20,9 @@ private:
     std::map<Facing_Direction, RepeatAnimation> idle_Animations;
     std::map<Facing_Direction, Animations> ranged_Attack_Animations;
     std::map<Facing_Direction, Animations> melee_Attack_Animations;
+    std::map<Facing_Direction, RepeatAnimation> buff_walking_Animations;
+    std::map<Facing_Direction, RepeatAnimation> buff_idle_Animations;
+    std::map<Facing_Direction, Animations> buff_melee_Attack_Animations;
     Facing_Direction attack_Direction = DOWN;
 public:
     PlayerState previousState = IDLE;

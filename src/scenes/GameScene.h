@@ -26,16 +26,18 @@ namespace game::scenes
         int current_level = 1;
         float wave_timer = 0.0f;
 
+        bool fairy_has_spawned = false;
         int score = 0;
         int souls = 0;
         float score_timer = 0.0f;
+        std::string debug_text = "Debug Info:";
 
     public:
         GameScene();
         ~GameScene() override;
         void Update() override;
         void Draw() override;
-
+        int CountItemsOfType(ItemType type, const Object_Manager& objectManager, const Player_Class_One& player);
         int Level_Nbr = 1;
         Screen screen {&Level_Nbr};
         std::shared_ptr<Cam> cam;

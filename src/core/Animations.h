@@ -29,6 +29,8 @@ public:
     void Draw_Current_Frame(Vector2);
     bool IsFinished() const;
     int GetCurrentFrame() const { return current_Frame; }
+    Texture2D GetSpritesheet() const { return spritesheet; }
+    Rectangle GetCurrentFrameRec() const { return target; }
 };
 
 #endif //RAYLIBSTARTER_ANIMATIONS_H

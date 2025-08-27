@@ -17,6 +17,8 @@ Player_Base_Class::Player_Base_Class(int max_Health, float movement_Speed, float
       previous_Position(start_Position), melee_Cooldown(0.0f), range_Attack_Cooldown(0.0f),
       inventory_Is_Full(false), facing_Direction(Facing_Direction::DOWN), is_Moving(false)
 {
+    this->original_movement_speed = movement_Speed;
+    this->original_damage_multiplier = damage_multiplier;
     this->hitbox =
     {
         start_Position.x,
@@ -45,15 +47,23 @@ void Player_Base_Class::Player_Input()
     {
         Ranged_Attack();
     }
-
-    /*if (IsKeyPressed(game::Config::key_Use_Item) && inventory_Is_Full)
-    {
-        Use_Item();
-    }*/
+    Use_Item();
 }
 
 void Player_Base_Class::Tick(float delta_time)
 {
+    if (is_buffed)
+    {
+        buff_timer -= delta_time;
+        if (buff_timer <= 0.0f)
+        {
+            is_buffed = false;
+            player_Movement_Speed = original_movement_speed;
+            player_Damage_Multiplier = original_damage_multiplier;
+            RemoveHeldItem();
+        }
+    }
+
     Update_Previous_Position();
     if (game::Config::enable_Health_Drain) {
         player_Health -= game::Config::player_Health_Drain_Rate * delta_time;
@@ -100,6 +110,22 @@ void Player_Base_Class::On_Collision(Collidable* other)
     {
         CollisionResponse::Resolve_Overlap(this, other);
 	}
+    else if (otherType == Collision_Type::CONSUMABLE)
+    {
+        if (auto* item = dynamic_cast<ItemBase*>(other))
+        {
+            if (item->GetType() == ItemType::FAIRY)
+            {
+                SetHasFairy(true);
+                item->Mark_For_Destruction();
+            }
+
+            else if (!HasItem())
+            {
+                PickUpItem(item);
+            }
+        }
+    }
 }
 
 void Player_Base_Class::Draw()
@@ -109,6 +135,7 @@ void Player_Base_Class::Draw()
 
 void Player_Base_Class::Ranged_Attack()
 {
+    if (is_buffed) return;
     this->range_Attack_Cooldown = game::Config::player_Ranged_Attack_Cooldown;
 
     this->currentState = ATTACKING_RANGED;
@@ -182,30 +209,41 @@ Collision_Type Player_Base_Class::Get_Collision_Type() const
     return Collision_Type::PLAYER;
 }
 
-Vector2 Player_Base_Class::Get_Player_Pos() {
+Vector2 Player_Base_Class::Get_Player_Pos()
+{
     return this->player_Pos;
 }
+
 void Player_Base_Class::Take_Damage(int damage_amount)
 {
+    if (is_buffed && damage_amount > 0) return;
+
     player_Health -= damage_amount;
+    player_Health = std::min(player_Health, (float)player_Max_Health);
 }
-Vector2 Player_Base_Class::Get_Player_Center() {
+
+Vector2 Player_Base_Class::Get_Player_Center()
+{
     return (Vector2){this->hitbox.x + this->hitbox.width / 2, this->hitbox.y + this->hitbox.height / 2};
 }
+
 void Player_Base_Class::Set_Position(Vector2 position)
 {
     this->hitbox.x = position.x;
     this->hitbox.y = position.y;
     this->player_Pos = position;
 }
+
 float Player_Base_Class::Get_Health() const
 {
     return this->player_Health;
 }
+
 bool Player_Base_Class::Is_Dead() const
 {
     return this->player_Health <= 0;
 }
+
 void Player_Base_Class::Update_Input_Stacks()
 {
     if (IsKeyPressed(game::Config::key_Left))  horizontal_inputs.push_front(Input_Direction::LEFT);
@@ -273,7 +311,55 @@ void Player_Base_Class::Melee_Attack()
 
     auto* melee_box = new game::Player_Melee_Hitbox(attack_hitbox, final_damage);
 
-    if (object_manager_ptr) {
+    if (object_manager_ptr)
+    {
         object_manager_ptr->AddObject(melee_box);
     }
+}
+
+bool Player_Base_Class::HasItem() const
+{
+    return held_item != nullptr;
+}
+
+void Player_Base_Class::PickUpItem(ItemBase* item_to_pick_up)
+{
+    if (!HasItem() && object_manager_ptr != nullptr)
+    {
+        held_item = item_to_pick_up;
+        object_manager_ptr->RemoveObject(item_to_pick_up);
+    }
+}
+
+void Player_Base_Class::Use_Item()
+{
+    if (IsKeyPressed(game::Config::key_Use_Item) && HasItem())
+    {
+        held_item->Activate(this);
+    }
+}
+
+void Player_Base_Class::RemoveHeldItem()
+{
+    if (held_item != nullptr)
+    {
+        delete held_item;
+        held_item = nullptr;
+    }
+}
+
+void Player_Base_Class::ApplyTestoBuff()
+{
+    if (!is_buffed)
+    {
+        is_buffed = true;
+        player_Movement_Speed *= game::Config::testo_Needle_Speed_Boost;
+        player_Damage_Multiplier *= game::Config::testo_Needle_Damage_Boost;
+    }
+    buff_timer = game::Config::testo_Needle_Buff_Duration;
+}
+
+bool Player_Base_Class::IsBuffed() const
+{
+    return is_buffed;
 }

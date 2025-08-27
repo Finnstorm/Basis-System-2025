@@ -53,6 +53,37 @@ Player_Class_One::Player_Class_One(Vector2 start_Position)
     melee_Attack_Animations.try_emplace(UP_RIGHT, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackUpRightAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
     melee_Attack_Animations.try_emplace(DOWN_LEFT, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackDownLeftAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack, player_Melee_Attack_Anim_Speed);
     melee_Attack_Animations.try_emplace(DOWN_RIGHT, player_Melee_Attack_Anim_Size, game::Config::kPlayerMeleeAttackDownRightAnim, player_Melee_Attack_Frame_Count, sprites_Per_Line_Melee_Attack,player_Melee_Attack_Anim_Speed);
+
+    int player_Buff_Walk_Anim_Speed = game::Config::player_Buff_Walk_Anim_Speed;
+    Vector2 player_Buff_Walk_Anim_Size = game::Config::player_Buff_Walk_Anim_Size;
+    int player_Buff_Walk_Frame_Count = game::Config::player_Buff_Walk_Frame_Count;
+    int sprites_Per_Line_Buff_Walk = player_Buff_Walk_Frame_Count;
+    buff_walking_Animations.try_emplace(UP, player_Buff_Walk_Anim_Size, game::Config::kPlayerBuffWalkUpAnim, player_Buff_Walk_Frame_Count, sprites_Per_Line_Buff_Walk, player_Buff_Walk_Anim_Speed);
+    buff_walking_Animations.try_emplace(DOWN, player_Buff_Walk_Anim_Size, game::Config::kPlayerBuffWalkDownAnim, player_Buff_Walk_Frame_Count, sprites_Per_Line_Buff_Walk, player_Buff_Walk_Anim_Speed);
+    buff_walking_Animations.try_emplace(LEFT, player_Buff_Walk_Anim_Size, game::Config::kPlayerBuffWalkLeftAnim, player_Buff_Walk_Frame_Count, sprites_Per_Line_Buff_Walk, player_Buff_Walk_Anim_Speed);
+    buff_walking_Animations.try_emplace(RIGHT, player_Buff_Walk_Anim_Size, game::Config::kPlayerBuffWalkRightAnim, player_Buff_Walk_Frame_Count, sprites_Per_Line_Buff_Walk, player_Buff_Walk_Anim_Speed);
+
+    int player_Buff_Idle_Anim_Speed = game::Config::player_Buff_Idle_Anim_Speed;
+    Vector2 player_Buff_Idle_Anim_Size = game::Config::player_Buff_Idle_Anim_Size;
+    int player_Buff_Idle_Frame_Count = game::Config::player_Buff_Idle_Frame_Count;
+    int sprites_Per_Line_Buff_Idle = player_Buff_Idle_Frame_Count;
+    buff_idle_Animations.try_emplace(UP, player_Buff_Idle_Anim_Size, game::Config::kPlayerBuffIdleUpAnim, player_Buff_Idle_Frame_Count, sprites_Per_Line_Buff_Idle, player_Buff_Idle_Anim_Speed);
+    buff_idle_Animations.try_emplace(DOWN, player_Buff_Idle_Anim_Size, game::Config::kPlayerBuffIdleDownAnim, player_Buff_Idle_Frame_Count, sprites_Per_Line_Buff_Idle, player_Buff_Idle_Anim_Speed);
+    buff_idle_Animations.try_emplace(LEFT, player_Buff_Idle_Anim_Size, game::Config::kPlayerBuffIdleLeftAnim, player_Buff_Idle_Frame_Count, sprites_Per_Line_Buff_Idle, player_Buff_Idle_Anim_Speed);
+    buff_idle_Animations.try_emplace(RIGHT, player_Buff_Idle_Anim_Size, game::Config::kPlayerBuffIdleRightAnim, player_Buff_Idle_Frame_Count, sprites_Per_Line_Buff_Idle, player_Buff_Idle_Anim_Speed);
+
+    int player_Buff_Melee_Attack_Anim_Speed = game::Config::player_Buff_Melee_Attack_Anim_Speed;
+    Vector2 player_Buff_Melee_Attack_Anim_Size = game::Config::player_Buff_Melee_Attack_Anim_Size;
+    int player_Buff_Melee_Attack_Frame_Count = game::Config::player_Buff_Melee_Attack_Frame_Count;
+    int sprites_Per_Line_Buff_Melee_Attack = player_Buff_Melee_Attack_Frame_Count;
+    buff_melee_Attack_Animations.try_emplace(UP, player_Buff_Melee_Attack_Anim_Size, game::Config::kPlayerBuffMeleeUpAnim, player_Buff_Melee_Attack_Frame_Count, sprites_Per_Line_Buff_Melee_Attack, player_Buff_Melee_Attack_Anim_Speed);
+    buff_melee_Attack_Animations.try_emplace(DOWN, player_Buff_Melee_Attack_Anim_Size, game::Config::kPlayerBuffMeleeDownAnim, player_Buff_Melee_Attack_Frame_Count, sprites_Per_Line_Buff_Melee_Attack, player_Buff_Melee_Attack_Anim_Speed);
+    buff_melee_Attack_Animations.try_emplace(LEFT, player_Buff_Melee_Attack_Anim_Size, game::Config::kPlayerBuffMeleeLeftAnim, player_Buff_Melee_Attack_Frame_Count, sprites_Per_Line_Buff_Melee_Attack, player_Buff_Melee_Attack_Anim_Speed);
+    buff_melee_Attack_Animations.try_emplace(RIGHT, player_Buff_Melee_Attack_Anim_Size, game::Config::kPlayerBuffMeleeRightAnim, player_Buff_Melee_Attack_Frame_Count, sprites_Per_Line_Buff_Melee_Attack, player_Buff_Melee_Attack_Anim_Speed);
+    buff_melee_Attack_Animations.try_emplace(UP_LEFT, player_Buff_Melee_Attack_Anim_Size, game::Config::kPlayerBuffMeleeUpLeftAnim, player_Buff_Melee_Attack_Frame_Count, sprites_Per_Line_Buff_Melee_Attack, player_Buff_Melee_Attack_Anim_Speed);
+    buff_melee_Attack_Animations.try_emplace(UP_RIGHT, player_Buff_Melee_Attack_Anim_Size, game::Config::kPlayerBuffMeleeUpRightAnim, player_Buff_Melee_Attack_Frame_Count, sprites_Per_Line_Buff_Melee_Attack, player_Buff_Melee_Attack_Anim_Speed);
+    buff_melee_Attack_Animations.try_emplace(DOWN_LEFT, player_Buff_Melee_Attack_Anim_Size, game::Config::kPlayerBuffMeleeDownLeftAnim, player_Buff_Melee_Attack_Frame_Count, sprites_Per_Line_Buff_Melee_Attack, player_Buff_Melee_Attack_Anim_Speed);
+    buff_melee_Attack_Animations.try_emplace(DOWN_RIGHT, player_Buff_Melee_Attack_Anim_Size, game::Config::kPlayerBuffMeleeDownRightAnim, player_Buff_Melee_Attack_Frame_Count, sprites_Per_Line_Buff_Melee_Attack, player_Buff_Melee_Attack_Anim_Speed);
 }
 
 
@@ -61,58 +92,74 @@ Player_Class_One::~Player_Class_One() {}
 
 void Player_Class_One::Tick(float delta_time)
 {
-    Player_Base_Class::Tick(delta_time);
+    Player_Base_Class::Tick(delta_time); // Dies setzt die 'is_Moving'-Variable
 
-    if (currentState == ATTACKING_RANGED) {
-        if (ranged_Attack_Animations.count(attack_Direction) && ranged_Attack_Animations.at(attack_Direction).IsFinished()) {
-            currentState = IDLE;
-        }
-    }
-    else if (currentState == ATTACKING_MELEE)
+    // ====================================================================
+    // 1. ZUSTAND VERWALTEN: Bestimme den korrekten Zustand des Spielers
+    // ====================================================================
+
+    // Wenn eine Angriffs-Animation läuft, prüfe, ob sie beendet ist.
+    if (currentState == ATTACKING_MELEE)
     {
-        if (melee_Attack_Animations.count(attack_Direction) && melee_Attack_Animations.at(attack_Direction).IsFinished()) {
-            currentState = IDLE;
+        auto* active_melee_map = IsBuffed() ? &buff_melee_Attack_Animations : &melee_Attack_Animations;
+        if (!active_melee_map->count(attack_Direction) || active_melee_map->at(attack_Direction).IsFinished())
+        {
+            currentState = IDLE; // Angriff beenden
         }
     }
-    else
+    else if (currentState == ATTACKING_RANGED)
+    {
+        // Annahme: Fernkampf hat keine Buff-Variante
+        if (!ranged_Attack_Animations.count(attack_Direction) || ranged_Attack_Animations.at(attack_Direction).IsFinished())
+        {
+            currentState = IDLE; // Angriff beenden
+        }
+    }
+
+    // Wenn wir nicht mitten in einem Angriff sind, bestimme, ob wir laufen oder stehen.
+    if (currentState != ATTACKING_MELEE && currentState != ATTACKING_RANGED)
     {
         currentState = is_Moving ? WALKING : IDLE;
     }
 
-    if (currentState == ATTACKING_RANGED)
-    {
-        if (ranged_Attack_Animations.count(attack_Direction))
-        {
-            ranged_Attack_Animations.at(attack_Direction).Update_Frame(delta_time);
-        }
-    }
-    else if (currentState == ATTACKING_MELEE)
-    {
-        if (melee_Attack_Animations.count(attack_Direction))
-        {
-            melee_Attack_Animations.at(attack_Direction).Update_Frame(delta_time);
-        }
-    }
-    else
-    {
-        Facing_Direction primaryDirection = facing_Direction;
-        switch (facing_Direction) {
-            case UP_LEFT: case DOWN_LEFT: primaryDirection = LEFT; break;
-            case UP_RIGHT: case DOWN_RIGHT: primaryDirection = RIGHT; break;
-            default: break;
-        }
+    // ====================================================================
+    // 2. ANIMATION AKTUALISIEREN: Update die Frames basierend auf dem finalen Zustand
+    // ====================================================================
 
-        if (currentState == WALKING) {
-            if (walking_Animations.count(primaryDirection)) {
-                walking_Animations.at(primaryDirection).Update_Frame(delta_time);
+    // Wähle die korrekten Animations-Maps basierend auf dem Buff-Status aus
+    auto* active_walking_map = IsBuffed() ? &buff_walking_Animations : &walking_Animations;
+    auto* active_idle_map = IsBuffed() ? &buff_idle_Animations : &idle_Animations;
+    auto* active_melee_map = IsBuffed() ? &buff_melee_Attack_Animations : &melee_Attack_Animations;
+
+    // Vereinfache die Richtung für Lauf- und Idle-Animationen (nur 4 Richtungen)
+    Facing_Direction primaryDirection = facing_Direction;
+    if (facing_Direction == UP_LEFT || facing_Direction == DOWN_LEFT) primaryDirection = LEFT;
+    if (facing_Direction == UP_RIGHT || facing_Direction == DOWN_RIGHT) primaryDirection = RIGHT;
+
+    // Aktualisiere die passende Animation
+    switch (currentState)
+    {
+        case WALKING:
+            if (active_walking_map->count(primaryDirection)) {
+                active_walking_map->at(primaryDirection).Update_Frame(delta_time);
             }
-        } else {
-            if (idle_Animations.count(primaryDirection)) {
-                idle_Animations.at(primaryDirection).Update_Frame(delta_time);
+            break;
+        case IDLE:
+            if (active_idle_map->count(primaryDirection)) {
+                active_idle_map->at(primaryDirection).Update_Frame(delta_time);
             }
-        }
+            break;
+        case ATTACKING_MELEE:
+            if (active_melee_map->count(attack_Direction)) {
+                active_melee_map->at(attack_Direction).Update_Frame(delta_time);
+            }
+            break;
+        case ATTACKING_RANGED:
+            if (ranged_Attack_Animations.count(attack_Direction)) {
+                ranged_Attack_Animations.at(attack_Direction).Update_Frame(delta_time);
+            }
+            break;
     }
-    previousState = currentState;
 }
 
 void Player_Class_One::Draw()
@@ -120,19 +167,29 @@ void Player_Class_One::Draw()
     Animations* current_attack_anim = nullptr;
     RepeatAnimation* current_loop_anim = nullptr;
     Vector2 draw_pos;
+    auto* active_walking_map = &walking_Animations;
+    auto* active_idle_map = &idle_Animations;
+    auto* active_melee_map = &melee_Attack_Animations;
 
-    if (currentState == ATTACKING_RANGED)
+    if (IsBuffed())
+    {
+        active_walking_map = &buff_walking_Animations;
+        active_idle_map = &buff_idle_Animations;
+        active_melee_map = &buff_melee_Attack_Animations;
+    }
+
+    if (currentState == ATTACKING_MELEE)
+    {
+        if (active_melee_map->count(attack_Direction))
+        {
+            current_attack_anim = &active_melee_map->at(attack_Direction);
+        }
+    }
+    else if (currentState == ATTACKING_RANGED)
     {
         if (ranged_Attack_Animations.count(attack_Direction))
         {
             current_attack_anim = &ranged_Attack_Animations.at(attack_Direction);
-        }
-    }
-    else if (currentState == ATTACKING_MELEE)
-    {
-        if (melee_Attack_Animations.count(attack_Direction))
-        {
-            current_attack_anim = &melee_Attack_Animations.at(attack_Direction);
         }
     }
     else
@@ -146,12 +203,16 @@ void Player_Class_One::Draw()
             default: break;
         }
 
-        if (currentState == WALKING) {
-            current_loop_anim = &walking_Animations.at(primaryDirection);
-        } else {
-            current_loop_anim = &idle_Animations.at(primaryDirection);
+        if (currentState == WALKING)
+        {
+            current_loop_anim = &active_walking_map->at(primaryDirection);
+        }
+        else
+        {
+            current_loop_anim = &active_idle_map->at(primaryDirection);
         }
     }
+
 
     if (current_attack_anim != nullptr) {
         draw_pos.x = this->hitbox.x - (current_attack_anim->size.x - this->hitbox.width) / 2.0f;
@@ -179,8 +240,10 @@ void Player_Class_One::Ranged_Attack()
 void Player_Class_One::Melee_Attack()
 {
     this->attack_Direction = this->facing_Direction;
-    Player_Base_Class::Melee_Attack(); // Ruft die Logik der Basisklasse auf
-    if (melee_Attack_Animations.count(this->attack_Direction)) {
-        melee_Attack_Animations.at(this->attack_Direction).First_Frame();
+    Player_Base_Class::Melee_Attack();
+    auto* active_melee_map = IsBuffed() ? &buff_melee_Attack_Animations : &melee_Attack_Animations;
+    if (active_melee_map->count(this->attack_Direction))
+    {
+        active_melee_map->at(this->attack_Direction).First_Frame();
     }
 }

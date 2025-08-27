@@ -2,10 +2,8 @@
 // Created by Kruse on 23/05/2025.
 //
 #pragma once
-
-
+#include "ItemBase.h"
 #include <list>
-
 #include "raylib.h"
 #include "Collidable.h"
 #include "CollisionManager.h"
@@ -28,6 +26,13 @@ protected:
 	float player_Movement_Speed;
 	float player_Damage_Multiplier;
 
+	ItemBase* held_item = nullptr;
+	bool is_buffed = false;
+	float buff_timer = 0.0f;
+	float original_movement_speed;
+	float original_damage_multiplier;
+	bool has_fairy = false;
+
     Vector2 player_Pos;
 	Vector2 previous_Position;
 	Collision_Manager* manager_Ptr;
@@ -48,7 +53,7 @@ public:
 
 	Player_Base_Class(int max_Health, float movement_Speed, float damage_multiplier, Vector2 start_Position);
 	bool Is_Dead() const;
-	// Destruktor
+
 	~Player_Base_Class() override;
 	void Player_Input();
 	void Tick(float delta_time) override;
@@ -61,7 +66,6 @@ public:
 	void Update_Facing_Direction();
 	void Update_Input_Stacks();
 	virtual void Ranged_Attack();
-	void Use_Item();
 	float Get_Health() const;
     Collision_Type Get_Collision_Type() const override;
     Vector2 Get_Player_Pos();
@@ -70,5 +74,15 @@ public:
     void Take_Damage(int damage);
 
 	Object_Manager* object_manager_ptr = nullptr;
+
+	void Use_Item();
+	void PickUpItem(ItemBase* item_to_pick_up);
+	bool HasItem() const;
+	ItemBase* GetHeldItem() const { return held_item; }
+	void RemoveHeldItem();
+	void ApplyTestoBuff();
+	bool IsBuffed() const;
+	void SetHasFairy(bool value) { has_fairy = value; }
+	bool HasFairy() const { return has_fairy; }
 };
 
