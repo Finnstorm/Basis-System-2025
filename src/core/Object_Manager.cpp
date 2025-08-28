@@ -15,7 +15,6 @@ Object_Manager::Object_Manager()
 void Object_Manager::AddObject(Collidable* object)
 {
     managed_objects.push_back(object);
-
 }
 
 void Object_Manager::RemoveObject(Collidable* object)

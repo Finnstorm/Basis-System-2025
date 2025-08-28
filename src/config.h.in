@@ -157,7 +157,7 @@ namespace game
 
 
         //____________________Wellen Spawner Global____________________________
-        inline static constexpr float kWaveInterval = 400.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
+        inline static constexpr float kWaveInterval = 200.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
         inline static constexpr float kWaveSpawnDuration = 100.0f;      // Zeit x 10 in Sekunden, über die die Gegner einer Welle gespawnt werden.
         inline static constexpr float kFirstWave = 40.0f;               // Zeit bis die erste Welle kommt. 40 = 4 Sekunden
         inline static constexpr int kScore_Per_Wave = 250; // Punkte pro neuer Welle
@@ -170,7 +170,7 @@ namespace game
         inline static constexpr int kMeleeBauer_L1_StartWave = 1;               // Erscheint ab Welle ....
         inline static constexpr int kMeleeBauer_L1_SpawnEveryXWaves = 1;        // Erscheint in jeder ... Welle.
         inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 6;       // Startet mit ... Gegnern.
-        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 2;    // Pro Erscheinungswelle kommen ... dazu.
+        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 0;    // Pro Erscheinungswelle kommen ... dazu.
         inline static constexpr bool kMeleeBauer_L1_EnableDecrease = false;     // Gegner werden weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 3;       // gegner werden ab ... Welle weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseAmount = 3;          // Pro Erscheinungswelle werden es ... weniger.
@@ -216,12 +216,12 @@ namespace game
         inline static constexpr float item_Attraction_Speed = 18.0f;        // Geschwindigkeit, mit der das Item zum Spieler gezogen wird
 
         // ------ Item Drop Rates from Enemies ------
-        inline static constexpr int enemy_Item_Drop_Chance_Percent = 12; // Globale Chance in %, dass ein Gegner überhaupt ein Item droppt
+        inline static constexpr int enemy_Item_Drop_Chance_Percent = 100; // Globale Chance in %, dass ein Gegner überhaupt ein Item droppt
 
         // Die folgenden Werte sind "Gewichte". Ein höherer Wert bedeutet eine höhere Chance im Vergleich zu den anderen.
         // Ein Wert von 0 bedeutet, dass dieses Item niemals von Gegnern gedroppt wird. 10 und 1 bedeutet das Item mit 1ß kommt 10 mal häufiger
-        inline static constexpr int item_Drop_Weight_Heal = 30;
-        inline static constexpr int item_Drop_Weight_Bomb = 5;
+        inline static constexpr int item_Drop_Weight_Heal = 0;
+        inline static constexpr int item_Drop_Weight_Bomb = 300;
         inline static constexpr int item_Drop_Weight_TestoNeedle = 1;
         inline static constexpr int item_Drop_Weight_Key = 0; // Schlüssel soll nicht von Gegnern droppen
         inline static constexpr int item_Drop_Weight_Fairy = 0; // Fee soll nicht von Gegnern droppen
