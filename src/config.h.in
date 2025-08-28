@@ -159,7 +159,7 @@ namespace game
         //____________________Wellen Spawner Global____________________________
         inline static constexpr float kWaveInterval = 200.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
         inline static constexpr float kWaveSpawnDuration = 100.0f;      // Zeit x 10 in Sekunden, über die die Gegner einer Welle gespawnt werden.
-        inline static constexpr float kFirstWave = 40.0f;               // Zeit bis die erste Welle kommt. 40 = 4 Sekunden
+        inline static constexpr float kFirstWave = 100.0f;               // Zeit bis die erste Welle kommt. 40 = 4 Sekunden
         inline static constexpr int kScore_Per_Wave = 250; // Punkte pro neuer Welle
         inline static constexpr float kScore_Time_Interval = 5.0f; // Sekunden pro Punkt also 0.5 heißt 2 Punkte
                                                                    // pro Sekunde weil er alle 0.5 Sekunden einen Punkt addiert.
@@ -208,28 +208,28 @@ namespace game
         //____________________Item System Settings____________________________
 
         // ------ General Item Properties ------
-        inline static constexpr float item_Despawn_Time = 300.0f;              // Lebensdauer in Sekunden, bis ein Item verschwindet
-        inline static constexpr float item_Blinking_Start_Time = 20.0f;     // Sekunden vor Despawn, wann das Blinken beginnt 20 = 2 Sekunden
+        inline static constexpr float item_Despawn_Time = 200.0f;              // Lebensdauer in Sekunden, bis ein Item verschwindet
+        inline static constexpr float item_Blinking_Start_Time = 50.0f;     // Sekunden vor Despawn, wann das Blinken beginnt 20 = 2 Sekunden
         inline static constexpr float item_Blink_Interval = 0.4f;           // Zeit in Sekunden pro Blink (an/aus)
         inline static constexpr Vector2 item_Pickup_Hitbox_Size = {16.0f, 16.0f};
-        inline static constexpr Vector2 item_Attraction_Hitbox_Size = {32.0f, 32.0f}; // Größere Hitbox für den "Magnet"-Effekt
-        inline static constexpr float item_Attraction_Speed = 18.0f;        // Geschwindigkeit, mit der das Item zum Spieler gezogen wird
+        inline static constexpr Vector2 item_Attraction_Hitbox_Size = {56.0f, 56.0f}; // Größere Hitbox für den "Magnet"-Effekt
+        inline static constexpr float item_Attraction_Speed = 10.0f;        // Geschwindigkeit, mit der das Item zum Spieler gezogen wird
 
         // ------ Item Drop Rates from Enemies ------
-        inline static constexpr int enemy_Item_Drop_Chance_Percent = 20; // Globale Chance in %, dass ein Gegner überhaupt ein Item droppt
+        inline static constexpr int enemy_Item_Drop_Chance_Percent = 15; // Globale Chance in %, dass ein Gegner überhaupt ein Item droppt
 
         // Die folgenden Werte sind "Gewichte". Ein höherer Wert bedeutet eine höhere Chance im Vergleich zu den anderen.
         // Ein Wert von 0 bedeutet, dass dieses Item niemals von Gegnern gedroppt wird. 10 und 1 bedeutet das Item mit 10 kommt 10 mal häufiger
-        inline static constexpr int item_Drop_Weight_Heal = 30;
-        inline static constexpr int item_Drop_Weight_Bomb = 5;
-        inline static constexpr int item_Drop_Weight_TestoNeedle = 1;
+        inline static constexpr int item_Drop_Weight_Heal = 20;
+        inline static constexpr int item_Drop_Weight_Bomb = 8;
+        inline static constexpr int item_Drop_Weight_TestoNeedle = 0;
         inline static constexpr int item_Drop_Weight_Key = 0; // Schlüssel soll nicht von Gegnern droppen
         inline static constexpr int item_Drop_Weight_Fairy = 0; // Fee soll nicht von Gegnern droppen
 
 
         // ------ Heil-Item: Health Potion ------
         inline static constexpr int health_Potion_Heal_Amount = 50;        // Wie viel Leben wiederhergestellt wird
-        inline static constexpr int health_Potion_Max_On_Map = 5;          // Maximale Anzahl (Map + Inventar)
+        inline static constexpr int health_Potion_Max_On_Map = 2;          // Maximale Anzahl (Map + Inventar)
         inline static constexpr const char* kHealthPotionAnim = "PieWare/assets/Items/Animations/Animation_Healthpotion.png";
         inline static constexpr Vector2 health_Potion_Anim_Size = {16.0f, 16.0f};
         inline static constexpr int health_Potion_Frame_Count = 9;
@@ -298,7 +298,7 @@ namespace game
         inline static constexpr float key_Anim_Speed = 1.0f;
 
         // ------ Feen-Item ------
-        inline static constexpr Vector2 fairy_Spawn_Position = {760.0f, 784.0f}; // Spawn Position des Feenitems
+        inline static constexpr Vector2 fairy_Spawn_Position = {752.0f, 772.0f}; // Spawn Position des Feenitems
         inline static constexpr const char* kFairyAnimLvl1 = "PieWare/assets/Items/Animations/FeenFluegel_animation.png"; // Asset für Level 1 (flügel)
         inline static constexpr const char* kFairyAnimLvl2 = "PieWare/assets/Items/Animations/FeenHoerner_animation.png"; // Asset für Level 2
         inline static constexpr const char* kFairyAnimLvl3 = "PieWare/assets/Spritesheets/Zepter_animation.png"; // Natürlich für Level 3 lul
