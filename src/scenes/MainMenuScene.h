@@ -13,6 +13,9 @@
 
 class MainMenuScene : public game::core::Scene{
 private:
+    Texture2D buttons= LoadTexture(game::Config::button_asset);
+    Rectangle src{1,1,82,34};
+
     enum menustate {main,options, credits ,end,list};
     menustate state;
 int counter;
