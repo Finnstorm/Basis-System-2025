@@ -212,14 +212,14 @@ namespace game
         inline static constexpr float item_Blinking_Start_Time = 20.0f;     // Sekunden vor Despawn, wann das Blinken beginnt 20 = 2 Sekunden
         inline static constexpr float item_Blink_Interval = 0.4f;           // Zeit in Sekunden pro Blink (an/aus)
         inline static constexpr Vector2 item_Pickup_Hitbox_Size = {16.0f, 16.0f};
-        inline static constexpr Vector2 item_Attraction_Hitbox_Size = {72.0f, 72.0f}; // Größere Hitbox für den "Magnet"-Effekt
+        inline static constexpr Vector2 item_Attraction_Hitbox_Size = {32.0f, 32.0f}; // Größere Hitbox für den "Magnet"-Effekt
         inline static constexpr float item_Attraction_Speed = 18.0f;        // Geschwindigkeit, mit der das Item zum Spieler gezogen wird
 
         // ------ Item Drop Rates from Enemies ------
-        inline static constexpr int enemy_Item_Drop_Chance_Percent = 12; // Globale Chance in %, dass ein Gegner überhaupt ein Item droppt
+        inline static constexpr int enemy_Item_Drop_Chance_Percent = 20; // Globale Chance in %, dass ein Gegner überhaupt ein Item droppt
 
         // Die folgenden Werte sind "Gewichte". Ein höherer Wert bedeutet eine höhere Chance im Vergleich zu den anderen.
-        // Ein Wert von 0 bedeutet, dass dieses Item niemals von Gegnern gedroppt wird. 10 und 1 bedeutet das Item mit 1ß kommt 10 mal häufiger
+        // Ein Wert von 0 bedeutet, dass dieses Item niemals von Gegnern gedroppt wird. 10 und 1 bedeutet das Item mit 10 kommt 10 mal häufiger
         inline static constexpr int item_Drop_Weight_Heal = 30;
         inline static constexpr int item_Drop_Weight_Bomb = 5;
         inline static constexpr int item_Drop_Weight_TestoNeedle = 1;
@@ -241,7 +241,7 @@ namespace game
         inline static constexpr float bomb_Explosion_Damage_Lifetime = 7.5f;   // Dauer der Schadensfläche
         inline static constexpr float bomb_Explosion_Visual_Lifetime = 7.5f;   // Dauer der visuellen Fläche
         inline static constexpr int bomb_Max_On_Map = 1;                    // Maximale Anzahl (Map + Inventar)
-        inline static constexpr const char* kBombItemAnim = "PieWare/assets/Items/Animations/Animation_Bomb(Aus).png"; // Bomeben Item anim
+        inline static constexpr const char* kBombItemAnim = "PieWare/assets/Items/Animations/Animation_Bomb(Aus).png"; // Bomben Item anim
         inline static constexpr Vector2 bomb_Item_Anim_Size = {16.0f, 16.0f}; // Größe des Items
         inline static constexpr int bomb_Item_Frame_Count = 9; // Wie viele Frames hat die Animation für das Item
         inline static constexpr float bomb_Item_Anim_Speed = 1.0f; // Wie schnell soll diese Animation durchlaufen
@@ -252,7 +252,7 @@ namespace game
 
         // ------ Testonadel-Item ------
         inline static constexpr float testo_Needle_Buff_Duration = 100.0f;  // Dauer des Buffs in Sekunden 100 = 10 Sek
-        inline static constexpr float testo_Needle_Speed_Boost = 1.5f;     // Multiplikator für die Geschwindigkeit
+        inline static constexpr float testo_Needle_Speed_Boost = 0.75f;     // Multiplikator für die Geschwindigkeit
         inline static constexpr float testo_Needle_Damage_Boost = 2.0f;    // Multiplikator für den Schaden
         inline static constexpr int testo_Needle_Max_On_Map = 1;
         inline static constexpr const char* kTestoNeedleAnim = "PieWare/assets/Items/Animations/Animation_Testonadel.png";
@@ -291,14 +291,14 @@ namespace game
         inline static constexpr Vector2 player_Buff_Melee_Attack_Anim_Size = {48, 48};
 
         // ------ Schlüssel-Item ------
-        inline static constexpr int key_Max_On_Map = 6; // Maximale Anzahl (Map + Inventar)
+        inline static constexpr int key_Max_On_Map = 1; // Maximale Anzahl (Map + Inventar)
         inline static constexpr const char* kKeyAnim = "PieWare/assets/Items/Animations/Animation_Schluessel.png";
         inline static constexpr Vector2 key_Anim_Size = {16.0f, 16.0f};
         inline static constexpr int key_Frame_Count = 9;
         inline static constexpr float key_Anim_Speed = 1.0f;
 
         // ------ Feen-Item ------
-        inline static constexpr Vector2 fairy_Spawn_Position = {100.0f, 100.0f}; // Spawn Position des Feenitems
+        inline static constexpr Vector2 fairy_Spawn_Position = {760.0f, 784.0f}; // Spawn Position des Feenitems
         inline static constexpr const char* kFairyAnimLvl1 = "PieWare/assets/Items/Animations/FeenFluegel_animation.png"; // Asset für Level 1 (flügel)
         inline static constexpr const char* kFairyAnimLvl2 = "PieWare/assets/Items/Animations/FeenHoerner_animation.png"; // Asset für Level 2
         inline static constexpr const char* kFairyAnimLvl3 = "PieWare/assets/Spritesheets/Zepter_animation.png"; // Natürlich für Level 3 lul
@@ -307,8 +307,8 @@ namespace game
         inline static constexpr float fairy_Anim_Speed = 1.0f;
 
         // ------ Hard-coded Item Positions ------
-        inline static constexpr Vector2 initial_Testo_Needle_Position = {200.0f, 200.0f}; // Position Testonadel im Tempel
-        inline static constexpr Vector2 initial_Key_Position = {300.0f, 300.0f}; // Position Schlüssel zu Beginn
+        inline static constexpr Vector2 initial_Testo_Needle_Position = {104.0f, 464.0f}; // Position Testonadel im Tempel
+        inline static constexpr Vector2 initial_Key_Position = {1408.0f, 464.0f}; // Position Schlüssel zu Beginn
 
 
 
