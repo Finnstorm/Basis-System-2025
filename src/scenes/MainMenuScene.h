@@ -13,8 +13,12 @@
 
 class MainMenuScene : public game::core::Scene{
 private:
-    Texture2D buttons= LoadTexture(game::Config::button_asset);
-    Rectangle src{1,1,82,34};
+    Texture2D start_button= LoadTexture(game::Config::start_button_asset);
+    Texture2D options_button= LoadTexture(game::Config::option_button_asset);
+    Texture2D ranking_button= LoadTexture(game::Config::ranking_button_asset);
+    Texture2D credits_button= LoadTexture(game::Config::credits_button_asset);
+    Texture2D quit_button= LoadTexture(game::Config::quit_button_asset);
+    Rectangle src{1,1,80,32};
 
     enum menustate {main,options, credits ,end,list};
     menustate state;

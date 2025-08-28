@@ -87,6 +87,9 @@ void MainMenuScene::main_Update() {
     if (counter>4){
         counter=counter-5;
     }
+    if (counter<0){
+        counter=4;
+    }
     if (Input_Check_Sel()){
 
         switch (counter) {
@@ -118,62 +121,52 @@ void MainMenuScene::main_Draw() {
     //Draw Menu Backdrop
     if (counter==0){
         // Draw Highlited Button
-        src.x=1;
-        src.y=34;
-        DrawTextureRec(buttons,src,{game::Config::kStageWidth/2-41,150},WHITE);
+        src.x=80;
+        DrawTextureRec(start_button,src,{game::Config::kStageWidth/2-40,150},WHITE);
     }
     else{
         src.x=1;
-        src.y=1;
-        DrawTextureRec(buttons,src,{game::Config::kStageWidth/2-41,150},WHITE);
+        DrawTextureRec(start_button,src,{game::Config::kStageWidth/2-40,150},WHITE);
     }
     if (counter==1){
 // Draw Highlited Button
-        src.x=1;
-        src.y=102;
-        DrawTextureRec(buttons,src,{game::Config::kStageWidth/2-41,200},WHITE);
+        src.x=80;
+        DrawTextureRec(options_button,src,{game::Config::kStageWidth/2-40,200},WHITE);
     }
     else{
 //Draw Regular Button Asset
-        src.x=2;
-        src.y=68;
-        DrawTextureRec(buttons,src,{game::Config::kStageWidth/2-41,200},WHITE);
+        src.x=1;
+        DrawTextureRec(options_button,src,{game::Config::kStageWidth/2-40,200},WHITE);
     }
     if (counter==2){
 // Draw Highlited Button
-        src.x=86;
-        src.y=102;
-        DrawTextureRec(buttons,src,{game::Config::kStageWidth/2-41,250},WHITE);
+        src.x=80;
+        DrawTextureRec(ranking_button,src,{game::Config::kStageWidth/2-40,250},WHITE);
     }
     else{
 //Draw Regular Button Asset
-        src.x=86;
-        src.y=68;
-        DrawTextureRec(buttons,src,{game::Config::kStageWidth/2-41,250},WHITE);
+        src.x=1;
+        DrawTextureRec(ranking_button,src,{game::Config::kStageWidth/2-40,250},WHITE);
     }
     if (counter==3){
 // Draw Highlited Button
-        src.x=86;
-        src.y=34;
-        DrawTextureRec(buttons,src,{game::Config::kStageWidth/2-41,300},WHITE);
+        src.x=80;
+        DrawTextureRec(credits_button,src,{game::Config::kStageWidth/2-40,300},WHITE);
     }
     else{
 //Draw Regular Button Asset
-        src.x=86;
-        src.y=1;
-        DrawTextureRec(buttons,src,{game::Config::kStageWidth/2-41,300},WHITE);
+        src.x=1;
+        DrawTextureRec(credits_button,src,{game::Config::kStageWidth/2-40,300},WHITE);
     }
     if (counter==4){
 // Draw Highlited Button
-        src.x=86;
-        src.y=134;
-        DrawTextureRec(buttons,src,{game::Config::kStageWidth/2-41,350},WHITE);
+        src.x=80;
+        DrawTextureRec(quit_button,src,{game::Config::kStageWidth/2-40,350},WHITE);
     }
     else{
 //Draw Regular Button Asset
-        src.x=2;
-        src.y=134;
-        DrawTextureRec(buttons,src,{game::Config::kStageWidth/2-41,350},WHITE);
+        src.x=1;
+        DrawTextureRec(quit_button,src,{game::Config::kStageWidth/2-40,350},WHITE);
     }
 }
 void MainMenuScene::options_Update() {
