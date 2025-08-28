@@ -9,7 +9,6 @@
 #include "Renderer.h"
 #include "SpriteAnimated.h"
 #include <raymath.h>
-
 #include "MenuScene.h"
 #include "../game/PlayerClassOne.h"
 #include "../core/CollisionManager.h"
@@ -109,9 +108,9 @@ void game::scenes::GameScene::Update()
             }
         }
     }
-    if (!fairy_has_spawned && !mp.HasFairy() /* && Deine_Rätsel_Bedingung == true */)
+    if (!fairy_has_spawned && !mp.HasFairy())
     {
-        objectManager.AddObject(new FairyItem(game::Config::fairy_Spawn_Position, this->current_level));
+        objectManager.AddObjectDeferred(new FairyItem(game::Config::fairy_Spawn_Position, this->current_level));
         fairy_has_spawned = true;
     }
 
@@ -133,70 +132,71 @@ void game::scenes::GameScene::Update()
     }
     p_cm->Check_Collisions();
     cam->Cam_Movement(dtm.Get_Dt(), screen.Get_Map_Dimensions());
-    std::vector<Collidable*> new_objects_to_add;
-    objectManager.Cleanup_Objects([this, &new_objects_to_add](Collidable* cleaned_obj)
+    std::vector<Vector2> dead_enemy_positions;
+objectManager.Cleanup_Objects([this, &dead_enemy_positions](Collidable* cleaned_obj)
+{
+    if (cleaned_obj->Get_Collision_Type() == Collision_Type::ENEMY)
     {
-        if (cleaned_obj->Get_Collision_Type() == Collision_Type::ENEMY)
-        {
-            auto* enemy = static_cast<enemy::Enemy_Base_Class*>(cleaned_obj);
+        auto* enemy = static_cast<enemy::Enemy_Base_Class*>(cleaned_obj);
         this->score += enemy->Get_Score_Value();
         this->souls += enemy->Get_Souls_Value();
-        if (GetRandomValue(1, 100) <= game::Config::enemy_Item_Drop_Chance_Percent)
+
+        // Nur die Position für später speichern
+        dead_enemy_positions.push_back(enemy->Get_Position());
+    }
+});
+
+
+// 2. VERARBEITEN: Nachdem das Aufräumen FERTIG ist, hier sicher die Item-Logik ausführen.
+for (const auto& pos : dead_enemy_positions)
+{
+    if (GetRandomValue(1, 100) <= game::Config::enemy_Item_Drop_Chance_Percent)
+    {
+        // Hier ist der Aufruf von CountItemsOfType jetzt 100% sicher!
+        std::vector<std::pair<ItemType, int>> weighted_list;
+        int total_weight = 0;
+
+        if (CountItemsOfType(ItemType::HEALTH_POTION, objectManager, mp) < game::Config::health_Potion_Max_On_Map) {
+            weighted_list.push_back({ItemType::HEALTH_POTION, game::Config::item_Drop_Weight_Heal});
+            total_weight += game::Config::item_Drop_Weight_Heal;
+        }
+        if (CountItemsOfType(ItemType::BOMB, objectManager, mp) < game::Config::bomb_Max_On_Map) {
+            weighted_list.push_back({ItemType::BOMB, game::Config::item_Drop_Weight_Bomb});
+            total_weight += game::Config::item_Drop_Weight_Bomb;
+        }
+        if (CountItemsOfType(ItemType::TESTO_NEEDLE, objectManager, mp) < game::Config::testo_Needle_Max_On_Map) {
+            weighted_list.push_back({ItemType::TESTO_NEEDLE, game::Config::item_Drop_Weight_TestoNeedle});
+            total_weight += game::Config::item_Drop_Weight_TestoNeedle;
+        }
+
+        if (total_weight > 0)
         {
-            std::vector<std::pair<ItemType, int>> weighted_list;
-            int total_weight = 0;
-
-            // Prüfe, welche Items überhaupt droppen können (Maximalzahl nicht erreicht)
-            if (CountItemsOfType(ItemType::HEALTH_POTION, objectManager, mp) < game::Config::health_Potion_Max_On_Map) {
-                weighted_list.push_back({ItemType::HEALTH_POTION, game::Config::item_Drop_Weight_Heal});
-                total_weight += game::Config::item_Drop_Weight_Heal;
-            }
-            if (CountItemsOfType(ItemType::BOMB, objectManager, mp) < game::Config::bomb_Max_On_Map) {
-                weighted_list.push_back({ItemType::BOMB, game::Config::item_Drop_Weight_Bomb});
-                total_weight += game::Config::item_Drop_Weight_Bomb;
-            }
-            if (CountItemsOfType(ItemType::TESTO_NEEDLE, objectManager, mp) < game::Config::testo_Needle_Max_On_Map) {
-                weighted_list.push_back({ItemType::TESTO_NEEDLE, game::Config::item_Drop_Weight_TestoNeedle});
-                total_weight += game::Config::item_Drop_Weight_TestoNeedle;
-            }
-
-            if (total_weight > 0)
+            int roll = GetRandomValue(1, total_weight);
+            for (const auto& pair : weighted_list)
             {
-                int roll = GetRandomValue(1, total_weight);
-                for (const auto& pair : weighted_list)
+                roll -= pair.second;
+                if (roll <= 0)
                 {
-                    roll -= pair.second;
-                    if (roll <= 0)
+                    ItemBase* spawned_item = nullptr;
+                    switch (pair.first)
                     {
-                        ItemBase* spawned_item = nullptr;
-                        Vector2 pos = enemy->Get_Position();
-                        switch (pair.first)
-                        {
-                            case ItemType::HEALTH_POTION:
-                                spawned_item = new HealthPotion(pos);
-                                break;
-                            case ItemType::BOMB:
-                                spawned_item = new BombItem(pos);
-                                break;
-                            case ItemType::TESTO_NEEDLE:
-                                spawned_item = new TestoNeedle(pos);
-                                break;
-                        }
-                        if (spawned_item) {
-                            new_objects_to_add.push_back(spawned_item);
-                        }
-                        break;
+                        case ItemType::HEALTH_POTION: spawned_item = new HealthPotion(pos); break;
+                        case ItemType::BOMB: spawned_item = new BombItem(pos); break;
+                        case ItemType::TESTO_NEEDLE: spawned_item = new TestoNeedle(pos); break;
                     }
+                    if (spawned_item) {
+                        // Und natürlich die sichere, verzögerte Methode zum Hinzufügen verwenden!
+                        objectManager.AddObjectDeferred(spawned_item);
+                    }
+                    break;
                 }
             }
         }
     }
-});
-    for (auto* new_obj : new_objects_to_add)
-    {
-        objectManager.AddObject(new_obj);
-    }
-    objectManager.ProcessAdditions();
+}
+
+
+objectManager.ProcessAdditions();
     dtm.Update();
 }
 

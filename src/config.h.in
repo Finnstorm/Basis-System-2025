@@ -157,7 +157,7 @@ namespace game
 
 
         //____________________Wellen Spawner Global____________________________
-        inline static constexpr float kWaveInterval = 400.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
+        inline static constexpr float kWaveInterval = 200.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
         inline static constexpr float kWaveSpawnDuration = 100.0f;      // Zeit x 10 in Sekunden, über die die Gegner einer Welle gespawnt werden.
         inline static constexpr float kFirstWave = 40.0f;               // Zeit bis die erste Welle kommt. 40 = 4 Sekunden
         inline static constexpr int kScore_Per_Wave = 250; // Punkte pro neuer Welle
@@ -170,7 +170,7 @@ namespace game
         inline static constexpr int kMeleeBauer_L1_StartWave = 1;               // Erscheint ab Welle ....
         inline static constexpr int kMeleeBauer_L1_SpawnEveryXWaves = 1;        // Erscheint in jeder ... Welle.
         inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 6;       // Startet mit ... Gegnern.
-        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 2;    // Pro Erscheinungswelle kommen ... dazu.
+        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 0;    // Pro Erscheinungswelle kommen ... dazu.
         inline static constexpr bool kMeleeBauer_L1_EnableDecrease = false;     // Gegner werden weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 3;       // gegner werden ab ... Welle weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseAmount = 3;          // Pro Erscheinungswelle werden es ... weniger.
@@ -323,7 +323,11 @@ namespace game
         inline static constexpr const int key_Use_Item = KEY_L;
 
         // ------Main Menu -------
-        inline static constexpr const char* button_asset ="assets/graphics/pngs/MenuButtons.png";
+        inline static constexpr const char* start_button_asset ="PieWare/assets/UI/MainMenu/Button_Start.png";
+        inline static constexpr const char* option_button_asset ="PieWare/assets/UI/MainMenu/Button_Options.png";
+        inline static constexpr const char* ranking_button_asset ="PieWare/assets/UI/MainMenu/Button_Ranking.png";
+        inline static constexpr const char* credits_button_asset ="PieWare/assets/UI/MainMenu/Button_Credits.png";
+        inline static constexpr const char* quit_button_asset ="PieWare/assets/UI/MainMenu/Button_Quit.png";
 
 
         // ------ DEBUGGING ------
