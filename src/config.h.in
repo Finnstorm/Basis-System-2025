@@ -219,8 +219,8 @@ namespace game
         inline static constexpr int enemy_Item_Drop_Chance_Percent = 12; // Globale Chance in %, dass ein Gegner überhaupt ein Item droppt
 
         // Die folgenden Werte sind "Gewichte". Ein höherer Wert bedeutet eine höhere Chance im Vergleich zu den anderen.
-        // Ein Wert von 0 bedeutet, dass dieses Item niemals von Gegnern gedroppt wird.
-        inline static constexpr int item_Drop_Weight_Heal = 0;
+        // Ein Wert von 0 bedeutet, dass dieses Item niemals von Gegnern gedroppt wird. 10 und 1 bedeutet das Item mit 1ß kommt 10 mal häufiger
+        inline static constexpr int item_Drop_Weight_Heal = 30;
         inline static constexpr int item_Drop_Weight_Bomb = 5;
         inline static constexpr int item_Drop_Weight_TestoNeedle = 1;
         inline static constexpr int item_Drop_Weight_Key = 0; // Schlüssel soll nicht von Gegnern droppen
