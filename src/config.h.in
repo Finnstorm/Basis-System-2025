@@ -26,7 +26,7 @@ namespace game
         inline static constexpr int kTargetFps = 60;
 
         // Start game in window or fullscreen mode
-        inline static constexpr const bool kFullScreen = false;
+        inline static constexpr const bool kFullScreen = true;
 
         // Define if the game uses a mouse/mouse pointer
         // The mouse position is then accessible in game::core::Store in the mouse_position attribute
@@ -216,12 +216,12 @@ namespace game
         inline static constexpr float item_Attraction_Speed = 18.0f;        // Geschwindigkeit, mit der das Item zum Spieler gezogen wird
 
         // ------ Item Drop Rates from Enemies ------
-        inline static constexpr int enemy_Item_Drop_Chance_Percent = 100; // Globale Chance in %, dass ein Gegner überhaupt ein Item droppt
+        inline static constexpr int enemy_Item_Drop_Chance_Percent = 18; // Globale Chance in %, dass ein Gegner überhaupt ein Item droppt
 
         // Die folgenden Werte sind "Gewichte". Ein höherer Wert bedeutet eine höhere Chance im Vergleich zu den anderen.
         // Ein Wert von 0 bedeutet, dass dieses Item niemals von Gegnern gedroppt wird. 10 und 1 bedeutet das Item mit 1ß kommt 10 mal häufiger
-        inline static constexpr int item_Drop_Weight_Heal = 0;
-        inline static constexpr int item_Drop_Weight_Bomb = 300;
+        inline static constexpr int item_Drop_Weight_Heal = 30;
+        inline static constexpr int item_Drop_Weight_Bomb = 3;
         inline static constexpr int item_Drop_Weight_TestoNeedle = 1;
         inline static constexpr int item_Drop_Weight_Key = 0; // Schlüssel soll nicht von Gegnern droppen
         inline static constexpr int item_Drop_Weight_Fairy = 0; // Fee soll nicht von Gegnern droppen
