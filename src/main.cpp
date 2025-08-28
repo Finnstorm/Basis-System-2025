@@ -9,6 +9,7 @@
 #include "scenes/Screen.h"
 #include "config.h.in"
 #include "MenuScene.h"
+#include "MainMenuScene.h"
 
 
 /* Aktiviert "String-Literalen erlaubt "menu"s Daraus wird dann direkt ein std::string
@@ -25,7 +26,7 @@ int main()
                           game::Config::kExitKey,game::Config::kUseMouse, game::Config::kAudio,
                           game::Config::kProjectName);
 
-    game.Run("menu"s, std::make_unique<game::scenes::MenuScene>());
+    game.Run("menu"s, std::make_unique<MainMenuScene>());
 
     return EXIT_SUCCESS;
 }

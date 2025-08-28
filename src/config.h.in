@@ -322,6 +322,10 @@ namespace game
         inline static constexpr const int key_Ranged_Attack = KEY_K;
         inline static constexpr const int key_Use_Item = KEY_L;
 
+        // ------Main Menu -------
+        inline static constexpr const char* button_asset ="assets/graphics/pngs/MenuButtons.png";
+
+
         // ------ DEBUGGING ------
         inline static constexpr bool visualize_Player_Hitbox = false;
         inline static constexpr bool visualize_Attack_Hitboxes = false;
