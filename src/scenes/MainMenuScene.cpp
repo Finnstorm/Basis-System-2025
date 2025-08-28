@@ -87,6 +87,9 @@ void MainMenuScene::main_Update() {
     if (counter>4){
         counter=counter-5;
     }
+    if (counter<0){
+        counter=4;
+    }
     if (Input_Check_Sel()){
 
         switch (counter) {
@@ -118,7 +121,7 @@ void MainMenuScene::main_Draw() {
     //Draw Menu Backdrop
     if (counter==0){
         // Draw Highlited Button
-        src.x=81;
+        src.x=80;
         DrawTextureRec(start_button,src,{game::Config::kStageWidth/2-40,150},WHITE);
     }
     else{
@@ -127,7 +130,7 @@ void MainMenuScene::main_Draw() {
     }
     if (counter==1){
 // Draw Highlited Button
-        src.x=81;
+        src.x=80;
         DrawTextureRec(options_button,src,{game::Config::kStageWidth/2-40,200},WHITE);
     }
     else{
@@ -137,7 +140,7 @@ void MainMenuScene::main_Draw() {
     }
     if (counter==2){
 // Draw Highlited Button
-        src.x=81;
+        src.x=80;
         DrawTextureRec(ranking_button,src,{game::Config::kStageWidth/2-40,250},WHITE);
     }
     else{
@@ -147,7 +150,7 @@ void MainMenuScene::main_Draw() {
     }
     if (counter==3){
 // Draw Highlited Button
-        src.x=81;
+        src.x=80;
         DrawTextureRec(credits_button,src,{game::Config::kStageWidth/2-40,300},WHITE);
     }
     else{
@@ -157,7 +160,7 @@ void MainMenuScene::main_Draw() {
     }
     if (counter==4){
 // Draw Highlited Button
-        src.x=81;
+        src.x=80;
         DrawTextureRec(quit_button,src,{game::Config::kStageWidth/2-40,350},WHITE);
     }
     else{
