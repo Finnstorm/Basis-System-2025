@@ -220,15 +220,15 @@ namespace game
 
         // Die folgenden Werte sind "Gewichte". Ein höherer Wert bedeutet eine höhere Chance im Vergleich zu den anderen.
         // Ein Wert von 0 bedeutet, dass dieses Item niemals von Gegnern gedroppt wird. 10 und 1 bedeutet das Item mit 10 kommt 10 mal häufiger
-        inline static constexpr int item_Drop_Weight_Heal = 20;
-        inline static constexpr int item_Drop_Weight_Bomb = 8;
+        inline static constexpr int item_Drop_Weight_Heal = 7;
+        inline static constexpr int item_Drop_Weight_Bomb = 3;
         inline static constexpr int item_Drop_Weight_TestoNeedle = 0;
         inline static constexpr int item_Drop_Weight_Key = 0; // Schlüssel soll nicht von Gegnern droppen
         inline static constexpr int item_Drop_Weight_Fairy = 0; // Fee soll nicht von Gegnern droppen
 
 
         // ------ Heil-Item: Health Potion ------
-        inline static constexpr int health_Potion_Heal_Amount = 10;        // Wie viel Leben wiederhergestellt wird
+        inline static constexpr int health_Potion_Heal_Amount = 30;        // Wie viel Leben wiederhergestellt wird
         inline static constexpr int health_Potion_Max_On_Map = 2;          // Maximale Anzahl (Map + Inventar)
         inline static constexpr const char* kHealthPotionAnim = "PieWare/assets/Items/Animations/Animation_Healthpotion.png";
         inline static constexpr Vector2 health_Potion_Anim_Size = {16.0f, 16.0f};
