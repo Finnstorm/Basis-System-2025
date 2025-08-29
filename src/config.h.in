@@ -170,7 +170,7 @@ namespace game
         inline static constexpr int kMeleeBauer_L1_StartWave = 1;               // Erscheint ab Welle ....
         inline static constexpr int kMeleeBauer_L1_SpawnEveryXWaves = 1;        // Erscheint in jeder ... Welle.
         inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 6;       // Startet mit ... Gegnern.
-        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 0;    // Pro Erscheinungswelle kommen ... dazu.
+        inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 3;    // Pro Erscheinungswelle kommen ... dazu.
         inline static constexpr bool kMeleeBauer_L1_EnableDecrease = false;     // Gegner werden weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 3;       // gegner werden ab ... Welle weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseAmount = 3;          // Pro Erscheinungswelle werden es ... weniger.
@@ -228,7 +228,7 @@ namespace game
 
 
         // ------ Heil-Item: Health Potion ------
-        inline static constexpr int health_Potion_Heal_Amount = 50;        // Wie viel Leben wiederhergestellt wird
+        inline static constexpr int health_Potion_Heal_Amount = 10;        // Wie viel Leben wiederhergestellt wird
         inline static constexpr int health_Potion_Max_On_Map = 2;          // Maximale Anzahl (Map + Inventar)
         inline static constexpr const char* kHealthPotionAnim = "PieWare/assets/Items/Animations/Animation_Healthpotion.png";
         inline static constexpr Vector2 health_Potion_Anim_Size = {16.0f, 16.0f};
