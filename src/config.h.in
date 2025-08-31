@@ -246,7 +246,7 @@ namespace game
 
         // ------ Heil-Item: Health Potion ------
         inline static constexpr int health_Potion_Heal_Amount = 30;        // Wie viel Leben wiederhergestellt wird
-        inline static constexpr int health_Potion_Max_On_Map = 2;          // Maximale Anzahl (Map + Inventar)
+        inline static constexpr int health_Potion_Max_On_Map = 5;          // Maximale Anzahl (Map + Inventar)
         inline static constexpr const char* kHealthPotionAnim = "PieWare/assets/Items/Animations/Animation_Healthpotion.png";
         inline static constexpr Vector2 health_Potion_Anim_Size = {16.0f, 16.0f};
         inline static constexpr int health_Potion_Frame_Count = 9;

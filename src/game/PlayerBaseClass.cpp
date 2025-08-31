@@ -52,6 +52,15 @@ void Player_Base_Class::Player_Input()
 
 void Player_Base_Class::Tick(float delta_time)
 {
+    if (item_remove_ticker > 0)
+    {
+        item_remove_ticker++;
+        if (item_remove_ticker > 5)
+        {
+            RemoveHeldItem();
+            item_remove_ticker = 0;
+        }
+    }
     if (is_buffed)
     {
         buff_timer -= delta_time;
