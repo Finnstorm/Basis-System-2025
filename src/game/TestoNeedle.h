@@ -11,7 +11,7 @@
 class TestoNeedle : public ItemBase
 {
 public:
-    TestoNeedle(Vector2 position);
+    TestoNeedle(Vector2 position, bool has_despawn_timer = true);
     void Activate(Player_Base_Class* player) override;
 };
 

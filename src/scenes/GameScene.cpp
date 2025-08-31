@@ -46,7 +46,7 @@ game::scenes::GameScene::GameScene()
     int souls = 0;
     float score_timer = 0.0f;
 
-    objectManager.AddObject(new TestoNeedle(game::Config::initial_Testo_Needle_Position));
+    objectManager.AddObject(new TestoNeedle(game::Config::initial_Testo_Needle_Position, false));
     objectManager.AddObject(new KeyItem(game::Config::initial_Key_Position));
 }
 game::scenes::GameScene::~GameScene()
