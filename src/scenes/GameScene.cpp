@@ -141,30 +141,27 @@ objectManager.Cleanup_Objects([this, &dead_enemy_positions](Collidable* cleaned_
         this->score += enemy->Get_Score_Value();
         this->souls += enemy->Get_Souls_Value();
 
-        // Nur die Position für später speichern
         dead_enemy_positions.push_back(enemy->Get_Position());
     }
 });
 
 
-// 2. VERARBEITEN: Nachdem das Aufräumen FERTIG ist, hier sicher die Item-Logik ausführen.
 for (const auto& pos : dead_enemy_positions)
 {
     if (GetRandomValue(1, 100) <= game::Config::enemy_Item_Drop_Chance_Percent)
     {
-        // Hier ist der Aufruf von CountItemsOfType jetzt 100% sicher!
         std::vector<std::pair<ItemType, int>> weighted_list;
         int total_weight = 0;
 
-        if (CountItemsOfType(ItemType::HEALTH_POTION, objectManager, mp) < game::Config::health_Potion_Max_On_Map) {
+        if (CountItemsOfType(ItemType::HEALTH_POTION, objectManager, mp) + potions_to_spawn < game::Config::health_Potion_Max_On_Map) {
             weighted_list.push_back({ItemType::HEALTH_POTION, game::Config::item_Drop_Weight_Heal});
             total_weight += game::Config::item_Drop_Weight_Heal;
         }
-        if (CountItemsOfType(ItemType::BOMB, objectManager, mp) < game::Config::bomb_Max_On_Map) {
+        if (CountItemsOfType(ItemType::BOMB, objectManager, mp) + bombs_to_spawn < game::Config::bomb_Max_On_Map) {
             weighted_list.push_back({ItemType::BOMB, game::Config::item_Drop_Weight_Bomb});
             total_weight += game::Config::item_Drop_Weight_Bomb;
         }
-        if (CountItemsOfType(ItemType::TESTO_NEEDLE, objectManager, mp) < game::Config::testo_Needle_Max_On_Map) {
+        if (CountItemsOfType(ItemType::TESTO_NEEDLE, objectManager, mp) + needles_to_spawn < game::Config::testo_Needle_Max_On_Map) {
             weighted_list.push_back({ItemType::TESTO_NEEDLE, game::Config::item_Drop_Weight_TestoNeedle});
             total_weight += game::Config::item_Drop_Weight_TestoNeedle;
         }
@@ -180,12 +177,20 @@ for (const auto& pos : dead_enemy_positions)
                     ItemBase* spawned_item = nullptr;
                     switch (pair.first)
                     {
-                        case ItemType::HEALTH_POTION: spawned_item = new HealthPotion(pos); break;
-                        case ItemType::BOMB: spawned_item = new BombItem(pos); break;
-                        case ItemType::TESTO_NEEDLE: spawned_item = new TestoNeedle(pos); break;
+                        case ItemType::HEALTH_POTION:
+                            spawned_item = new HealthPotion(pos);
+                            potions_to_spawn++;
+                            break;
+                        case ItemType::BOMB:
+                            spawned_item = new BombItem(pos);
+                            bombs_to_spawn++;
+                            break;
+                        case ItemType::TESTO_NEEDLE:
+                            spawned_item = new TestoNeedle(pos);
+                            needles_to_spawn++;
+                            break;
                     }
                     if (spawned_item) {
-                        // Und natürlich die sichere, verzögerte Methode zum Hinzufügen verwenden!
                         objectManager.AddObjectDeferred(spawned_item);
                     }
                     break;
