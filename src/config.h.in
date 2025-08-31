@@ -112,7 +112,7 @@ namespace game
         inline static constexpr float projectile_Anim_Speed = 3.0f;
         inline static constexpr float player_Ranged_Damage_Factor = 1.0f;
 
-        inline static constexpr const char* kProjectileSprite = "PieWare/assets/Spritesheets/Projectile_Right.png";
+        inline static constexpr const char* kProjectileSprite = "PieWare/assets/Items/Projectile_Right_White.png";
 
         // ------Player_Melee_Attack------
         inline static constexpr float player_Melee_Attack_Cooldown = 10.0f;
