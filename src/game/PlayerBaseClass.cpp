@@ -333,7 +333,7 @@ void Player_Base_Class::PickUpItem(ItemBase* item_to_pick_up)
 
 void Player_Base_Class::Use_Item()
 {
-    if (IsKeyPressed(game::Config::key_Use_Item) && HasItem())
+    if (IsKeyPressed(game::Config::key_Use_Item) && HasItem()&& !is_buffed)
     {
         held_item->Activate(this);
     }
