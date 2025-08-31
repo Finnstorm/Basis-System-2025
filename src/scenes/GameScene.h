@@ -25,9 +25,6 @@ namespace game::scenes
         int current_wave = 0;
         int current_level = 1;
         float wave_timer = 0.0f;
-        int potions_to_spawn = 0;
-        int bombs_to_spawn = 0;
-        int needles_to_spawn = 0;
 
         bool fairy_has_spawned = false;
         int score = 0;

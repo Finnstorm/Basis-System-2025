@@ -61,12 +61,11 @@ void BombItem::Activate(Player_Base_Class* player)
         arm_width
     };
 
-    // Erzeuge die Hitbox-Objekte
     player->object_manager_ptr->AddObjectDeferred(new BombExplosionHitbox(center_box, damage));
     player->object_manager_ptr->AddObjectDeferred(new BombExplosionHitbox(top_box, damage));
     player->object_manager_ptr->AddObjectDeferred(new BombExplosionHitbox(bottom_box, damage));
     player->object_manager_ptr->AddObjectDeferred(new BombExplosionHitbox(left_box, damage));
     player->object_manager_ptr->AddObjectDeferred(new BombExplosionHitbox(right_box, damage));
-
-    player->RemoveHeldItem();
+    player->item_remove_ticker = 1;
+    this->Mark_For_Destruction();
 }

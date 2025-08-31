@@ -145,6 +145,9 @@ objectManager.Cleanup_Objects([this, &dead_enemy_positions](Collidable* cleaned_
     }
 });
 
+    int potions_to_spawn = 0;
+    int bombs_to_spawn = 0;
+    int needles_to_spawn = 0;
 
 for (const auto& pos : dead_enemy_positions)
 {
