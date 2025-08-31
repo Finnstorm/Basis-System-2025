@@ -114,15 +114,32 @@ namespace game
 
         inline static constexpr const char* kProjectileSprite = "PieWare/assets/Items/Projectile_Right_White.png";
 
-        // ------Player_Melee_Attack------
-        inline static constexpr float player_Melee_Attack_Cooldown = 10.0f;
-        inline static constexpr float player_Melee_Reach_Tiles = 1.2f;
-        inline static constexpr float player_Melee_Width_Tiles = 2.8f;
-        inline static constexpr float player_Melee_Hitbox_Lifetime = 2.0f;
-            // Diese zwei Werte sagen aus wie weit die Hitbox in den Spieler rein geschoben wird in pixel
-            inline static constexpr float player_Melee_Side_Offset = 4.0f;
-            inline static constexpr float player_Melee_Vertical_Offset = 4.0f;
-            inline static constexpr float player_Melee_Diagonal_Offset = 8.0f;
+       // ------Player_Melee_Attack------
+       // Diese Werte gelten für den normalen Zustand.
+       inline static constexpr float player_Melee_Attack_Cooldown = 10.0f;
+       inline static constexpr float player_Melee_Hitbox_Lifetime = 1.0f; // Lebensdauer in 1/10 Sekunden
+
+       // SEITLICHER ANGRIFF (Links/Rechts & Oben/Unten)
+       inline static constexpr float player_Melee_Side_Reach_Tiles = 1.2f;   // Länge
+       inline static constexpr float player_Melee_Side_Width_Tiles = 2.8f;   // Breite
+
+       // DIAGONALER ANGRIFF
+       inline static constexpr float player_Melee_Diag_Reach_Tiles = 1.2f;
+       inline static constexpr float player_Melee_Diag_Width_Tiles = 2.2f; // sollte immer länger sein
+
+       // OFFSETS (wie weit die Hitbox in den Spieler geschoben wird)
+       inline static constexpr float player_Melee_Side_Offset = 0.0f;
+       inline static constexpr float player_Melee_Vertical_Offset = 0.0f;
+       inline static constexpr float player_Melee_Diagonal_Offset = 8.0f;
+
+       // ------Player_Melee_Attack (Testonadel)------
+       // Dieselben Werte für den Buff-Zustand.
+       inline static constexpr float player_Melee_Buff_Side_Reach_Tiles = 1.8f;
+       inline static constexpr float player_Melee_Buff_Side_Width_Tiles = 3.2f;
+
+       inline static constexpr float player_Melee_Buff_Diag_Reach_Tiles = 1.0f;
+       inline static constexpr float player_Melee_Buff_Diag_Width_Tiles = 2.5f;
+
 
         //____________________Gegner Bauer____________________________
         // ------Melee_Enemy_Type1 Settings------

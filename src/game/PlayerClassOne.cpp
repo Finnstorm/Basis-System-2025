@@ -92,51 +92,36 @@ Player_Class_One::~Player_Class_One() {}
 
 void Player_Class_One::Tick(float delta_time)
 {
-    Player_Base_Class::Tick(delta_time); // Dies setzt die 'is_Moving'-Variable
+    Player_Base_Class::Tick(delta_time);
 
-    // ====================================================================
-    // 1. ZUSTAND VERWALTEN: Bestimme den korrekten Zustand des Spielers
-    // ====================================================================
-
-    // Wenn eine Angriffs-Animation läuft, prüfe, ob sie beendet ist.
     if (currentState == ATTACKING_MELEE)
     {
         auto* active_melee_map = IsBuffed() ? &buff_melee_Attack_Animations : &melee_Attack_Animations;
         if (!active_melee_map->count(attack_Direction) || active_melee_map->at(attack_Direction).IsFinished())
         {
-            currentState = IDLE; // Angriff beenden
+            currentState = IDLE;
         }
     }
     else if (currentState == ATTACKING_RANGED)
     {
-        // Annahme: Fernkampf hat keine Buff-Variante
         if (!ranged_Attack_Animations.count(attack_Direction) || ranged_Attack_Animations.at(attack_Direction).IsFinished())
         {
-            currentState = IDLE; // Angriff beenden
+            currentState = IDLE;
         }
     }
 
-    // Wenn wir nicht mitten in einem Angriff sind, bestimme, ob wir laufen oder stehen.
     if (currentState != ATTACKING_MELEE && currentState != ATTACKING_RANGED)
     {
         currentState = is_Moving ? WALKING : IDLE;
     }
-
-    // ====================================================================
-    // 2. ANIMATION AKTUALISIEREN: Update die Frames basierend auf dem finalen Zustand
-    // ====================================================================
-
-    // Wähle die korrekten Animations-Maps basierend auf dem Buff-Status aus
     auto* active_walking_map = IsBuffed() ? &buff_walking_Animations : &walking_Animations;
     auto* active_idle_map = IsBuffed() ? &buff_idle_Animations : &idle_Animations;
     auto* active_melee_map = IsBuffed() ? &buff_melee_Attack_Animations : &melee_Attack_Animations;
 
-    // Vereinfache die Richtung für Lauf- und Idle-Animationen (nur 4 Richtungen)
     Facing_Direction primaryDirection = facing_Direction;
     if (facing_Direction == UP_LEFT || facing_Direction == DOWN_LEFT) primaryDirection = LEFT;
     if (facing_Direction == UP_RIGHT || facing_Direction == DOWN_RIGHT) primaryDirection = RIGHT;
 
-    // Aktualisiere die passende Animation
     switch (currentState)
     {
         case WALKING:
