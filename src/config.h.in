@@ -222,7 +222,7 @@ namespace game
         // Ein Wert von 0 bedeutet, dass dieses Item niemals von Gegnern gedroppt wird. 10 und 1 bedeutet das Item mit 10 kommt 10 mal häufiger
         inline static constexpr int item_Drop_Weight_Heal = 7;
         inline static constexpr int item_Drop_Weight_Bomb = 3;
-        inline static constexpr int item_Drop_Weight_TestoNeedle = 100;
+        inline static constexpr int item_Drop_Weight_TestoNeedle = 0;
         inline static constexpr int item_Drop_Weight_Key = 0; // Schlüssel soll nicht von Gegnern droppen
         inline static constexpr int item_Drop_Weight_Fairy = 0; // Fee soll nicht von Gegnern droppen
 
@@ -254,7 +254,7 @@ namespace game
         inline static constexpr float testo_Needle_Buff_Duration = 100.0f;  // Dauer des Buffs in Sekunden 100 = 10 Sek
         inline static constexpr float testo_Needle_Speed_Boost = 0.75f;     // Multiplikator für die Geschwindigkeit
         inline static constexpr float testo_Needle_Damage_Boost = 2.0f;    // Multiplikator für den Schaden
-        inline static constexpr int testo_Needle_Max_On_Map = 3;
+        inline static constexpr int testo_Needle_Max_On_Map = 1;
         inline static constexpr const char* kTestoNeedleAnim = "PieWare/assets/Items/Animations/Animation_Testonadel.png";
         inline static constexpr Vector2 testo_Needle_Anim_Size = {16.0f, 16.0f};
         inline static constexpr int testo_Needle_Frame_Count = 9;
