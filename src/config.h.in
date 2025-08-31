@@ -237,16 +237,16 @@ namespace game
 
         // Die folgenden Werte sind "Gewichte". Ein höherer Wert bedeutet eine höhere Chance im Vergleich zu den anderen.
         // Ein Wert von 0 bedeutet, dass dieses Item niemals von Gegnern gedroppt wird. 10 und 1 bedeutet das Item mit 10 kommt 10 mal häufiger
-        inline static constexpr int item_Drop_Weight_Heal = 7;
-        inline static constexpr int item_Drop_Weight_Bomb = 3;
-        inline static constexpr int item_Drop_Weight_TestoNeedle = 0;
+        inline static constexpr int item_Drop_Weight_Heal = 70;
+        inline static constexpr int item_Drop_Weight_Bomb = 25;
+        inline static constexpr int item_Drop_Weight_TestoNeedle = 5;
         inline static constexpr int item_Drop_Weight_Key = 0; // Schlüssel soll nicht von Gegnern droppen
         inline static constexpr int item_Drop_Weight_Fairy = 0; // Fee soll nicht von Gegnern droppen
 
 
         // ------ Heil-Item: Health Potion ------
         inline static constexpr int health_Potion_Heal_Amount = 30;        // Wie viel Leben wiederhergestellt wird
-        inline static constexpr int health_Potion_Max_On_Map = 5;          // Maximale Anzahl (Map + Inventar)
+        inline static constexpr int health_Potion_Max_On_Map = 3;          // Maximale Anzahl (Map + Inventar)
         inline static constexpr const char* kHealthPotionAnim = "PieWare/assets/Items/Animations/Animation_Healthpotion.png";
         inline static constexpr Vector2 health_Potion_Anim_Size = {16.0f, 16.0f};
         inline static constexpr int health_Potion_Frame_Count = 9;
@@ -268,9 +268,9 @@ namespace game
         inline static constexpr float bomb_Explosion_Anim_Speed = 3.0f; // Wie schnell läuft die Animation durch
 
         // ------ Testonadel-Item ------
-        inline static constexpr float testo_Needle_Buff_Duration = 100.0f;  // Dauer des Buffs in Sekunden 100 = 10 Sek
+        inline static constexpr float testo_Needle_Buff_Duration = 70.0f;  // Dauer des Buffs in Sekunden 100 = 10 Sek
         inline static constexpr float testo_Needle_Speed_Boost = 0.75f;     // Multiplikator für die Geschwindigkeit
-        inline static constexpr float testo_Needle_Damage_Boost = 2.0f;    // Multiplikator für den Schaden
+        inline static constexpr float testo_Needle_Damage_Boost = 3.0f;    // Multiplikator für den Schaden
         inline static constexpr int testo_Needle_Max_On_Map = 1;
         inline static constexpr const char* kTestoNeedleAnim = "PieWare/assets/Items/Animations/Animation_Testonadel.png";
         inline static constexpr Vector2 testo_Needle_Anim_Size = {16.0f, 16.0f};
@@ -283,7 +283,7 @@ namespace game
         inline static constexpr const char* kPlayerBuffWalkDownAnim = "PieWare/assets/Spritesheets/Gnome_Walking_Down.png";
         inline static constexpr const char* kPlayerBuffWalkLeftAnim = "PieWare/assets/Spritesheets/Gnome_Walking_Left.png";
         inline static constexpr const char* kPlayerBuffWalkRightAnim = "PieWare/assets/Spritesheets/Gnome_Walking_Right.png";
-        inline static constexpr float player_Buff_Walk_Anim_Speed = 2.6f;
+        inline static constexpr float player_Buff_Walk_Anim_Speed = 2.4f;
         inline static constexpr int player_Buff_Walk_Frame_Count = 14;
         inline static constexpr Vector2 player_Buff_Walk_Anim_Size = {16,16};
 
@@ -303,7 +303,7 @@ namespace game
         inline static constexpr const char* kPlayerBuffMeleeUpRightAnim = "PieWare/assets/Spritesheets/Gnome_SwordAttack_RightUp.png";
         inline static constexpr const char* kPlayerBuffMeleeDownLeftAnim = "PieWare/assets/Spritesheets/GnomeSwordAttack_LeftDown.png";
         inline static constexpr const char* kPlayerBuffMeleeDownRightAnim = "PieWare/assets/Spritesheets/Gnome_SwordAttack_RightDown.png";
-        inline static constexpr float player_Buff_Melee_Attack_Anim_Speed = 3.0f;
+        inline static constexpr float player_Buff_Melee_Attack_Anim_Speed =  1.85f;
         inline static constexpr int player_Buff_Melee_Attack_Frame_Count = 13;
         inline static constexpr Vector2 player_Buff_Melee_Attack_Anim_Size = {48, 48};
 
@@ -324,7 +324,7 @@ namespace game
         inline static constexpr float fairy_Anim_Speed = 1.0f;
 
         // ------ Hard-coded Item Positions ------
-        inline static constexpr Vector2 initial_Testo_Needle_Position = {104.0f, 464.0f}; // Position Testonadel im Tempel
+        inline static constexpr Vector2 initial_Testo_Needle_Position = {184.0f, 472.0f}; // Position Testonadel im Tempel
         inline static constexpr Vector2 initial_Key_Position = {1408.0f, 464.0f}; // Position Schlüssel zu Beginn
 
 
