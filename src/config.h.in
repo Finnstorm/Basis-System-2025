@@ -117,20 +117,20 @@ namespace game
        // ------Player_Melee_Attack------
        // Diese Werte gelten für den normalen Zustand.
        inline static constexpr float player_Melee_Attack_Cooldown = 10.0f;
-       inline static constexpr float player_Melee_Hitbox_Lifetime = 1.0f; // Lebensdauer in 1/10 Sekunden
+       inline static constexpr float player_Melee_Hitbox_Lifetime = 3.5f; // Lebensdauer in 1/10 Sekunden
 
        // SEITLICHER ANGRIFF (Links/Rechts & Oben/Unten)
        inline static constexpr float player_Melee_Side_Reach_Tiles = 1.2f;   // Länge
        inline static constexpr float player_Melee_Side_Width_Tiles = 2.8f;   // Breite
 
        // DIAGONALER ANGRIFF
-       inline static constexpr float player_Melee_Diag_Reach_Tiles = 1.2f;
-       inline static constexpr float player_Melee_Diag_Width_Tiles = 2.2f; // sollte immer länger sein
+       inline static constexpr float player_Melee_Diag_Reach_Tiles = 0.8f;
+       inline static constexpr float player_Melee_Diag_Width_Tiles = 1.5f; // sollte immer länger sein
 
        // OFFSETS (wie weit die Hitbox in den Spieler geschoben wird)
-       inline static constexpr float player_Melee_Side_Offset = 0.0f;
-       inline static constexpr float player_Melee_Vertical_Offset = 0.0f;
-       inline static constexpr float player_Melee_Diagonal_Offset = 8.0f;
+       inline static constexpr float player_Melee_Side_Offset = 4.0f;
+       inline static constexpr float player_Melee_Vertical_Offset = 4.0f;
+       inline static constexpr float player_Melee_Diagonal_Offset = 0.0f;
 
        // ------Player_Melee_Attack (Testonadel)------
        // Dieselben Werte für den Buff-Zustand.
