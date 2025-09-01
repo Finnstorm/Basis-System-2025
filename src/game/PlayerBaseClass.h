@@ -61,7 +61,7 @@ public:
 	virtual void Draw() override;
 
 	virtual void Melee_Attack();
-
+	void Heal_To_Full();
 	void Update_Previous_Position();
 	void Update_Facing_Direction();
 	void Update_Input_Stacks();
@@ -84,7 +84,7 @@ public:
 	bool IsBuffed() const;
 	void SetHasFairy(bool value) { has_fairy = value; }
 	bool HasFairy() const { return has_fairy; }
-
+	void Reset_For_New_Level();
 	void Calculate_Melee_Hitboxes(std::vector<Rectangle>& out_hitboxes, Facing_Direction direction) const;
 	Facing_Direction Get_Facing_Direction() const { return facing_Direction; }
 };

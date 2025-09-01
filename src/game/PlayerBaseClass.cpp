@@ -243,6 +243,11 @@ void Player_Base_Class::Set_Position(Vector2 position)
     this->player_Pos = position;
 }
 
+void Player_Base_Class::Heal_To_Full()
+{
+    this->player_Health = this->player_Max_Health;
+}
+
 float Player_Base_Class::Get_Health() const
 {
     return this->player_Health;
@@ -396,4 +401,13 @@ void Player_Base_Class::Calculate_Melee_Hitboxes(std::vector<Rectangle>& out_hit
         case NONE:
             return;
     }
+}
+void Player_Base_Class::Reset_For_New_Level()
+{
+    this->has_fairy = false;
+    this->is_Moving = false;
+    this->currentState = IDLE;
+    this->facing_Direction = DOWN;
+    this->horizontal_inputs.clear();
+    this->vertical_inputs.clear();
 }
