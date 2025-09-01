@@ -6,9 +6,6 @@
 #include <vector>
 #include "../config.h.in"
 #include "GameScene.h"
-
-// in main erstellen: object_Manager g_objectManager;
-
 Screen::Screen(int *level_Ptr) : Level_Nbr_Ptr(level_Ptr) {
     this->loaded= false;
 }
@@ -34,28 +31,15 @@ void Screen::Load_Levelmap() {
     map_Dimensions.x = map->getSize().x * map->getTileSize().x;
     map_Dimensions.y = map->getSize().y * map->getTileSize().y;
 
-    // Load texture
     for (auto &tileset : map->getTilesets())
     {
-
-        // 1. Wir definieren das Basisverzeichnis, von dem aus der relative Pfad des Bildes gilt.
         std::string tileset_json_base_dir = "assets/Tiled/Tilesets/";
-
-        // 2. Wir holen den reinen Bildpfad aus den Daten (z.B. "../Tileset-pngs/Level_1_Tileset.png")
         std::string image_path_relative = tileset.getImagePath().string();
-
-        // 3. Wir kombinieren die Pfade. fs::path kümmert sich um die "/" und "\"
         fs::path final_path = fs::path(tileset_json_base_dir) / fs::path(image_path_relative);
-
-        // 4. Wir laden die Textur mit dem normalisierten Pfad.
-        // .canonical() löst ".." auf und macht den Pfad absolut.
-        // .string() wandelt den Pfad in einen std::string um.
-        // .c_str() gibt den für Raylib benötigten const char* zurück.
         tileatlas_Texture = LoadTexture(fs::canonical(final_path).string().c_str());
 
         if (tileatlas_Texture.id == 0)
         {
-            // Wichtige Debug-Ausgabe, falls es immer noch fehlschlägt
             std::cerr << "FEHLER: Tileset-Textur konnte nicht geladen werden unter: " << final_path.string() << std::endl;
             std::cerr << "Versuchter kanonischer Pfad: " << fs::absolute(final_path).string() << std::endl;
         }
@@ -67,21 +51,10 @@ void Screen::Load_Levelmap() {
     }
 }
 
-//Every Tilelayer need to posses a boolean IsAboveObjects = true if it should be rendered after the objects
-//Draw_Level() function calls now need to look loke this
-//
-//Screen.Draw_Level(false)
-//Screen.LoadGameObjects()
-//Screen.Draw_Level(true)
-
-//Draw_Level(false) only draws Tilelayer that are below the objects
-//while Draw_Level(true) only draws the ones above the Objects
-
-void Screen::Draw_Level(std::shared_ptr<Cam> kamera,bool aboveObjects) {
-
-
-    //make sure the map is loaded before drawing
-    if (map == nullptr) {
+void Screen::Draw_Level(std::shared_ptr<Cam> kamera,bool aboveObjects)
+{
+    if (map == nullptr)
+    {
         std::cerr << "Cannot draw level: Map not loaded." << std::endl;
         return;
     }
@@ -99,22 +72,14 @@ void Screen::Draw_Level(std::shared_ptr<Cam> kamera,bool aboveObjects) {
         }
         if (isAbove != aboveObjects)
             continue;
-
-        //get Tilelayer Data
         auto &tile_Layer = layer.getTileData();
-
-        //Iterate through each Tile
         for (const auto &pair: tile_Layer)
-            //'pair.first' is a std::tuple<int, int> representing the Tile's grid position
-            //'pair.second' is a pointer to the tson::Tile object
         {
-            // Extract x and y coordinates from the tuple
             int x = std::get<0>(pair.first);
             int y = std::get<1>(pair.first);
             tson::Tile *tile = pair.second;
 
             if (tile != nullptr) {
-                //Check if there is a tile at the current posiotion
                 tson::Rect drawingRect = tile->getDrawingRect();
                 tson::Vector2f worldPos = {
                         static_cast<float>(x * map->getTileSize().x),
@@ -141,7 +106,8 @@ void Screen::Draw_Level(std::shared_ptr<Cam> kamera,bool aboveObjects) {
 
 void Screen::Load_Game_Objects(Object_Manager& g_Object_Manager)
 {
-    if (!this->loaded){
+    if (!this->loaded)
+    {
         Load_Levelmap();
     }
     if (map == nullptr)
@@ -150,7 +116,6 @@ void Screen::Load_Game_Objects(Object_Manager& g_Object_Manager)
         return;
     }
 
-    //Processing Object layers
     for (auto &layer: map->getLayers()) {
         if (layer.getType() == tson::LayerType::ObjectGroup) {
             const std::string &layer_Name = layer.getName();

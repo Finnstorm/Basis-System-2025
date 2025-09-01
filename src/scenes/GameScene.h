@@ -18,7 +18,7 @@ namespace game::scenes
     private:
         Vector2 sp = game::Config::player_Spawn_Position;
         Rectangle wb{0,0,game::Config::kStageWidth,game::Config::kStageHeight};
-        Player_Class_One mp{sp};
+        Player_Class_One* player_ptr = nullptr;
         DT::timemachine dtm;
         std::unique_ptr<Collision_Manager> p_cm;
         std::unique_ptr<EnemySpawner> enemySpawner;
@@ -27,13 +27,11 @@ namespace game::scenes
         float wave_timer = 0.0f;
 
         bool fairy_has_spawned = false;
-        int score = 0;
-        int souls = 0;
         float score_timer = 0.0f;
         std::string debug_text = "Debug Info:";
 
     public:
-        GameScene();
+        explicit GameScene(int level_to_load = 1);
         ~GameScene() override;
         void Update() override;
         void Draw() override;

@@ -4,7 +4,13 @@ add_library(scenes STATIC MenuScene.h MenuScene.cpp GameScene.h GameScene.cpp Pa
         screen.cpp
         screen.h
         MainMenuScene.cpp
-        MainMenuScene.h)
+        MainMenuScene.h
+        DeathScene.cpp
+        DeathScene.h
+        UpgradeScene.cpp
+        UpgradeScene.h
+        ScoreboardScene.cpp
+        ScoreboardScene.h)
 
 target_include_directories(scenes PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 

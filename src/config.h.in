@@ -200,13 +200,13 @@ namespace game
         //____________________Wellen Spawner Level 2____________________________
 
         //------ Gegner: Bauer ------
-        inline static constexpr int kMeleeBauer_L2_StartWave = 3;                   // Erscheint in Level 2 erst ab Welle 3.
-        inline static constexpr int kMeleeBauer_L2_SpawnEveryXWaves = 2;            // Erscheint nur jede zweite Welle (3, 5, 7...).
-        inline static constexpr int kMeleeBauer_L2_InitialSpawnCount = 10;          // Startet hier direkt mit 10.
-        inline static constexpr int kMeleeBauer_L2_IncreasePerSpawnWave = 5;        // Erhöht sich schneller.
-        inline static constexpr bool kMeleeBauer_L2_EnableDecrease = false;         // Keine Abschwächung in diesem Level.
-        inline static constexpr int kMeleeBauer_L2_DecreaseStartWave = 999;         // Irrelevanter Wert.
-        inline static constexpr int kMeleeBauer_L2_DecreaseAmount = 0;              // Irrelevanter Wert.
+        inline static constexpr int kMeleeBauer_L2_StartWave = 1;
+        inline static constexpr int kMeleeBauer_L2_SpawnEveryXWaves = 1;
+        inline static constexpr int kMeleeBauer_L2_InitialSpawnCount = 10;
+        inline static constexpr int kMeleeBauer_L2_IncreasePerSpawnWave = 5;
+        inline static constexpr bool kMeleeBauer_L2_EnableDecrease = false;
+        inline static constexpr int kMeleeBauer_L2_DecreaseStartWave = 999;
+        inline static constexpr int kMeleeBauer_L2_DecreaseAmount = 0;
 
 
 
@@ -361,9 +361,9 @@ namespace game
                 case 1:
                 return "assets/Tiled/Levelmaps/Level_1.json";
                 case 2:
-                return "assets/Tiled/Levelmaps/lvl2.json";
+                return "assets/Tiled/Levelmaps/Level_3.json";
                 case 3:
-                return "assets/maps/level3.json";
+                return "assets/Tiled/Levelmaps/Level_3.json";
                 default:
                 return "assets/maps/default.json";
             }

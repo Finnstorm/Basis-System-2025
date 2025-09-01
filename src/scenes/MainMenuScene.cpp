@@ -94,6 +94,7 @@ void MainMenuScene::main_Update() {
 
         switch (counter) {
             case 0:{
+                game::core::Store::player_state = nullptr;
                 game::core::Store::stage->ReplaceWithNewScene("menu", "game", std::make_unique<game::scenes::GameScene>());
                 break;
             }
