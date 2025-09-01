@@ -361,7 +361,7 @@ namespace game
                 case 1:
                 return "assets/Tiled/Levelmaps/Level_1.json";
                 case 2:
-                return "assets/Tiled/Levelmaps/Level_3.json";
+                return "assets/Tiled/Levelmaps/Level_2.json";
                 case 3:
                 return "assets/Tiled/Levelmaps/Level_3.json";
                 default:
