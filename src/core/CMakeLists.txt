@@ -56,7 +56,9 @@ add_library(core STATIC game.h game.cpp store.h ../scenes/Scene.h stage.h stage.
         ../game/KeyItem.cpp
         ../game/KeyItem.h
         ../game/FairyItem.cpp
-        ../game/FairyItem.h)
+        ../game/FairyItem.h
+        ../game/HUD.h
+        ../game/HUD.cpp)
 
 target_include_directories(core PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 

@@ -7,6 +7,7 @@
 #include "Cam.h"
 #include <memory>
 #include "../game/EnemySpawner.h"
+#include "../game/HUD.h"
 
 namespace game::scenes
 {
@@ -29,6 +30,9 @@ namespace game::scenes
         bool fairy_has_spawned = false;
         float score_timer = 0.0f;
         std::string debug_text = "Debug Info:";
+
+        HUD hud{nullptr};
+
 
     public:
         explicit GameScene(int level_to_load = 1);

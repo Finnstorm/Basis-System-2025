@@ -24,6 +24,8 @@ add_subdirectory(scenes)
 add_executable(${PROJECT_NAME} main.cpp
         Vectors.h
         game/PlayerBaseClass.cpp
+        game/HUD.h
+        game/HUD.cpp
 )
 
 # Add config.h.in file

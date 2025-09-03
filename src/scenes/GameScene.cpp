@@ -41,6 +41,8 @@ game::scenes::GameScene::GameScene(int level_to_load) : Level_Nbr(level_to_load)
     objectManager.AddObject(this->player_ptr);
     cam = std::make_shared<Cam>(*this->player_ptr);
 
+    hud= HUD(player_ptr);
+
     screen.Load_Game_Objects(objectManager);
 
     this->player_ptr->object_manager_ptr = &objectManager;
@@ -212,7 +214,7 @@ for (const auto& pos : dead_enemy_positions)
     }
 }
 
-
+    hud.HUD_update();
 objectManager.ProcessAdditions();
     dtm.Update();
 }
@@ -231,20 +233,7 @@ void game::scenes::GameScene::Draw()
     }
     screen.Draw_Level(this->cam, true);
     EndMode2D();
-
-    int playerHealth = static_cast<int>(player_ptr->Get_Health());
-    std::string healthText = "Leben: " + std::to_string(playerHealth);
-    DrawText(healthText.c_str(), 20, 20, 30, WHITE);
-
-    std::string scoreText = "Score: " + std::to_string(game::core::Store::player_state->score);
-    DrawText(scoreText.c_str(), 220, 20, 30, WHITE);
-
-    std::string soulsText = "Souls: " + std::to_string(game::core::Store::player_state->souls);
-    DrawText(soulsText.c_str(), 450, 20, 30, WHITE);
-
-    int time_to_wave = static_cast<int>(wave_timer / 10.0f);
-    std::string waveText = "Naechste Welle in: " + std::to_string(time_to_wave);
-    DrawText(waveText.c_str(), GetScreenWidth() - 400, 20, 30, WHITE);
+    hud.HUD_draw();
 }
 
 int game::scenes::GameScene::CountItemsOfType(ItemType type, const Object_Manager& objectManager, const Player_Class_One& player)

@@ -346,6 +346,33 @@ namespace game
         inline static constexpr const char* credits_button_asset ="PieWare/assets/UI/MainMenu/Button_Credits.png";
         inline static constexpr const char* quit_button_asset ="PieWare/assets/UI/MainMenu/Button_Quit.png";
 
+        //-------HUD----------
+         inline static constexpr const char* Symbol_AA ="PieWare/assets/UI/HUD/Button_ArrowAttack.png";
+                        inline static constexpr const char* Symbol_AAU ="PieWare/assets/UI/HUD/Button_ArrowAttack_Use.png";
+                        inline static constexpr const char* Symbol_AAI ="PieWare/assets/UI/HUD/Button_ArrowAttack_Input.png";
+                        inline static constexpr const char* Symbol_IB ="PieWare/assets/UI/HUD/Button_Item_Bomb.png";
+                        inline static constexpr const char* Symbol_IBU ="PieWare/assets/UI/HUD/Button_Item_Bomb_Use.png";
+                        inline static constexpr const char* Symbol_IE ="PieWare/assets/UI/HUD/Button_Item_Empty.png";
+                        inline static constexpr const char* Symbol_IEU ="PieWare/assets/UI/HUD/Button_Item_Empty_Use.png";
+                        inline static constexpr const char* Symbol_II ="PieWare/assets/UI/HUD/Button_Item_Input.png";
+                        inline static constexpr const char* Symbol_IK ="PieWare/assets/UI/HUD/Button_Item_Key.png";
+                        inline static constexpr const char* Symbol_IKU ="PieWare/assets/UI/HUD/Button_Item_Key_Use.png";
+                        inline static constexpr const char* Symbol_SA ="PieWare/assets/UI/HUD/Button_SwordAttack.png";
+                        inline static constexpr const char* Symbol_SAU ="PieWare/assets/UI/HUD/Button_SwordAttack_Use.png";
+                        inline static constexpr const char* Symbol_SAI ="PieWare/assets/UI/HUD/Button_SwordAttack_Input.png";
+                        inline static constexpr const char* Symbol_HH ="PieWare/assets/UI/HUD/Healthbar_HalfHeart.png";
+                        inline static constexpr const char* Symbol_H ="PieWare/assets/UI/HUD/Healthbar_Heart.png";
+                        inline static constexpr const char* Symbol_HS ="PieWare/assets/UI/HUD/Healthbar_Static.png";
+                        inline static constexpr const char* Symbol_HU ="PieWare/assets/UI/HUD/Healthbar_UpgradeHeart.png";
+                        inline static constexpr const char* Symbol_HUH ="PieWare/assets/UI/HUD/Healthbar_UpgradeHalfHeart.png";
+                        inline static constexpr const char* Symbol_SCC ="PieWare/assets/UI/HUD/ScoreCounter_Static.png";
+                        inline static constexpr const char* Symbol_SOC ="PieWare/assets/UI/HUD/SoulCounter_Static.png";
+                        inline static constexpr const char* Symbol_IP ="PieWare/assets/UI/HUD/Button_Item_Potionl.png";
+                        inline static constexpr const char* Symbol_IPU ="PieWare/assets/UI/HUD/Button_Item_Potionl_Use.png";
+                        inline static constexpr const char* Symbol_IT ="PieWare/assets/UI/HUD/Button_Item_Testonadel.png";
+                        inline static constexpr const char* Symbol_ITU ="PieWare/assets/UI/HUD/Button_Item_Testonadel_Use.png";
+
+
 
         // ------ DEBUGGING ------
         inline static constexpr bool visualize_Player_Hitbox = false;
