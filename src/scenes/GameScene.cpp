@@ -19,11 +19,16 @@
 #include "../game/FairyItem.h"
 #include "../game/HealthPotion.h"
 #include "../game/BombItem.h"
+#include "../game/KnightEnemy.h"
+#include "../game/DemonKnightEnemy.h"
+#include "../game/PeasantEnemy.h"
 
 using namespace std::string_literals;
 
 game::scenes::GameScene::GameScene(int level_to_load) : Level_Nbr(level_to_load)
 {
+    enemy::Melee_Enemy::Load_All_Melee_Assets();
+
     if (!game::core::Store::player_state)
     {
         game::core::Store::player_state = std::make_unique<game::core::PlayerState>(game::Config::player_Spawn_Position);
@@ -36,7 +41,6 @@ game::scenes::GameScene::GameScene(int level_to_load) : Level_Nbr(level_to_load)
     }
 
     this->player_ptr = &game::core::Store::player_state->player;
-    enemy::Melee_Enemy::Load_Assets();
     dtm.Start();
     objectManager.AddObject(this->player_ptr);
     cam = std::make_shared<Cam>(*this->player_ptr);
@@ -49,8 +53,17 @@ game::scenes::GameScene::GameScene(int level_to_load) : Level_Nbr(level_to_load)
     p_cm = std::make_unique<Collision_Manager>(wb, objectManager.managed_objects);
 
     enemySpawner = std::make_unique<EnemySpawner>(objectManager, cam);
-    enemySpawner->Register_Enemy_Type("Bauer", [](Vector2 pos) -> enemy::Enemy_Base_Class* {
-        return new enemy::Melee_Enemy(pos);
+    enemySpawner->Register_Enemy_Type("Bauer", [](Vector2 pos) -> enemy::Enemy_Base_Class*
+    {
+        return new enemy::Peasant_Enemy(pos);
+    });
+    enemySpawner->Register_Enemy_Type("Ritter", [](Vector2 pos) -> enemy::Enemy_Base_Class*
+    {
+        return new enemy::Knight_Enemy(pos);
+    });
+    enemySpawner->Register_Enemy_Type("Demonenritter", [](Vector2 pos) -> enemy::Enemy_Base_Class*
+    {
+        return new enemy::Demon_Knight_Enemy(pos);
     });
 
     this->current_level = level_to_load;
@@ -62,7 +75,10 @@ game::scenes::GameScene::GameScene(int level_to_load) : Level_Nbr(level_to_load)
     objectManager.AddObject(new TestoNeedle(game::Config::initial_Testo_Needle_Position, false));
     objectManager.AddObject(new KeyItem(game::Config::initial_Key_Position));
 }
-game::scenes::GameScene::~GameScene() { }
+game::scenes::GameScene::~GameScene()
+{
+    enemy::Melee_Enemy::Unload_All_Melee_Assets();
+}
 
 void game::scenes::GameScene::Update()
 {

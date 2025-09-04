@@ -34,7 +34,6 @@ void BombExplosionHitbox::Tick(float delta_time)
 
 void BombExplosionHitbox::On_Collision(Collidable* other)
 {
-    // Schaden wird nur verursacht, solange der Timer läuft
     if (damage_active_timer > 0 && other->Get_Collision_Type() == Collision_Type::ENEMY)
     {
         CollisionResponse::Apply_Damage(other, damage);
@@ -46,7 +45,6 @@ void BombExplosionHitbox::Draw()
     Texture2D sheet = animation.GetSpritesheet();
     Rectangle source_rec = animation.GetCurrentFrameRec();
 
-    // Manuelle Implementierung der Kachel-Funktion
     if (sheet.id <= 0 || source_rec.width == 0 || source_rec.height == 0) return;
 
     for (float y = hitbox.y; y < hitbox.y + hitbox.height; y += source_rec.height)

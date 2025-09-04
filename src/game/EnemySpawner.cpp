@@ -25,44 +25,251 @@ void EnemySpawner::Start_New_Wave(int wave_number, int level_number)
 
     if (enemy_factories.count("Bauer"))
     {
-        const int start_wave              = (level_number == 1) ? game::Config::kMeleeBauer_L1_StartWave : game::Config::kMeleeBauer_L2_StartWave;
-        const int spawn_every_x_waves     = (level_number == 1) ? game::Config::kMeleeBauer_L1_SpawnEveryXWaves : game::Config::kMeleeBauer_L2_SpawnEveryXWaves;
-        const int initial_spawn_count     = (level_number == 1) ? game::Config::kMeleeBauer_L1_InitialSpawnCount : game::Config::kMeleeBauer_L2_InitialSpawnCount;
-        const int increase_per_spawn_wave = (level_number == 1) ? game::Config::kMeleeBauer_L1_IncreasePerSpawnWave : game::Config::kMeleeBauer_L2_IncreasePerSpawnWave;
-        const bool enable_decrease        = (level_number == 1) ? game::Config::kMeleeBauer_L1_EnableDecrease : game::Config::kMeleeBauer_L2_EnableDecrease;
-        const int decrease_start_wave     = (level_number == 1) ? game::Config::kMeleeBauer_L1_DecreaseStartWave : game::Config::kMeleeBauer_L2_DecreaseStartWave;
-        const int decrease_amount         = (level_number == 1) ? game::Config::kMeleeBauer_L1_DecreaseAmount : game::Config::kMeleeBauer_L2_DecreaseAmount;
-
-        if (wave_number >= start_wave)
+        bool is_enabled = false;
+        switch (level_number)
         {
-            if ((wave_number - start_wave) % spawn_every_x_waves == 0)
+            case 1: is_enabled = game::Config::kMeleeBauer_L1_IsEnabled; break;
+            case 2: is_enabled = game::Config::kMeleeBauer_L2_IsEnabled; break;
+            case 3: is_enabled = game::Config::kMeleeBauer_L3_IsEnabled; break;
+        }
+
+        if (is_enabled)
+        {
+
+            int start_wave;
+            int spawn_every_x_waves;
+            int initial_spawn_count;
+            int increase_per_spawn_wave;
+            bool enable_decrease;
+            int decrease_start_wave;
+            int decrease_amount;
+
+            switch (level_number)
             {
-                int& count = current_spawn_counts["Bauer"];
-                if (wave_number == start_wave)
+                case 1:
+                start_wave              = game::Config::kMeleeBauer_L1_StartWave;
+                spawn_every_x_waves     = game::Config::kMeleeBauer_L1_SpawnEveryXWaves;
+                initial_spawn_count     = game::Config::kMeleeBauer_L1_InitialSpawnCount;
+                increase_per_spawn_wave = game::Config::kMeleeBauer_L1_IncreasePerSpawnWave;
+                enable_decrease         = game::Config::kMeleeBauer_L1_EnableDecrease;
+                decrease_start_wave     = game::Config::kMeleeBauer_L1_DecreaseStartWave;
+                decrease_amount         = game::Config::kMeleeBauer_L1_DecreaseAmount;
+                break;
+                case 2:
+                    start_wave              = game::Config::kMeleeBauer_L2_StartWave;
+                spawn_every_x_waves     = game::Config::kMeleeBauer_L2_SpawnEveryXWaves;
+                initial_spawn_count     = game::Config::kMeleeBauer_L2_InitialSpawnCount;
+                increase_per_spawn_wave = game::Config::kMeleeBauer_L2_IncreasePerSpawnWave;
+                enable_decrease         = game::Config::kMeleeBauer_L2_EnableDecrease;
+                decrease_start_wave     = game::Config::kMeleeBauer_L2_DecreaseStartWave;
+                decrease_amount         = game::Config::kMeleeBauer_L2_DecreaseAmount;
+                break;
+                case 3:
+                    start_wave              = game::Config::kMeleeBauer_L3_StartWave;
+                spawn_every_x_waves     = game::Config::kMeleeBauer_L3_SpawnEveryXWaves;
+                initial_spawn_count     = game::Config::kMeleeBauer_L3_InitialSpawnCount;
+                increase_per_spawn_wave = game::Config::kMeleeBauer_L3_IncreasePerSpawnWave;
+                enable_decrease         = game::Config::kMeleeBauer_L3_EnableDecrease;
+                decrease_start_wave     = game::Config::kMeleeBauer_L3_DecreaseStartWave;
+                decrease_amount         = game::Config::kMeleeBauer_L3_DecreaseAmount;
+                break;
+            }
+
+            if (wave_number >= start_wave)
+            {
+                if ((wave_number - start_wave) % spawn_every_x_waves == 0)
                 {
-                    count = initial_spawn_count;
-                }
-                else
-                {
-                    if (enable_decrease && wave_number >= decrease_start_wave)
+                    int& count = current_spawn_counts["Bauer"];
+                    if (wave_number == start_wave)
                     {
-                        count -= decrease_amount;
+                        count = initial_spawn_count;
                     }
                     else
                     {
-                        count += increase_per_spawn_wave;
+                        if (enable_decrease && wave_number >= decrease_start_wave)
+                        {
+                            count -= decrease_amount;
+                        }
+                        else
+                        {
+                            count += increase_per_spawn_wave;
+                        }
                     }
-                }
-                if (count < 0) count = 0;
-                if (count > 0)
-                {
-                    wave_spawn_queue.push_back({"Bauer", count});
-                    total_enemies_this_wave += count;
+                    if (count < 0) count = 0;
+                    if (count > 0)
+                    {
+                        wave_spawn_queue.push_back({"Bauer", count});
+                        total_enemies_this_wave += count;
+                    }
                 }
             }
         }
     }
-    // Hier könnten später Prüfungen für andere Gegnerfolgen.
+
+if (enemy_factories.count("Ritter"))
+    {
+        bool is_enabled = false;
+        switch (level_number)
+        {
+            case 1: is_enabled = game::Config::kMeleeRitter_L1_IsEnabled; break;
+            case 2: is_enabled = game::Config::kMeleeRitter_L2_IsEnabled; break;
+            case 3: is_enabled = game::Config::kMeleeRitter_L3_IsEnabled; break;
+        }
+
+        if (is_enabled)
+        {
+            int start_wave;
+            int spawn_every_x_waves;
+            int initial_spawn_count;
+            int increase_per_spawn_wave;
+            bool enable_decrease;
+            int decrease_start_wave;
+            int decrease_amount;
+
+            switch (level_number)
+            {
+                case 1:
+                start_wave              = game::Config::kMeleeRitter_L1_StartWave;
+                spawn_every_x_waves     = game::Config::kMeleeRitter_L1_SpawnEveryXWaves;
+                initial_spawn_count     = game::Config::kMeleeRitter_L1_InitialSpawnCount;
+                increase_per_spawn_wave = game::Config::kMeleeRitter_L1_IncreasePerSpawnWave;
+                enable_decrease         = game::Config::kMeleeRitter_L1_EnableDecrease;
+                decrease_start_wave     = game::Config::kMeleeRitter_L1_DecreaseStartWave;
+                decrease_amount         = game::Config::kMeleeRitter_L1_DecreaseAmount;
+                break;
+                case 2:
+                start_wave              = game::Config::kMeleeRitter_L2_StartWave;
+                spawn_every_x_waves     = game::Config::kMeleeRitter_L2_SpawnEveryXWaves;
+                initial_spawn_count     = game::Config::kMeleeRitter_L2_InitialSpawnCount;
+                increase_per_spawn_wave = game::Config::kMeleeRitter_L2_IncreasePerSpawnWave;
+                enable_decrease         = game::Config::kMeleeRitter_L2_EnableDecrease;
+                decrease_start_wave     = game::Config::kMeleeRitter_L2_DecreaseStartWave;
+                decrease_amount         = game::Config::kMeleeRitter_L2_DecreaseAmount;
+                break;
+                case 3:
+                start_wave              = game::Config::kMeleeRitter_L3_StartWave;
+                spawn_every_x_waves     = game::Config::kMeleeRitter_L3_SpawnEveryXWaves;
+                initial_spawn_count     = game::Config::kMeleeRitter_L3_InitialSpawnCount;
+                increase_per_spawn_wave = game::Config::kMeleeRitter_L3_IncreasePerSpawnWave;
+                enable_decrease         = game::Config::kMeleeRitter_L3_EnableDecrease;
+                decrease_start_wave     = game::Config::kMeleeRitter_L3_DecreaseStartWave;
+                decrease_amount         = game::Config::kMeleeRitter_L3_DecreaseAmount;
+                break;
+            }
+
+            if (wave_number >= start_wave)
+            {
+                if ((wave_number - start_wave) % spawn_every_x_waves == 0)
+                {
+                    int& count = current_spawn_counts["Ritter"];
+                    if (wave_number == start_wave)
+                    {
+                        count = initial_spawn_count;
+                    }
+                    else
+                    {
+                        if (enable_decrease && wave_number >= decrease_start_wave)
+                        {
+                            count -= decrease_amount;
+                        }
+                        else
+                        {
+                            count += increase_per_spawn_wave;
+                        }
+                    }
+                    if (count < 0) count = 0;
+                    if (count > 0)
+                    {
+                        wave_spawn_queue.push_back({"Ritter", count});
+                        total_enemies_this_wave += count;
+                    }
+                }
+            }
+        }
+    }
+
+    if (enemy_factories.count("Demonenritter"))
+    {
+        bool is_enabled = false;
+        switch (level_number)
+        {
+            case 1: is_enabled = game::Config::kMeleeDemonenritter_L1_IsEnabled; break;
+            case 2: is_enabled = game::Config::kMeleeDemonenritter_L2_IsEnabled; break;
+            case 3: is_enabled = game::Config::kMeleeDemonenritter_L3_IsEnabled; break;
+        }
+
+        if (is_enabled)
+        {
+
+            int start_wave;
+            int spawn_every_x_waves;
+            int initial_spawn_count;
+            int increase_per_spawn_wave;
+            bool enable_decrease;
+            int decrease_start_wave;
+            int decrease_amount;
+
+            switch (level_number)
+            {
+                case 1:
+                start_wave              = game::Config::kMeleeDemonenritter_L1_StartWave;
+                spawn_every_x_waves     = game::Config::kMeleeDemonenritter_L1_SpawnEveryXWaves;
+                initial_spawn_count     = game::Config::kMeleeDemonenritter_L1_InitialSpawnCount;
+                increase_per_spawn_wave = game::Config::kMeleeDemonenritter_L1_IncreasePerSpawnWave;
+                enable_decrease         = game::Config::kMeleeDemonenritter_L1_EnableDecrease;
+                decrease_start_wave     = game::Config::kMeleeDemonenritter_L1_DecreaseStartWave;
+                decrease_amount         = game::Config::kMeleeDemonenritter_L1_DecreaseAmount;
+                break;
+                case 2:
+                start_wave              = game::Config::kMeleeDemonenritter_L2_StartWave;
+                spawn_every_x_waves     = game::Config::kMeleeDemonenritter_L2_SpawnEveryXWaves;
+                initial_spawn_count     = game::Config::kMeleeDemonenritter_L2_InitialSpawnCount;
+                increase_per_spawn_wave = game::Config::kMeleeDemonenritter_L2_IncreasePerSpawnWave;
+                enable_decrease         = game::Config::kMeleeDemonenritter_L2_EnableDecrease;
+                decrease_start_wave     = game::Config::kMeleeDemonenritter_L2_DecreaseStartWave;
+                decrease_amount         = game::Config::kMeleeDemonenritter_L2_DecreaseAmount;
+                break;
+                case 3:
+                start_wave              = game::Config::kMeleeDemonenritter_L3_StartWave;
+                spawn_every_x_waves     = game::Config::kMeleeDemonenritter_L3_SpawnEveryXWaves;
+                initial_spawn_count     = game::Config::kMeleeDemonenritter_L3_InitialSpawnCount;
+                increase_per_spawn_wave = game::Config::kMeleeDemonenritter_L3_IncreasePerSpawnWave;
+                enable_decrease         = game::Config::kMeleeDemonenritter_L3_EnableDecrease;
+                decrease_start_wave     = game::Config::kMeleeDemonenritter_L3_DecreaseStartWave;
+                decrease_amount         = game::Config::kMeleeDemonenritter_L3_DecreaseAmount;
+                break;
+            }
+
+            if (wave_number >= start_wave)
+            {
+                if ((wave_number - start_wave) % spawn_every_x_waves == 0)
+                {
+                    int& count = current_spawn_counts["Demonenritter"];
+                    if (wave_number == start_wave)
+                    {
+                        count = initial_spawn_count;
+                    }
+                    else
+                    {
+                        if (enable_decrease && wave_number >= decrease_start_wave)
+                        {
+                            count -= decrease_amount;
+                        }
+                        else
+                        {
+                            count += increase_per_spawn_wave;
+                        }
+                    }
+                    if (count < 0) count = 0;
+                    if (count > 0)
+                    {
+                        wave_spawn_queue.push_back({"Demonenritter", count});
+                        total_enemies_this_wave += count;
+                    }
+                }
+            }
+        }
+    }
 }
 
 void EnemySpawner::Update(float delta_time)

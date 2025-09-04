@@ -3,48 +3,64 @@
 //
 
 #include "MeleeEnemy.h"
-#include <cmath>
-#include <iostream>
-#include <raylib.h>
-
 #include "CollisionResponse.h"
 #include "raymath.h"
 #include "../Config.h.in"
+
 namespace enemy
 {
-    Texture2D Melee_Enemy::walk_texture_left;
-    Texture2D Melee_Enemy::walk_texture_right;
-    Texture2D Melee_Enemy::attack_texture_left;
-    Texture2D Melee_Enemy::attack_texture_right;
+    std::map<std::string, Texture2D> Melee_Enemy::s_melee_textures;
 
-    void Melee_Enemy::Load_Assets()
+    void Melee_Enemy::Load_All_Melee_Assets()
     {
-        walk_texture_left = LoadTexture(game::Config::kMeleeEnemy1WalkLeftAnim);
-        walk_texture_right = LoadTexture(game::Config::kMeleeEnemy1WalkRightAnim);
-        attack_texture_left = LoadTexture(game::Config::kMeleeEnemy1AttackLeftAnim);
-        attack_texture_right = LoadTexture(game::Config::kMeleeEnemy1AttackRightAnim);
+        s_melee_textures["Bauer_Walk_Left"] = LoadTexture(game::Config::kMeleeEnemy1WalkLeftAnim);
+        s_melee_textures["Bauer_Walk_Right"] = LoadTexture(game::Config::kMeleeEnemy1WalkRightAnim);
+        s_melee_textures["Bauer_Attack_Left"] = LoadTexture(game::Config::kMeleeEnemy1AttackLeftAnim);
+        s_melee_textures["Bauer_Attack_Right"] = LoadTexture(game::Config::kMeleeEnemy1AttackRightAnim);
+
+        s_melee_textures["Ritter_Walk_Left"] = LoadTexture(game::Config::kMeleeEnemy2WalkLeftAnim);
+        s_melee_textures["Ritter_Walk_Right"] = LoadTexture(game::Config::kMeleeEnemy2WalkRightAnim);
+        s_melee_textures["Ritter_Attack_Left"] = LoadTexture(game::Config::kMeleeEnemy2AttackLeftAnim);
+        s_melee_textures["Ritter_Attack_Right"] = LoadTexture(game::Config::kMeleeEnemy2AttackRightAnim);
+
+        s_melee_textures["Demonenritter_Walk_Left"] = LoadTexture(game::Config::kMeleeEnemy3WalkLeftAnim);
+        s_melee_textures["Demonenritter_Walk_Right"] = LoadTexture(game::Config::kMeleeEnemy3WalkRightAnim);
+        s_melee_textures["Demonenritter_Attack_Left"] = LoadTexture(game::Config::kMeleeEnemy3AttackLeftAnim);
+        s_melee_textures["Demonenritter_Attack_Right"] = LoadTexture(game::Config::kMeleeEnemy3AttackRightAnim);
     }
 
-    Melee_Enemy::Melee_Enemy(Vector2 start_position)
-        : Enemy_Base_Class( "Bauer", game::Config::melee_enemy_1_health, game::Config::melee_enemy_1_movement_speed,
-        game::Config::melee_enemy_1_damage, game::Config::melee_enemy_1_score_value,
-        game::Config::melee_enemy_1_souls_value, start_position, game::Config::melee_enemy_1_hitbox.x,
-        game::Config::melee_enemy_1_hitbox.y, game::Config::melee_enemy_1_attack_cooldown,
-        game::Config::kAIBase_SeekWeight, game::Config::kAIBase_SeparationWeight,
-        game::Config::kAIBase_PlayerSeparationWeight, game::Config::kAIBase_DesiredSeparation, game::Config::kAIBase_Drag)
+    void Melee_Enemy::Unload_All_Melee_Assets()
     {
-        walk_animations.try_emplace(LEFT, game::Config::melee_enemy_1_walk_anim_size, walk_texture_left,
-        game::Config::melee_enemy_1_walk_frame_count, game::Config::melee_enemy_1_walk_frame_count,
-        game::Config::melee_enemy_1_walk_anim_speed); walk_animations.try_emplace(RIGHT,
-        game::Config::melee_enemy_1_walk_anim_size, walk_texture_right, game::Config::melee_enemy_1_walk_frame_count,
-        game::Config::melee_enemy_1_walk_frame_count, game::Config::melee_enemy_1_walk_anim_speed);
+        for (auto const& [key, val] : s_melee_textures)
+        {
+            UnloadTexture(val);
+        }
+        s_melee_textures.clear();
+    }
 
-        attack_animations.try_emplace(LEFT, game::Config::melee_enemy_1_attack_anim_size, attack_texture_left,
-        game::Config::melee_enemy_1_attack_frame_count, game::Config::melee_enemy_1_attack_frame_count,
-        game::Config::melee_enemy_1_attack_anim_speed);  attack_animations.try_emplace(RIGHT,
-        game::Config::melee_enemy_1_attack_anim_size, attack_texture_right,
-        game::Config::melee_enemy_1_attack_frame_count, game::Config::melee_enemy_1_attack_frame_count,
-        game::Config::melee_enemy_1_attack_anim_speed);
+    Melee_Enemy::Melee_Enemy(Vector2 start_position, const std::string& name, int health, float speed, int damage,
+        int score, int souls, float cooldown, Vector2 hitbox_size, const char* walk_left_path,
+        const char* walk_right_path, const char* attack_left_path, const char* attack_right_path, Vector2 walk_anim_size,
+        int walk_frame_count, float walk_anim_speed, Vector2 attack_anim_size, int attack_frame_count, float attack_anim_speed)
+
+     : Enemy_Base_Class(name, health, speed, damage, score, souls, start_position, hitbox_size.x, hitbox_size.y, cooldown,
+          game::Config::kAIBase_SeekWeight, game::Config::kAIBase_SeparationWeight, game::Config::kAIBase_PlayerSeparationWeight,
+          game::Config::kAIBase_DesiredSeparation, game::Config::kAIBase_Drag)
+    {
+        this->walk_texture_left = &s_melee_textures.at(name + "_Walk_Left");
+        this->walk_texture_right = &s_melee_textures.at(name + "_Walk_Right");
+        this->attack_texture_left = &s_melee_textures.at(name + "_Attack_Left");
+        this->attack_texture_right = &s_melee_textures.at(name + "_Attack_Right");
+
+        walk_animations.try_emplace(LEFT, walk_anim_size, *this->walk_texture_left,
+            walk_frame_count, walk_frame_count, walk_anim_speed);
+        walk_animations.try_emplace(RIGHT, walk_anim_size, *this->walk_texture_right,
+            walk_frame_count, walk_frame_count, walk_anim_speed);
+
+        attack_animations.try_emplace(LEFT, attack_anim_size, *this->attack_texture_left,
+            attack_frame_count, attack_frame_count, attack_anim_speed);
+        attack_animations.try_emplace(RIGHT, attack_anim_size, *this->attack_texture_right,
+            attack_frame_count, attack_frame_count, attack_anim_speed);
     }
 
     void Melee_Enemy::Tick_Melee(float delta_time, Vector2 player_center)

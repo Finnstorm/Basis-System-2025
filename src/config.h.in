@@ -110,7 +110,6 @@ namespace game
         inline static constexpr Vector2 projectile_Anim_Size = {8, 8};
         inline static constexpr Vector2 projectile_Hitbox_Size = {8, 8};
         inline static constexpr float projectile_Anim_Speed = 3.0f;
-        inline static constexpr float player_Ranged_Damage_Factor = 1.0f;
 
         inline static constexpr const char* kProjectileSprite = "PieWare/assets/Items/Projectile_Right_White.png";
 
@@ -168,47 +167,166 @@ namespace game
 
 
         //____________________Gegner Ritter____________________________
+        // ------Melee_Enemy_Type2 Settings------
+        inline static constexpr int melee_enemy_2_health = 50;
+        inline static constexpr float melee_enemy_2_movement_speed = 8.0f;
+        inline static constexpr Vector2 melee_enemy_2_hitbox = {16, 24};
+        inline static constexpr int melee_enemy_2_score_value = 250;
+        inline static constexpr int melee_enemy_2_souls_value = 3;
+
+        // ------Melee_Enemy_Type2 Attack------
+        inline static constexpr int melee_enemy_2_damage = 15;
+        inline static constexpr float melee_enemy_2_attack_cooldown = 30.0f;
+
+        // ------Melee_Enemy_Type2 Animations ------
+        inline static constexpr float melee_enemy_2_walk_anim_speed = 1.0f;
+        inline static constexpr int melee_enemy_2_walk_frame_count = 12;
+        inline static constexpr Vector2 melee_enemy_2_walk_anim_size = {32, 32};
+        inline static constexpr const char* kMeleeEnemy2WalkLeftAnim = "PieWare/assets/Spritesheets/EnemyBauer_WalkingLeft_Lv1.png";
+        inline static constexpr const char* kMeleeEnemy2WalkRightAnim = "PieWare/assets/Spritesheets/EnemyBauer_WalkingRight_Lv1.png";
+
+        inline static constexpr float melee_enemy_2_attack_anim_speed = 3.0f;
+        inline static constexpr int melee_enemy_2_attack_frame_count = 10;
+        inline static constexpr Vector2 melee_enemy_2_attack_anim_size = {64, 32};
+        inline static constexpr const char* kMeleeEnemy2AttackLeftAnim = "PieWare/assets/Spritesheets/EnemyBauer_AttackLeft_Lv1.png";
+        inline static constexpr const char* kMeleeEnemy2AttackRightAnim = "PieWare/assets/Spritesheets/EnemyBauer_AttackRightt_Lv1.png";
 
 
+        //____________________Gegner Demonenritter____________________________
+        // ------Melee_Enemy_Type3 Settings------
+        inline static constexpr int melee_enemy_3_health = 90;
+        inline static constexpr float melee_enemy_3_movement_speed = 8.0f;
+        inline static constexpr Vector2 melee_enemy_3_hitbox = {16, 24};
+        inline static constexpr int melee_enemy_3_score_value = 500;
+        inline static constexpr int melee_enemy_3_souls_value = 5;
 
+        // ------Melee_Enemy_Type3 Attack------
+        inline static constexpr int melee_enemy_3_damage = 20;
+        inline static constexpr float melee_enemy_3_attack_cooldown = 30.0f;
+
+        // ------Melee_Enemy_Type3 Animations ------
+
+        inline static constexpr float melee_enemy_3_walk_anim_speed = 1.0f;
+        inline static constexpr int melee_enemy_3_walk_frame_count = 12;
+        inline static constexpr Vector2 melee_enemy_3_walk_anim_size = {32, 32};
+        inline static constexpr const char* kMeleeEnemy3WalkLeftAnim = "PieWare/assets/Spritesheets/EnemyBauer_WalkingLeft_Lv1.png";
+        inline static constexpr const char* kMeleeEnemy3WalkRightAnim = "PieWare/assets/Spritesheets/EnemyBauer_WalkingRight_Lv1.png";
+
+        inline static constexpr float melee_enemy_3_attack_anim_speed = 3.0f;
+        inline static constexpr int melee_enemy_3_attack_frame_count = 10;
+        inline static constexpr Vector2 melee_enemy_3_attack_anim_size = {64, 32};
+        inline static constexpr const char* kMeleeEnemy3AttackLeftAnim = "PieWare/assets/Spritesheets/EnemyBauer_AttackLeft_Lv1.png";
+        inline static constexpr const char* kMeleeEnemy3AttackRightAnim = "PieWare/assets/Spritesheets/EnemyBauer_AttackRightt_Lv1.png";
 
 
         //____________________Wellen Spawner Global____________________________
-        inline static constexpr float kWaveInterval = 200.0f;          // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
+        inline static constexpr float kWaveInterval = 200.0f;           // Zeit x 10 in Sekunden zwischen dem Start von zwei Wellen.
         inline static constexpr float kWaveSpawnDuration = 100.0f;      // Zeit x 10 in Sekunden, über die die Gegner einer Welle gespawnt werden.
-        inline static constexpr float kFirstWave = 100.0f;               // Zeit bis die erste Welle kommt. 40 = 4 Sekunden
-        inline static constexpr int kScore_Per_Wave = 250; // Punkte pro neuer Welle
-        inline static constexpr float kScore_Time_Interval = 5.0f; // Sekunden pro Punkt also 0.5 heißt 2 Punkte
-                                                                   // pro Sekunde weil er alle 0.5 Sekunden einen Punkt addiert.
+        inline static constexpr float kFirstWave = 100.0f;              // Zeit bis die erste Welle kommt. 40 = 4 Sekunden
+        inline static constexpr int kScore_Per_Wave = 250;              // Punkte pro neuer Welle
+        inline static constexpr float kScore_Time_Interval = 5.0f;      // Sekunden pro Punkt also 0.5 heißt 2 Punkte
+                                                                        // pro Sekunde weil er alle 0.5 Sekunden einen Punkt addiert.
 
         //____________________Wellen Spawner Level 1____________________________
 
         //------ Gegner: Bauer ------
+        inline static constexpr bool kMeleeBauer_L1_IsEnabled = true;            // Soll dieser Gegner überhaupt in diesem Level erscheinen
         inline static constexpr int kMeleeBauer_L1_StartWave = 1;               // Erscheint ab Welle ....
         inline static constexpr int kMeleeBauer_L1_SpawnEveryXWaves = 1;        // Erscheint in jeder ... Welle.
         inline static constexpr int kMeleeBauer_L1_InitialSpawnCount = 6;       // Startet mit ... Gegnern.
         inline static constexpr int kMeleeBauer_L1_IncreasePerSpawnWave = 3;    // Pro Erscheinungswelle kommen ... dazu.
         inline static constexpr bool kMeleeBauer_L1_EnableDecrease = false;     // Gegner werden weniger
         inline static constexpr int kMeleeBauer_L1_DecreaseStartWave = 3;       // gegner werden ab ... Welle weniger
-        inline static constexpr int kMeleeBauer_L1_DecreaseAmount = 3;          // Pro Erscheinungswelle werden es ... weniger.
-                                                                                // bei 0 werden es nicht weniger aber bei true kommen nicht mehr pro Welle
+        inline static constexpr int kMeleeBauer_L1_DecreaseAmount = 3;           // Pro Erscheinungswelle werden es ... weniger.
+                                                                                 // bei 0 werden es nicht weniger aber bei true kommen nicht mehr pro Welle
 
         //------ Gegner: Ritter ------
+        inline static constexpr bool kMeleeRitter_L1_IsEnabled = true;
+        inline static constexpr int kMeleeRitter_L1_StartWave = 6;
+        inline static constexpr int kMeleeRitter_L1_SpawnEveryXWaves = 2;
+        inline static constexpr int kMeleeRitter_L1_InitialSpawnCount = 2;
+        inline static constexpr int kMeleeRitter_L1_IncreasePerSpawnWave = 1;
+        inline static constexpr bool kMeleeRitter_L1_EnableDecrease = false;
+        inline static constexpr int kMeleeRitter_L1_DecreaseStartWave = 999;
+        inline static constexpr int kMeleeRitter_L1_DecreaseAmount = 0;
 
+        //------ Gegner: Demonenritter ------
+        inline static constexpr bool kMeleeDemonenritter_L1_IsEnabled = false;
+        inline static constexpr int kMeleeDemonenritter_L1_StartWave = 9;
+        inline static constexpr int kMeleeDemonenritter_L1_SpawnEveryXWaves = 2;
+        inline static constexpr int kMeleeDemonenritter_L1_InitialSpawnCount = 1;
+        inline static constexpr int kMeleeDemonenritter_L1_IncreasePerSpawnWave = 1;
+        inline static constexpr bool kMeleeDemonenritter_L1_EnableDecrease = false;
+        inline static constexpr int kMeleeDemonenritter_L1_DecreaseStartWave = 999;
+        inline static constexpr int kMeleeDemonenritter_L1_DecreaseAmount = 0;
 
 
         //____________________Wellen Spawner Level 2____________________________
 
         //------ Gegner: Bauer ------
-        inline static constexpr int kMeleeBauer_L2_StartWave = 1;
-        inline static constexpr int kMeleeBauer_L2_SpawnEveryXWaves = 1;
-        inline static constexpr int kMeleeBauer_L2_InitialSpawnCount = 10;
-        inline static constexpr int kMeleeBauer_L2_IncreasePerSpawnWave = 5;
-        inline static constexpr bool kMeleeBauer_L2_EnableDecrease = false;
-        inline static constexpr int kMeleeBauer_L2_DecreaseStartWave = 999;
-        inline static constexpr int kMeleeBauer_L2_DecreaseAmount = 0;
+        inline static constexpr bool kMeleeBauer_L2_IsEnabled = true;            // Soll dieser Gegner überhaupt in diesem Level erscheinen
+        inline static constexpr int kMeleeBauer_L2_StartWave = 1;               // Erscheint ab Welle ....
+        inline static constexpr int kMeleeBauer_L2_SpawnEveryXWaves = 1;        // Erscheint in jeder ... Welle.
+        inline static constexpr int kMeleeBauer_L2_InitialSpawnCount = 6;       // Startet mit ... Gegnern.
+        inline static constexpr int kMeleeBauer_L2_IncreasePerSpawnWave = 3;    // Pro Erscheinungswelle kommen ... dazu.
+        inline static constexpr bool kMeleeBauer_L2_EnableDecrease = true;     // Gegner werden weniger
+        inline static constexpr int kMeleeBauer_L2_DecreaseStartWave = 3;       // gegner werden ab ... Welle weniger
+        inline static constexpr int kMeleeBauer_L2_DecreaseAmount = 6;           // Pro Erscheinungswelle werden es ... weniger.
+                                                                                 // bei 0 werden es nicht weniger aber bei true kommen nicht mehr pro Welle
+
+        //------ Gegner: Ritter ------
+        inline static constexpr bool kMeleeRitter_L2_IsEnabled = true;
+        inline static constexpr int kMeleeRitter_L2_StartWave = 1;
+        inline static constexpr int kMeleeRitter_L2_SpawnEveryXWaves = 1;
+        inline static constexpr int kMeleeRitter_L2_InitialSpawnCount = 6;
+        inline static constexpr int kMeleeRitter_L2_IncreasePerSpawnWave = 3;
+        inline static constexpr bool kMeleeRitter_L2_EnableDecrease = false;
+        inline static constexpr int kMeleeRitter_L2_DecreaseStartWave = 999;
+        inline static constexpr int kMeleeRitter_L2_DecreaseAmount = 0;
+
+        //------ Gegner: Demonenritter ------
+        inline static constexpr bool kMeleeDemonenritter_L2_IsEnabled = true;
+        inline static constexpr int kMeleeDemonenritter_L2_StartWave = 6;
+        inline static constexpr int kMeleeDemonenritter_L2_SpawnEveryXWaves = 2;
+        inline static constexpr int kMeleeDemonenritter_L2_InitialSpawnCount = 2;
+        inline static constexpr int kMeleeDemonenritter_L2_IncreasePerSpawnWave = 1;
+        inline static constexpr bool kMeleeDemonenritter_L2_EnableDecrease = false;
+        inline static constexpr int kMeleeDemonenritter_L2_DecreaseStartWave = 999;
+        inline static constexpr int kMeleeDemonenritter_L2_DecreaseAmount = 0;
 
 
+        //____________________Wellen Spawner Level 3____________________________
+
+        //------ Gegner: Bauer ------
+        inline static constexpr bool kMeleeBauer_L3_IsEnabled = false;            // Soll dieser Gegner überhaupt in diesem Level erscheinen
+        inline static constexpr int kMeleeBauer_L3_StartWave = 1;               // Erscheint ab Welle ....
+        inline static constexpr int kMeleeBauer_L3_SpawnEveryXWaves = 1;        // Erscheint in jeder ... Welle.
+        inline static constexpr int kMeleeBauer_L3_InitialSpawnCount = 6;       // Startet mit ... Gegnern.
+        inline static constexpr int kMeleeBauer_L3_IncreasePerSpawnWave = 3;    // Pro Erscheinungswelle kommen ... dazu.
+        inline static constexpr bool kMeleeBauer_L3_EnableDecrease = false;     // Gegner werden weniger
+        inline static constexpr int kMeleeBauer_L3_DecreaseStartWave = 3;       // gegner werden ab ... Welle weniger
+        inline static constexpr int kMeleeBauer_L3_DecreaseAmount = 3;           // Pro Erscheinungswelle werden es ... weniger.
+                                                                                 // bei 0 werden es nicht weniger aber bei true kommen nicht mehr pro Welle
+
+        //------ Gegner: Ritter ------
+        inline static constexpr bool kMeleeRitter_L3_IsEnabled = true;
+        inline static constexpr int kMeleeRitter_L3_StartWave = 1;
+        inline static constexpr int kMeleeRitter_L3_SpawnEveryXWaves = 1;
+        inline static constexpr int kMeleeRitter_L3_InitialSpawnCount = 6;
+        inline static constexpr int kMeleeRitter_L3_IncreasePerSpawnWave = 3;
+        inline static constexpr bool kMeleeRitter_L3_EnableDecrease = true;
+        inline static constexpr int kMeleeRitter_L3_DecreaseStartWave = 3;
+        inline static constexpr int kMeleeRitter_L3_DecreaseAmount = 6;
+
+        //------ Gegner: Demonenritter ------
+        inline static constexpr bool kMeleeDemonenritter_L3_IsEnabled = true;
+        inline static constexpr int kMeleeDemonenritter_L3_StartWave = 3;
+        inline static constexpr int kMeleeDemonenritter_L3_SpawnEveryXWaves = 1;
+        inline static constexpr int kMeleeDemonenritter_L3_InitialSpawnCount = 6;
+        inline static constexpr int kMeleeDemonenritter_L3_IncreasePerSpawnWave = 3;
+        inline static constexpr bool kMeleeDemonenritter_L3_EnableDecrease = false;
+        inline static constexpr int kMeleeDemonenritter_L3_DecreaseStartWave = 999;
+        inline static constexpr int kMeleeDemonenritter_L3_DecreaseAmount = 0;
 
         //____________________Gegner Schwarm KI____________________________
         //------ Standard-Verhalten ------
