@@ -33,6 +33,7 @@ public:
     void Tick(float delta_time) override;
     void Ranged_Attack() override;
     void Melee_Attack() override;
+    void ReapplyUpgrades();
 };
 
 

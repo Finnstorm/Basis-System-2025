@@ -464,6 +464,17 @@ namespace game
         inline static constexpr const char* credits_button_asset ="PieWare/assets/UI/MainMenu/Button_Credits.png";
         inline static constexpr const char* quit_button_asset ="PieWare/assets/UI/MainMenu/Button_Quit.png";
 
+        // ------Upgrade Screen-------
+        inline static constexpr const char* continue_button_asset = "PieWare/assets/UI/Upgrade/Button_weiter.png";
+        inline static constexpr const char* speed_upgrade_asset = "PieWare/assets/UI/Upgrade/Button_Speed.png";
+        inline static constexpr const char* rangedDMG_upgrade_asset = "PieWare/assets/UI/Upgrade/Button_RangedDMG.png";
+        inline static constexpr const char* meeleDMG_upgrade_asset = "PieWare/assets/UI/Upgrade/Button_MeeleDMG.png";
+        inline static constexpr const char* lives_upgrade_asset = "PieWare/assets/UI/Upgrade/Button_Lives.png";
+        inline static constexpr const char* baseDMG_upgrade_asset = "PieWare/assets/UI/Upgrade/Button_BaseDMG.png";
+        inline static constexpr const char* atkSpeed_upgrade_asset = "PieWare/assets/UI/Upgrade/Button_AtkSpeed.png";
+        inline static constexpr const char* Soulcounter_BG_asset = "PieWare/assets/UI/Upgrade/Banner_SoulCounter.png";
+        inline static constexpr const char* abilityLevel_asset = "PieWare/assets/UI/Upgrade/AbilityLevel.png";
+
         //-------HUD----------
          inline static constexpr const char* Symbol_AA ="PieWare/assets/UI/HUD/Button_ArrowAttack.png";
                         inline static constexpr const char* Symbol_AAU ="PieWare/assets/UI/HUD/Button_ArrowAttack_Use.png";

@@ -26,6 +26,11 @@ protected:
 	float player_Movement_Speed;
 	float player_Damage_Multiplier;
 
+	int melee_Base_Damage;
+	int ranged_Base_Damage;
+	float melee_Base_Cooldown;
+	float ranged_Base_Cooldown;
+
 	ItemBase* held_item = nullptr;
 	bool is_buffed = false;
 	float buff_timer = 0.0f;
@@ -87,5 +92,23 @@ public:
 	void Reset_For_New_Level();
 	void Calculate_Melee_Hitboxes(std::vector<Rectangle>& out_hitboxes, Facing_Direction direction) const;
 	Facing_Direction Get_Facing_Direction() const { return facing_Direction; }
+
+	// --- setters/getters for upgrades ---
+	void SetMeleeDamage(int dmg) { melee_Base_Damage = dmg; }
+	void SetRangedDamage(int dmg) { ranged_Base_Damage = dmg; }
+	void SetAttackCooldown(float cd) { melee_Base_Cooldown = cd; }
+	void SetRangedCooldown(float cd) { ranged_Base_Cooldown = cd; }
+	void SetMovementSpeed(float speed) { player_Movement_Speed = speed; }
+	void SetMaxHealth(int health) { player_Max_Health = health; }
+	void SetDMGMult(float DMGMult) { player_Damage_Multiplier = DMGMult; }
+
+	int GetMeleeDamage() const { return melee_Base_Damage; }
+	int GetRangedDamage() const { return ranged_Base_Damage; }
+	float GetAttackCooldown() const { return melee_Base_Cooldown; }
+	float GetRangedCooldown() const { return ranged_Base_Cooldown; }
+	float GetMovementSpeed() const {return  player_Movement_Speed; }
+	int GetMaxHealth() { return player_Max_Health; }
+	float GetDMGMult() { return player_Damage_Multiplier; }
+
 };
 

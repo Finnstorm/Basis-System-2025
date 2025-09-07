@@ -15,6 +15,15 @@ namespace game::core
         explicit PlayerState(Vector2 start_pos) : player(start_pos) {}
     };
 
+    struct UpgradeState {
+        int maxhealth_level = 0;
+        int speed_level = 0;
+        float atkSpeed_level = 0;
+        float DMGxmult_level = 0;
+        int meleeDMG_level = 0;
+        int rangedDMG_level = 0;
+    };
+    inline UpgradeState upgrades{};
 
     struct Store final
     {

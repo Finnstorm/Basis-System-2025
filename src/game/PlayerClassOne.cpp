@@ -4,12 +4,29 @@
 
 #include "PlayerClassOne.h"
 #include <math.h>
+
+#include "PlayerEffectiveStats.h"
 #include "../config.h.in"
 
 Player_Class_One::Player_Class_One(Vector2 start_Position)
-    : Player_Base_Class(game::Config::player_Class_One_Max_Health, game::Config::player_Class_One_Movement_Speed,
-        game::Config::player_Class_One_Damage_Multiplier, start_Position)
+    : Player_Base_Class(/* maxHealth */ BuildEffectiveStats(game::core::upgrades).max_health,
+                        /* moveSpeed */ BuildEffectiveStats(game::core::upgrades).movement_speed,
+                        /* dmgMult   */ BuildEffectiveStats(game::core::upgrades).DMGxMult,
+                        start_Position)
+
 {
+    const auto effective_stats = BuildEffectiveStats(game::core::upgrades);
+    SetMeleeDamage(effective_stats.meleeDamage);           // or assign to your field
+    SetRangedDamage(effective_stats.rangedDamage);         // "
+    SetAttackCooldown(effective_stats.meele_attack_cooldown);    // where you compute melee/ranged cadence
+    SetRangedCooldown(effective_stats.ranged_attack_cooldown);
+    SetMovementSpeed(effective_stats.movement_speed);
+    SetMovementSpeed(effective_stats.movement_speed);
+    SetDMGMult(effective_stats.max_health);
+
+    //ClampCurrentHealthToMax();                 // if you track current HP separately
+
+
     int player_Walk_Anim_Speed = game::Config::player_Walk_Anim_Speed;
     Vector2 player_Walk_Anim_Size = game::Config::player_Walk_Anim_Size;
     int player_Walk_Frame_Count = game::Config::player_Walk_Frame_Count;
@@ -231,4 +248,17 @@ void Player_Class_One::Melee_Attack()
     {
         active_melee_map->at(this->attack_Direction).First_Frame();
     }
+}
+
+void Player_Class_One::ReapplyUpgrades()
+{
+    const auto eff = BuildEffectiveStats(game::core::upgrades);
+    // Movement/health/dmg mult are stored in base; set what you need:
+    SetMeleeDamage(eff.meleeDamage);
+    SetRangedDamage(eff.rangedDamage);
+    SetAttackCooldown(eff.meele_attack_cooldown);
+    SetRangedCooldown(eff.ranged_attack_cooldown);
+    SetMovementSpeed(eff.movement_speed);
+    SetMaxHealth(eff.max_health);
+    SetDMGMult(eff.DMGxMult);
 }
