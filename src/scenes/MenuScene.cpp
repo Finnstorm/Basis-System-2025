@@ -7,37 +7,33 @@
 
 using namespace std::string_literals;
 
-game::scenes::MenuScene::MenuScene()
-{
-    // Your scene initialization code here...
-
-}
-
-game::scenes::MenuScene::~MenuScene()
-{
-    // Your scene cleanup code here...
-}
+game::scenes::MenuScene::MenuScene() { }
+game::scenes::MenuScene::~MenuScene() { }
 
 void game::scenes::MenuScene::Update()
 {
-    // Your process input and update game scene code here...
-
     if (IsKeyPressed(KEY_ENTER))
+    {
+        game::core::Store::last_score = 0;
         game::core::Store::stage->ReplaceWithNewScene("menu"s, "game"s, std::make_unique<GameScene>());
+    }
 }
 
 void game::scenes::MenuScene::Draw()
 {
-    /*// Your scene drawing code here...
-    // Note that scene-actors are drawn automatically
-    //DrawText("Menu - press ENTER to load game scene", 10, 10, 30, LIGHTGRAY);
-    for (int i = 0; i < vec_cons.size(); ++i)
+    std::string menuText;
+    if (game::core::Store::last_score > 0)
     {
-        vec_cons[i].Draw();
+        menuText = "Dein Score betraegt " + std::to_string(game::core::Store::last_score) + ". Um es erneut zu versuchen, druecke Enter.";
     }
-    for (int i = 0; i < vec_walls.size(); ++i)
+    else
     {
-        vec_walls[i].Draw();*/
+        menuText = "Druecke Enter, um das Spiel zu starten";
+    }
 
-    }
+    // Text zentriert auf dem Bildschirm zeichnen
+    int fontSize = 40;
+    int textWidth = MeasureText(menuText.c_str(), fontSize);
+    DrawText(menuText.c_str(), GetScreenWidth() / 2 - textWidth / 2, GetScreenHeight() / 2 - (fontSize / 2), fontSize, RED);
+}
 

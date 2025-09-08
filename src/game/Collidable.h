@@ -17,16 +17,28 @@ enum class Collision_Type
     ENEMY_PROJECTILE,
     CONSUMABLE,
     PLAYER_MELEE_HITBOX,
-    ENEMY_SPAWNER
+    ENEMY_SPAWNER,
+    PLAYER_MELEE_ATTACK
 };
 
 class Collidable
 {
+protected:
+    Rectangle hitbox;
+    bool is_Marked_For_Destruction = false;
 public:
     virtual ~Collidable() = default;
 
-    virtual Rectangle Get_Hitbox() const = 0;
+    Rectangle Get_Hitbox() const{return this->hitbox;};
     virtual Collision_Type Get_Collision_Type() const = 0;
+    virtual void Tick(float delta_time) = 0;
+    virtual void Draw()=0;
     virtual void On_Collision(Collidable* other) = 0;
+    virtual void Set_Position(Vector2 position){}
+
+    virtual Vector2 Get_Position() const { return {hitbox.x, hitbox.y}; }
+    virtual void Mark_For_Destruction() { this->is_Marked_For_Destruction = true; }
+    bool Is_Marked_For_Destruction() const { return this->is_Marked_For_Destruction; }
+    virtual float GetYSortPosition() const { return hitbox.y + hitbox.height; }
 };
 #endif //COLLIDABLE_H

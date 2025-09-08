@@ -1,20 +1,13 @@
 #pragma once
-
 #ifndef SCREEN_H
 #define SCREEN_H
-
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <memory>
-#include "raylib.h"
+#include <raylib.h>
 #include <nlohmann/json.hpp>
+#include <memory>
 #include <../../external/tileson/tileson.hpp>
-#include "../Vectors.h"
-#include "../game/Walls.h"
-#include "../game/Consumables.h"
+#include "Cam.h"
 #include "Object_Manager.h"
+#include "CollisionManager.h"
 
 
 class Screen
@@ -22,14 +15,18 @@ class Screen
 public:
     Screen(int* Level_Ptr);
     ~Screen();
-    void Draw_Level(bool aboveObjects);
-    void LoadGameObjects(bool includeEnemySpawnersAsCollidables = false); // VERÄNDERUNG: Parametername angepasst
+    void Draw_Level(std::shared_ptr<Cam>, bool aboveObjects) ;
+    void Load_Game_Objects(Object_Manager& g_Object_Manager);
     void Load_Levelmap();
-
+    Vector2 Get_Map_Dimensions() const { return map_Dimensions; }
 private:
+    Vector2 map_Dimensions;
+    bool includeEnemySpawnersAsCollidables=false;
     Texture2D tileatlas_Texture;
     std::unique_ptr<tson::Map> map;
     int* Level_Nbr_Ptr = nullptr;
+    bool loaded;
+
 };
 
 

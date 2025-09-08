@@ -7,7 +7,8 @@
 #include "Texture2d.h"
 #include "Sprite.h"
 
-namespace game::core {
+namespace game::core
+{
     /**
      * The position within the spritesheet from which the individual frames are taken, as well as the number of frames
      * in the animation, the size of an individual frame and the speed of the animation can be specified via the

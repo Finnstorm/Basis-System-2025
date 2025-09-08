@@ -5,31 +5,8 @@
 #include "CollisionManager.h"
 
 // Konstruktor
-Collision_Manager::Collision_Manager(Rectangle world_Bounds)
-    : quadtree(std::make_unique<Quadtree>(0, world_Bounds)){}
-
-void Collision_Manager::Regist_Object(Collidable* object)
-{
-    // push_back nimmtdas Element "objecte" also einen Collidable zeiger (eine Adresse) und speichert diese
-    // am Ende des collidables Vector. Vektor vergrößert bei Bedarf seinen Speicher automatisch.
-    collidables.push_back(object);
-}
-
-void Collision_Manager::Unregist_Object(Collidable* object)
-{
-    // "begin" ist ein Iterator also ein Zeiger welcher auf das erste element im Vektor zeigt
-    // "end" zeigt auf die Position nach dem letzten Element und sagt, dass it dort nicht sein darf
-    // heißt er iteriert solange durch den Vektor bis er die passende Stelle gefunden hat, und
-    // durch .erase löscht er dise heraus und alle anderen Obejcte (pointer) im Vektor rücken auf die leere Stelle nach
-    for (auto it = collidables.begin(); it != collidables.end(); ++it)
-    {
-        if (*it == object)
-        {
-            collidables.erase(it);
-            break;
-        }
-    }
-}
+Collision_Manager::Collision_Manager(Rectangle world_Bounds,std::vector<Collidable*>& collidables)
+    : quadtree(std::make_unique<Quadtree>(0, world_Bounds)),collidables(collidables){}
 
 void Collision_Manager::Check_Collisions()
 {
@@ -66,7 +43,14 @@ void Collision_Manager::Check_Collisions()
 
             // count prüft die Liste ob das paar bereits existiert. Existiert dieses, so wird dieses Objekt übersprungen
             if (processed_pairs.count(pair)) continue;
+            Collision_Type typeA = objA->Get_Collision_Type();
+            Collision_Type typeB = objB->Get_Collision_Type();
 
+            if ((typeA == Collision_Type::PLAYER && typeB == Collision_Type::PLAYER_PROJECTILE) ||
+                (typeA == Collision_Type::PLAYER_PROJECTILE && typeB == Collision_Type::PLAYER))
+            {
+                continue; // Überspringe dieses Paar
+            }
             // Hier erfolgt der Collisioncheck. Ist dieser True wird an objA ein Pointer des objB übergeben und anderrum
             if (CheckCollisionRecs(objA->Get_Hitbox(), objB->Get_Hitbox()))
             {

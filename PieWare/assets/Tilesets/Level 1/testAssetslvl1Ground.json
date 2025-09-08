@@ -1,0 +1,14 @@
+{ "columns":16,
+ "image":"testAssetslvl1Ground.png",
+ "imageheight":135,
+ "imagewidth":271,
+ "margin":0,
+ "name":"testAssetslvl1Ground",
+ "spacing":1,
+ "tilecount":128,
+ "tiledversion":"1.11.2",
+ "tileheight":16,
+ "tilewidth":16,
+ "type":"tileset",
+ "version":"1.10"
+}

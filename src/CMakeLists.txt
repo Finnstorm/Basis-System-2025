@@ -6,6 +6,10 @@ include(../cmake/nlohmann_json.cmake)
 
 project(game VERSION 0.1.0 LANGUAGES CXX)
 
+if(MINGW)
+    set(CMAKE_EXE_LINKER_FLAGS "-static")
+endif()
+
 include(../cmake/doxygen.cmake)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -20,6 +24,8 @@ add_subdirectory(scenes)
 add_executable(${PROJECT_NAME} main.cpp
         Vectors.h
         game/PlayerBaseClass.cpp
+        game/HUD.h
+        game/HUD.cpp
 )
 
 # Add config.h.in file
@@ -32,11 +38,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 # Link to libraries
 target_link_libraries(${PROJECT_NAME} core scenes nlohmann_json::nlohmann_json)
 
-# Copy assets to assets path
-add_custom_target(copy_assets
-COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_LIST_DIR}/../cmake/copy-assets.cmake"
-)
-add_dependencies(${PROJECT_NAME} copy_assets)
+file(COPY "${CMAKE_SOURCE_DIR}/assets" DESTINATION "${CMAKE_BINARY_DIR}/src")
+file(COPY "${CMAKE_SOURCE_DIR}/PieWare/assets" DESTINATION "${CMAKE_BINARY_DIR}/src/PieWare")
 
 if (APPLE)
 target_link_libraries(${PROJECT_NAME} "-framework IOKit")

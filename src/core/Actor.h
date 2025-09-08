@@ -2,7 +2,8 @@
 
 #include "Sprite.h"
 
-namespace game::core {
+namespace game::core
+{
     /**
      * @brief Actor base class. Actors represent all game objects, such as players, enemies and other obstacles.
      *

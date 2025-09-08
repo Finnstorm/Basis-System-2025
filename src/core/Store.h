@@ -4,12 +4,27 @@
 #include <raylib.h>
 #include "Stage.h"
 #include "Actor.h"
-
+#include "../game/PlayerClassOne.h"
 namespace game::core
 {
-    /**
-     * @brief A central place to share globally accessible objects that should be accessible from anywhere.
-     */
+    struct PlayerState {
+        Player_Class_One player;
+        int score = 0;
+        int souls = 0;
+
+        explicit PlayerState(Vector2 start_pos) : player(start_pos) {}
+    };
+
+    struct UpgradeState {
+        int maxhealth_level = 0;
+        int speed_level = 0;
+        float atkSpeed_level = 0;
+        float DMGxmult_level = 0;
+        int meleeDMG_level = 0;
+        int rangedDMG_level = 0;
+    };
+    inline UpgradeState upgrades{};
+
     struct Store final
     {
         /// The Stage object is responsible for the scene change and for updating and drawing the scene contents
@@ -25,5 +40,8 @@ namespace game::core
         /// The actors map can contain shared pointers to actor objects that are to be used across
         /// multiple scenes (e.g. the player actor).
         inline static std::map<std::string, std::shared_ptr<game::core::Actor>> actors = { };
+        inline static std::unique_ptr<PlayerState> player_state = nullptr;
+        inline static int last_score = 0;
+
     };
 }
