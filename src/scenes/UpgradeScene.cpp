@@ -7,14 +7,28 @@
 #include <raylib.h>
 #include <Store.h>
 
+#include "FairyAnim.h"
 #include "PlayerEffectiveStats.h"
 #include "../config.h.in"
 
 namespace game::scenes {
-    UpgradeScene::UpgradeScene(int souls, int level)
-    {
+    UpgradeScene::UpgradeScene(int souls, int level) {
         this->souls_to_spend = souls;
-        this->current_level = level;
+        this->current_level  = level;
+
+        // load fairy animation depending on level
+        const std::string path = game::Config::fairy_spritesheet_path(level);
+        if (path != "no sprite found") {
+            const FairyAnimMeta meta = GetFairyMetaForLevel(level);
+            fairyAnim = RepeatAnimation(
+                meta.frameSize,
+                path.c_str(),
+                meta.frames,
+                meta.columns,
+                meta.fps
+            );
+            fairyAnim.First_Frame();
+        }
     }
 
     UpgradeScene::~UpgradeScene() {}
@@ -160,7 +174,7 @@ namespace game::scenes {
             DrawTexturePro(
                 sheet,
                  src_full,
-                 { x, y, src_full.width * 2.0f, src_full.height * 2.0f },
+                 { x, y, src_full.width * 3.0f, src_full.height * 3.0f },
                   { 0, 0 },
                  0.0f,
                  WHITE
@@ -174,7 +188,7 @@ namespace game::scenes {
             DrawTexturePro(
                 sheet,
                  src_empty_hi,
-                 { x, y, src_empty_hi.width * 2.0f, src_empty_hi.height * 2.0f },
+                 { x, y, src_empty_hi.width * 3.0f, src_empty_hi.height * 3.0f },
                   { 0, 0 },
                  0.0f,
                  tint
@@ -189,7 +203,7 @@ namespace game::scenes {
             DrawTexturePro(
                 sheet,
                  src_empty,
-                 { x, y, src_empty.width * 2.0f, src_empty.height * 2.0f },
+                 { x, y, src_empty.width * 3.0f, src_empty.height * 3.0f },
                   { 0, 0 },
                  0.0f,
                  WHITE
@@ -205,6 +219,8 @@ namespace game::scenes {
         for (int i = 0; i < kRows; ++i) {
             if (fail_flash_timer[i] > 0) --fail_flash_timer[i];
         }
+
+        fairyAnim.Update_Frame(GetFrameTime());
 
         Input_Check_Mov();
 
@@ -236,20 +252,23 @@ namespace game::scenes {
         //Draw Menu Backdrop
 
         DrawTexturePro(soulcounter_bg,
-                    {1, 1, 96, 32},                     // source rect (part of sheet)
-                    {20, 100, 96*2.0f, 32*2.0f},        // dest rect (x,y,w,h → scaled ×2)
+                    {0, 0, 64, 30},                     // source rect (part of sheet)
+                    {20, 100, 64*4.0f, 30*4.0f},        // dest rect (x,y,w,h → scaled ×2)
                     {0, 0},                                         // origin (pivot top-left)
                         0.0f,                                                // rotation
                         WHITE                                                // tint
                     );
+
         DrawText(TextFormat("%d", souls_to_spend), 30, 108, 20, WHITE);
+        fairyAnim.Draw_Current_Frame_Pro(Vector2{ 140.0f, 400 });
 
-        Rectangle pip_full  = {  1, 1, 32, 32 };
-        Rectangle pip_empty = { 97, 1, 32, 32 };
-        Rectangle pip_empty_hi = { 65, 1, 32, 32 };  // empty highlighted (hover)
 
-        constexpr float kStartX  = game::Config::kStageWidth / 2.0f + 90.0f;
-        constexpr float kSpacing = 64.0f;
+        Rectangle pip_full  = {  0, 0, 32, 32 };
+        Rectangle pip_empty = { 96, 0, 32, 32 };
+        Rectangle pip_empty_hi = { 64, 0, 32, 32 };  // empty highlighted (hover)
+
+        constexpr float kStartX  = game::Config::kStageWidth / 2.0f + 140.0f;
+        constexpr float kSpacing = 96.0f;
 
         // -----Max Health-----
         if (counter==0){
@@ -258,8 +277,8 @@ namespace game::scenes {
             DrawTexturePro(
                 lives_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 150.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 150.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -270,8 +289,8 @@ namespace game::scenes {
             DrawTexturePro(
                 lives_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 150.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 150.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -298,8 +317,8 @@ namespace game::scenes {
             DrawTexturePro(
                 speed_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 250.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 250.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -311,8 +330,8 @@ namespace game::scenes {
             DrawTexturePro(
                 speed_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 250.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 250.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -339,8 +358,8 @@ namespace game::scenes {
             DrawTexturePro(
                 atkSpeed_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 350.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 350.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -352,8 +371,8 @@ namespace game::scenes {
             DrawTexturePro(
                 atkSpeed_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 350.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 350.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -380,8 +399,8 @@ namespace game::scenes {
             DrawTexturePro(
                 DMGxMult_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 450.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 450.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -393,8 +412,8 @@ namespace game::scenes {
             DrawTexturePro(
                 DMGxMult_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 450.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 450.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -421,8 +440,8 @@ namespace game::scenes {
             DrawTexturePro(
                 meeleDMG_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 550.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 550.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -434,8 +453,8 @@ namespace game::scenes {
             DrawTexturePro(
                 meeleDMG_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 550.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 550.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -462,8 +481,8 @@ namespace game::scenes {
             DrawTexturePro(
                 rangedDMG_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 650.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 650.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -475,8 +494,8 @@ namespace game::scenes {
             DrawTexturePro(
                 rangedDMG_upgrade_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 650.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 650.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -503,8 +522,8 @@ namespace game::scenes {
             DrawTexturePro(
                 continue_button_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 750.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 750.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE
@@ -516,8 +535,8 @@ namespace game::scenes {
             DrawTexturePro(
                 continue_button_button,
                 abilities,
-                { game::Config::kStageWidth/2.0f - 80.0f, 750.0f,
-                    abilities.width * 2.0f, abilities.height * 2.0f },
+                { game::Config::kStageWidth/2.0f - 100.0f, 750.0f,
+                    abilities.width * 3.0f, abilities.height * 3.0f },
                     { 0, 0 },
                     0.0f,
                     WHITE

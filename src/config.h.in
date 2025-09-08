@@ -524,5 +524,19 @@ namespace game
                 return "assets/maps/default.json";
             }
         }
+        inline static std::string fairy_spritesheet_path(int Lvl_Nbr)
+                        {
+                            switch (Lvl_Nbr)
+                            {
+                                case 1:
+                                return "PieWare/assets/Spritesheets/Erzfee/ErzfeeAnimationLv1.png";
+                                case 2:
+                                return "PieWare/assets/Spritesheets/Erzfee/ErzfeeLv2Animation.png";
+                                case 3:
+                                return "PieWare/assets/Spritesheets/Erzfee/ErzfeeLv3Animation.png";
+                                default:
+                                return "no sprite found";
+                            }
+                        }
     };
 }

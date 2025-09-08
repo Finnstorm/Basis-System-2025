@@ -25,6 +25,7 @@ class RepeatAnimation {
     void Update_Frame(float delta_time);
     void First_Frame();
     void Draw_Current_Frame(Vector2);
+    void Draw_Current_Frame_Pro(Vector2);
 
 };
 

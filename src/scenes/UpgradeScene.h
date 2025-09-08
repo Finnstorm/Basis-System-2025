@@ -6,6 +6,8 @@
 #define UPGRADESCENE_H
 #include "Scene.h"
 #include "../config.h.in"
+#include "RepeatAnimation.h"
+#include "FairyAnim.h"
 #include "../game/PlayerBaseClass.h"
 
 namespace game::scenes
@@ -24,6 +26,12 @@ namespace game::scenes
         Texture2D continue_button_button = LoadTexture(game::Config::continue_button_asset);
         Rectangle abilities{1,1,80,32};
         Rectangle level_counter {1,1,32,32};
+
+        int souls_to_spend;
+        int current_level;
+        int counter;
+
+        RepeatAnimation fairyAnim{ Vector2{32.0f, 32.0f}, "", 1, 1, 1.0f };
 
 
         inline static constexpr int kUpgrade_Max_Level = 7;
@@ -52,11 +60,6 @@ namespace game::scenes
         bool TryBuy_GlobalDMG();
         bool TryBuy_MeleeDMG();
         bool TryBuy_RangedDMG();
-
-
-        int souls_to_spend;
-        int current_level;
-        int counter;
 
         void Input_Check_Mov();
         bool Input_Check_Sel();
