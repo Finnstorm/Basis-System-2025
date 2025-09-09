@@ -259,8 +259,29 @@ namespace game::scenes {
                         WHITE                                                // tint
                     );
 
+
+
         DrawText(TextFormat("%d", souls_to_spend), 30, 108, 20, WHITE);
         fairyAnim.Draw_Current_Frame_Pro(Vector2{ 140.0f, 400 });
+
+
+        Vector2 Text_basePos = {game::Config::kStageWidth / 2.0f + 140.0f, 70};
+        int colSpacing = 100;
+
+        int kFontSize[7] = {
+            60, 55, 55, 45, 45, 45, 40
+        };
+
+        for (int i = 0; i <= 6; i++) {
+            int FontSize = kFontSize[i];
+            int upgradePrice = kUpgrade_Prices[i];
+            std::string priceText = std::to_string(upgradePrice);
+
+            Vector2 pos{ Text_basePos.x + i * colSpacing, Text_basePos.y };
+            DrawTextEx(GnomeFont, priceText.c_str(), pos, FontSize, 2, Color{126, 196, 193, 255});
+        };
+
+
 
 
         Rectangle pip_full  = {  0, 0, 32, 32 };
